@@ -50,7 +50,7 @@
     /* ── NAVBAR ─────────────────────────────── */
     .navbar { position:sticky; top:0; z-index:100; background:var(--bg-white); border-bottom:1px solid var(--border); box-shadow:var(--shadow-sm); }
     .navbar-inner { display:flex; align-items:center; justify-content:space-between; height:68px; }
-    .logo { display:flex; align-items:center; gap:10px; }
+    .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
     .logo-icon { width:38px; height:38px; background:var(--primary); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; }
     .logo-icon svg { width:22px; height:22px; fill:#fff; }
     .logo-text { font-family:'Poppins',sans-serif; font-size:1.25rem; font-weight:700; color:var(--primary-dark); }
@@ -98,7 +98,7 @@
       overflow-x: auto;
     }
     .progress-inner {
-      max-width: 1280px; margin: 0 auto; padding: 0 24px;
+      max-width: 1200px; margin: 0 auto; padding: 0 24px;
       display: flex; align-items: stretch;
     }
     .prog-step {
@@ -130,7 +130,7 @@
 
     /* ── MAIN LAYOUT ──────────────────────── */
     .config-main {
-      max-width: 1280px; margin: 0 auto;
+      max-width: 1200px; margin: 0 auto;
       padding: 24px 24px 80px;
       display: grid;
       grid-template-columns: 1fr 360px;
@@ -317,6 +317,38 @@
     }
     .glass-color-chip .dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(0,0,0,.1); }
     .glass-color-chip:hover, .glass-color-chip.selected { border-color: var(--primary); color: var(--primary); }
+
+    /* ── MATERIAL CHIPS ───────────────────── */
+    .mat-chips { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:24px; }
+    .mat-chip {
+      display:flex; align-items:center; gap:8px;
+      padding:10px 18px; border-radius:var(--radius-md);
+      border:2px solid var(--border); background:#fff;
+      cursor:pointer; font-size:.875rem; font-weight:600; color:var(--text-mid);
+      transition:border-color var(--t), background var(--t), color var(--t);
+    }
+    .mat-chip:hover { border-color:var(--secondary); color:var(--primary); background:var(--bg); }
+    .mat-chip.selected { border-color:var(--primary); background:var(--bg); color:var(--primary); box-shadow:0 0 0 3px rgba(59,130,246,.12); }
+    .mat-chip svg { width:18px; height:18px; flex-shrink:0; }
+
+    /* ── WHATSAPP WIDGET ──────────────────── */
+    .wa-widget { position:fixed; bottom:24px; right:24px; z-index:1000; display:flex; flex-direction:column; align-items:flex-end; gap:12px; }
+    .wa-btn { width:56px; height:56px; border-radius:50%; background:#25D366; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 16px rgba(37,211,102,.4); transition:transform 200ms ease, box-shadow 200ms ease; flex-shrink:0; }
+    .wa-btn:hover { transform:scale(1.08); box-shadow:0 6px 24px rgba(37,211,102,.5); }
+    .wa-popup { display:none; background:#fff; border-radius:var(--radius-lg); box-shadow:0 8px 40px rgba(0,0,0,.18); width:300px; overflow:hidden; }
+    .wa-popup.open { display:block; animation:fadeUp 200ms ease; }
+    .wa-popup-header { background:#075E54; padding:14px 16px; display:flex; align-items:center; gap:10px; }
+    .wa-avatar { width:38px; height:38px; border-radius:50%; background:#25D366; display:flex; align-items:center; justify-content:center; font-family:'Poppins',sans-serif; font-size:.85rem; font-weight:700; color:#fff; flex-shrink:0; }
+    .wa-popup-name { font-size:.9rem; font-weight:700; color:#fff; }
+    .wa-popup-status { font-size:.72rem; color:rgba(255,255,255,.75); margin-top:1px; }
+    .wa-close { margin-left:auto; background:none; border:none; color:rgba(255,255,255,.7); font-size:1.4rem; cursor:pointer; line-height:1; padding:0 2px; }
+    .wa-close:hover { color:#fff; }
+    .wa-bubble { background:#DCF8C6; margin:16px 12px 8px; padding:10px 12px; border-radius:8px 8px 8px 0; font-size:.82rem; line-height:1.5; color:#1a1a1a; }
+    .wa-input-area { padding:8px 12px 14px; display:flex; flex-direction:column; gap:8px; }
+    .wa-input { width:100%; border:1px solid var(--border); border-radius:var(--radius-sm); padding:8px 10px; font-size:.82rem; font-family:'Open Sans',sans-serif; resize:none; outline:none; height:72px; color:var(--text-dark); }
+    .wa-input:focus { border-color:var(--secondary); }
+    .wa-send { background:#25D366; color:#fff; border:none; border-radius:var(--radius-sm); padding:9px 14px; font-size:.82rem; font-weight:600; cursor:pointer; transition:background 150ms ease; }
+    .wa-send:hover { background:#1DA851; }
 
     /* ── ACCESSORIES (step 6) ──────────────── */
     .acc-list { display: flex; flex-direction: column; gap: 12px; }
@@ -603,6 +635,21 @@
 
       <!-- ── STEP 1: TIPO ──────────────────────────────── -->
       <div class="step-content active" id="sc-1">
+        <div style="margin-bottom:20px;">
+          <div style="font-size:.8rem;font-weight:700;color:var(--text-mid);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">Materiale del profilo</div>
+          <div class="mat-chips" id="mat-chips">
+            <div class="mat-chip selected" onclick="selectMaterial('pvc')" id="mat-pvc">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg>PVC
+            </div>
+            <div class="mat-chip" onclick="selectMaterial('legno')" id="mat-legno">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>Legno
+            </div>
+            <div class="mat-chip" onclick="selectMaterial('alluminio')" id="mat-alluminio">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 9h16M4 14h16M9 4v16M14 4v16"/></svg>Alluminio
+            </div>
+          </div>
+        </div>
+        <div style="font-size:.8rem;font-weight:700;color:var(--text-mid);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">Tipo di apertura</div>
         <div class="type-grid" id="type-grid">
           <!-- rendered by JS -->
         </div>
@@ -719,6 +766,16 @@
           <div class="glass-colors" id="glass-colors">
             <!-- rendered by JS -->
           </div>
+        </div>
+        <div class="opening-card" style="margin-top:20px;justify-content:space-between;border-color:var(--accent);background:#F0FDF4;">
+          <div>
+            <div class="opening-card-name" style="color:var(--accent);">Canalina calda (warm edge spacer)</div>
+            <div class="opening-card-desc">Distanziatore termicamente migliorato — riduce la condensa sui bordi, migliora il valore Uw della finestra fino a 0.1 W/m²K.</div>
+          </div>
+          <label class="toggle-label">
+            <input type="checkbox" id="warmEdge-glass" onchange="st.warmEdge=this.checked; document.getElementById('warmEdge-main').checked=this.checked; updatePreviewPanel();">
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          </label>
         </div>
         <div class="val-error" id="err-6">Seleziona il tipo di vetro per continuare.</div>
       </div>
@@ -866,10 +923,12 @@ const OPENING_OPTS = {
 };
 
 const GLASS_OPTS = [
-  { id:'doppio-std',  name:'Doppio standard',       spec:'4/16/4 mm, gas argon',        uw:1.1, surcharge:0,  badge:null,            uwColor:'#F97316' },
-  { id:'doppio-lowe', name:'Doppio Low-E',          spec:'4/16/4 mm, basso emissivo',   uw:0.9, surcharge:22, badge:'Consigliato',   uwColor:'#EAB308' },
-  { id:'triplo-std',  name:'Triplo standard',       spec:'4/14/4/14/4 mm, argon',       uw:0.7, surcharge:48, badge:null,            uwColor:'#84CC16' },
-  { id:'triplo-lowe', name:'Triplo Low-E premium',  spec:'4/14/4/14/4 mm, Low-E',       uw:0.5, surcharge:78, badge:'Max efficienza', uwColor:'#16A34A' },
+  { id:'doppio-std',    name:'Doppio standard',        spec:'4/16/4 mm, gas argon',                  uw:1.1, badge:null,              uwColor:'#F97316' },
+  { id:'doppio-lowe',   name:'Doppio Low-E',           spec:'4/16/4 mm, coating basso emissivo',     uw:0.9, badge:'Consigliato',      uwColor:'#EAB308' },
+  { id:'doppio-acust',  name:'Doppio acustico',        spec:'6.8/18/4 mm VSG – 33 dB Rw',           uw:1.0, badge:'Anti-rumore',      uwColor:'#F97316' },
+  { id:'doppio-anti',   name:'Doppio antisfondamento', spec:'33.1/16/4 mm VSG – P1A certificato',   uw:1.0, badge:'Sicurezza',        uwColor:'#F97316' },
+  { id:'triplo-std',    name:'Triplo standard',        spec:'4/14/4/14/4 mm, gas argon',             uw:0.7, badge:null,              uwColor:'#84CC16' },
+  { id:'triplo-lowe',   name:'Triplo Low-E premium',   spec:'4/14/4/14/4 mm, 2× coating Low-E',     uw:0.5, badge:'Max efficienza',   uwColor:'#16A34A' },
 ];
 
 const COLOR_OPTS = [
@@ -888,11 +947,13 @@ const GLASS_COLOR_OPTS = [
 ];
 
 const ACCESSORY_OPTS = [
-  { id:'maniglia-p', name:'Maniglia premium alluminio', desc:'Design moderno, ergonomica, colori coordinati',  price:18 },
-  { id:'zanzariera', name:'Zanzariera a rullo',         desc:'Scomparsa, facile da usare, telaio in alluminio', price:42 },
-  { id:'griglia-v',  name:'Griglia di ventilazione',   desc:'Ventilazione silenziosa con filtro anti-insetti', price:35 },
-  { id:'tapparella', name:'Tapparella in PVC',          desc:'Isolamento termico/acustico aggiuntivo',          price:95 },
-  { id:'davanzale',  name:'Davanzale in alluminio',     desc:'Protegge il muro e completa il serramento',       price:55 },
+  { id:'maniglia-p',  name:'Maniglia premium alluminio',   desc:'Design moderno, ergonomica, disponibile in tutti i colori profilo',   price:18 },
+  { id:'serratura-mp',name:'Serratura multipunto',         desc:'3 punti di chiusura, certificazione anti-scasso classe 2',           price:68 },
+  { id:'zanzariera',  name:'Zanzariera a rullo',           desc:'Scomparsa, facile da usare, telaio in alluminio verniciato',         price:42 },
+  { id:'griglia-v',   name:'Griglia di ventilazione',      desc:'Ventilazione silenziosa con filtro anti-insetti integrato',          price:35 },
+  { id:'tapparella',  name:'Tapparella in PVC coibentata', desc:'Isolamento termico e acustico aggiuntivo, azionamento manuale',      price:95 },
+  { id:'cassonetto',  name:'Cassonetto coibentato',        desc:'Alloggiamento per tapparella, coibentazione 40mm – riduce dispersioni', price:130 },
+  { id:'davanzale',   name:'Davanzale in alluminio',       desc:'Profilo esterno in alluminio con gocciolatoio, protegge il muro',    price:55 },
 ];
 
 const SIZE_PRESETS = {
@@ -910,6 +971,7 @@ const SIZE_PRESETS = {
 
 const st = {
   step: 1,
+  material: 'pvc',
   type: null,
   width: 1000,
   height: 1200,
@@ -936,7 +998,7 @@ function buildPreviewSVG(compact) {
   const MAX_H = compact ? 170 : 250;
 
   const pc = COLOR_OPTS.find(c=>c.id===st.color) || COLOR_OPTS[0];
-  const glassOpac = { 'doppio-std':0.28, 'doppio-lowe':0.42, 'triplo-std':0.58, 'triplo-lowe':0.7 }[st.glass] || 0.4;
+  const glassOpac = { 'doppio-std':0.28, 'doppio-lowe':0.42, 'doppio-acust':0.32, 'doppio-anti':0.30, 'triplo-std':0.58, 'triplo-lowe':0.7 }[st.glass] || 0.4;
   const glassBase = GLASS_COLOR_OPTS.find(g=>g.id===st.glassColor) || GLASS_COLOR_OPTS[0];
   const glassFill = glassBase.fill.replace('OPAC', glassOpac);
 
@@ -1327,11 +1389,13 @@ function glassLayerIcon(id) {
 function renderAccList() {
   const el = document.getElementById('acc-list');
   const icons = {
-    'maniglia-p': `<path d="M12 2a2 2 0 012 2v8a2 2 0 01-2 2H8a2 2 0 01-2-2V4a2 2 0 012-2h4zm0 2H8v8h4V4zm6 0h-2v2h2v12h-2v2h2a2 2 0 002-2V6a2 2 0 00-2-2z"/>`,
-    'zanzariera': `<path d="M3 3h18v18H3V3zm2 2v14h14V5H5zm2 2h10v2H7V7zm0 4h10v2H7v-2zm0 4h6v2H7v-2z"/>`,
-    'griglia-v':  `<path d="M3 5h18v2H3V5zm0 6h18v2H3v-2zm0 6h18v2H3v-2z"/>`,
-    'tapparella': `<path d="M4 4h16v3H4V4zm0 5h16v3H4V9zm0 5h16v3H4v-3zm0 5h16v2H4v-2z"/>`,
-    'davanzale':  `<path d="M2 17h20v3H2v-3zM4 14h16v3H4v-3zM1 20h22v2H1v-2z"/>`,
+    'maniglia-p':  `<path d="M12 2a2 2 0 012 2v8a2 2 0 01-2 2H8a2 2 0 01-2-2V4a2 2 0 012-2h4zm0 2H8v8h4V4zm6 0h-2v2h2v12h-2v2h2a2 2 0 002-2V6a2 2 0 00-2-2z"/>`,
+    'serratura-mp':`<path d="M12 1C9.24 1 7 3.24 7 6v2H5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V10a2 2 0 00-2-2h-2V6c0-2.76-2.24-5-5-5zm0 2c1.66 0 3 1.34 3 3v2H9V6c0-1.66 1.34-3 3-3zm0 9a2 2 0 110 4 2 2 0 010-4z"/>`,
+    'zanzariera':  `<path d="M3 3h18v18H3V3zm2 2v14h14V5H5zm2 2h10v2H7V7zm0 4h10v2H7v-2zm0 4h6v2H7v-2z"/>`,
+    'griglia-v':   `<path d="M3 5h18v2H3V5zm0 6h18v2H3v-2zm0 6h18v2H3v-2z"/>`,
+    'tapparella':  `<path d="M4 4h16v3H4V4zm0 5h16v3H4V9zm0 5h16v3H4v-3zm0 5h16v2H4v-2z"/>`,
+    'cassonetto':  `<path d="M3 5a2 2 0 012-2h14a2 2 0 012 2v4H3V5zm0 6h18v8a2 2 0 01-2 2H5a2 2 0 01-2-2v-8zm7 2v4h4v-4h-4z"/>`,
+    'davanzale':   `<path d="M2 17h20v3H2v-3zM4 14h16v3H4v-3zM1 20h22v2H1v-2z"/>`,
   };
   el.innerHTML = ACCESSORY_OPTS.map(a => `
     <div class="acc-item${st.accessories.has(a.id)?' selected':''}"
@@ -1361,13 +1425,15 @@ function renderSummary() {
     ? `Sì – traversa a ${st.divSymmetric?'centro':st.divPos1+' mm'}${st.divPos2?' + '+st.divPos2+' mm':''}`
     : 'No';
 
+  const matLabel = { pvc:'PVC', legno:'Legno', alluminio:'Alluminio' }[st.material] || 'PVC';
   const specs = [
+    { k:'Materiale',    v: matLabel },
     { k:'Tipo',         v: tInfo?.name||'–' },
     { k:'Dimensioni',   v: `${st.width} × ${st.height} mm` },
     { k:'Divisioni',    v: divText },
-    { k:'Canalina calda',v: st.warmEdge ? 'Sì (warm edge)' : 'No' },
+    { k:'Canalina calda',v: st.warmEdge ? 'Sì (warm edge spacer)' : 'No' },
     { k:'Apertura',     v: opInfo?.name||'–' },
-    { k:'Profilo',      v: `${cInfo?.name||'–'} (${cInfo?.code||''})` },
+    { k:'Profilo colore',v: `${cInfo?.name||'–'} (${cInfo?.code||''})` },
     { k:'Vetro',        v: gInfo?.name||'–' },
     { k:'Colore vetro', v: gcInfo?.name||'–' },
     { k:'Accessori',    v: accNames.length ? accNames.join(', ') : 'Nessuno' },
@@ -1412,9 +1478,15 @@ function updatePreviewPanel() {
 //  ACTION HANDLERS
 // ═══════════════════════════════════════════════════
 
+function selectMaterial(id) {
+  st.material = id;
+  document.querySelectorAll('.mat-chip').forEach(c => c.classList.remove('selected'));
+  document.getElementById('mat-'+id).classList.add('selected');
+}
+
 function selectType(id) {
   st.type = id;
-  st.opening = null; // reset opening when type changes
+  st.opening = null;
   document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
   event.currentTarget.classList.add('selected');
   updatePreviewPanel();
@@ -1633,6 +1705,36 @@ document.addEventListener('keydown', e => {
   const mobileMenu = document.getElementById('mobileMenu');
   hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
 })();
+
+function toggleWa() {
+  document.getElementById('waPopup').classList.toggle('open');
+}
+function sendWa() {
+  const msg = document.getElementById('waText').value.trim() || 'Ciao, vorrei informazioni sulle vostre finestre!';
+  window.open('https://api.whatsapp.com/send?phone=393455086065&text='+encodeURIComponent(msg), '_blank');
+}
 </script>
+
+<!-- ══ WHATSAPP WIDGET ═══════════════════════════════ -->
+<div class="wa-widget">
+  <div class="wa-popup" id="waPopup">
+    <div class="wa-popup-header">
+      <div class="wa-avatar">VC</div>
+      <div>
+        <div class="wa-popup-name">Vetro Connections</div>
+        <div class="wa-popup-status">Di solito risponde in pochi minuti</div>
+      </div>
+      <button class="wa-close" onclick="toggleWa()" aria-label="Chiudi">×</button>
+    </div>
+    <div class="wa-bubble">Ciao! 👋 Come possiamo aiutarti? Scrivi qui il tuo messaggio e ti risponderemo su WhatsApp.</div>
+    <div class="wa-input-area">
+      <textarea class="wa-input" id="waText" placeholder="Es: Vorrei un preventivo per finestre in PVC..."></textarea>
+      <button class="wa-send" onclick="sendWa()">Invia su WhatsApp →</button>
+    </div>
+  </div>
+  <button class="wa-btn" onclick="toggleWa()" aria-label="Chatta su WhatsApp">
+    <svg viewBox="0 0 24 24" width="28" height="28" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/></svg>
+  </button>
+</div>
 </body>
 </html>
