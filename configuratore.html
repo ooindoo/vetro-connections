@@ -35,6 +35,7 @@
     }
 
     html { scroll-behavior: smooth; }
+    a { text-decoration:none; color:inherit; }
     body {
       font-family: 'Open Sans', sans-serif;
       font-size: 16px;
@@ -333,8 +334,8 @@
 
     /* ── WHATSAPP WIDGET ──────────────────── */
     .wa-widget { position:fixed; bottom:24px; right:24px; z-index:1000; display:flex; flex-direction:column; align-items:flex-end; gap:12px; }
-    .wa-btn { width:56px; height:56px; border-radius:50%; background:#25D366; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 16px rgba(37,211,102,.4); transition:transform 200ms ease, box-shadow 200ms ease; flex-shrink:0; }
-    .wa-btn:hover { transform:scale(1.08); box-shadow:0 6px 24px rgba(37,211,102,.5); }
+    .wa-btn { width:56px; height:56px; border-radius:50%; background:#25D366; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:none; transition:transform 200ms ease; flex-shrink:0; }
+    .wa-btn:hover { transform:scale(1.08); }
     .wa-popup { display:none; background:#fff; border-radius:var(--radius-lg); box-shadow:0 8px 40px rgba(0,0,0,.18); width:300px; overflow:hidden; }
     .wa-popup.open { display:block; animation:fadeUp 200ms ease; }
     .wa-popup-header { background:#075E54; padding:14px 16px; display:flex; align-items:center; gap:10px; }
@@ -562,6 +563,36 @@
     .toggle-thumb { position:absolute; top:3px; left:3px; width:18px; height:18px; background:#fff; border-radius:50%; transition:transform .2s; box-shadow:0 1px 4px rgba(0,0,0,.2); }
     .toggle-label input:checked + .toggle-track .toggle-thumb { transform:translateX(20px); }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+    @media (max-width: 480px) {
+      .config-header .inner { flex-direction:column; gap:10px; align-items:flex-start; }
+      .config-header h1 { font-size:1.05rem; }
+      .config-header-badge { font-size:.7rem; padding:5px 12px; }
+      .step-panel-header { padding:18px 16px 0; }
+      .step-body { padding:16px; }
+      .step-nav { padding:14px 16px; gap:8px; }
+      .step-counter { font-size:.75rem; }
+      .type-card { padding:12px 10px; gap:10px; }
+      .type-card-name { font-size:.8rem; }
+      .type-card-svg { width:48px; height:48px; }
+      .opening-card { padding:12px 14px; flex-wrap:wrap; gap:8px; }
+      .opening-card-name { font-size:.82rem; }
+      .glass-card { flex-wrap:wrap; gap:8px; padding:12px; }
+      .glass-name { font-size:.82rem; }
+      .glass-spec { font-size:.72rem; }
+      .mat-chip { padding:8px 12px; font-size:.8rem; gap:6px; }
+      .mat-chip svg { width:14px; height:14px; }
+      .acc-item { padding:12px; gap:10px; }
+      .acc-name { font-size:.82rem; }
+      .acc-icon { width:28px; height:28px; }
+      .spec-key { flex:0 0 95px; font-size:.7rem; }
+      .spec-val { font-size:.82rem; }
+      .prog-step { padding:10px 8px; }
+      .prog-step .lbl { font-size:.7rem; }
+      .preview-panel { padding:16px; }
+      .btn-quote { padding:14px 18px; font-size:.95rem; }
+      .wa-widget { bottom:16px; right:16px; }
+      .wa-popup { width:260px; }
+    }
   </style>
 </head>
 <body>
@@ -1562,35 +1593,37 @@ function showError(step, show) {
   if(el) el.classList.toggle('show', show);
 }
 
-function goToStep(n) {
-  if(n < 1 || n > STEPS.length) return;
-  // Allow jumping back freely; jumping forward requires validation of current
-  if(n > st.step) {
-    for(let s = st.step; s < n; s++) {
-      if(!validate(s)) {
-        showError(s, true);
-        return;
-      }
-    }
-  }
+function activateStep(n) {
   hideAllErrors();
   document.getElementById(`sc-${st.step}`).classList.remove('active');
   st.step = n;
   document.getElementById(`sc-${n}`).classList.add('active');
-
-  // Render dynamic steps
   if(n===2) renderSizeChips();
   if(n===4) renderOpeningGrid();
   if(n===5) renderColorGrid();
   if(n===6) renderGlassGrid();
   if(n===7) renderAccList();
   if(n===8) renderSummary();
-
   renderProgressBar();
   renderStepHeader();
   updateNavButtons();
   updatePreviewPanel();
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goToStep(n) {
+  if(n < 1 || n > STEPS.length) return;
+  if(n > st.step) {
+    for(let s = st.step; s < n; s++) {
+      if(!validate(s)) {
+        // Navigate to the failing step so the user can see the error
+        if(s !== st.step) activateStep(s);
+        setTimeout(() => showError(s, true), 80);
+        return;
+      }
+    }
+  }
+  activateStep(n);
 }
 
 function jumpStep(n) {
@@ -1630,10 +1663,122 @@ document.getElementById('btn-next').addEventListener('click', () => {
   goToStep(st.step + 1);
 });
 
-// Summary action buttons
-document.getElementById('btn-quote').addEventListener('click', () => {
-  alert('Grazie! La tua configurazione è stata inviata. Ti contatteremo entro 2 ore lavorative con un preventivo dettagliato. — Vetro Connections');
-});
+// Summary action — generate PDF in new tab
+document.getElementById('btn-quote').addEventListener('click', generateQuotePDF);
+
+function generateQuotePDF() {
+  const tInfo  = WINDOW_TYPES.find(x=>x.id===st.type);
+  const gInfo  = GLASS_OPTS.find(x=>x.id===st.glass);
+  const cInfo  = COLOR_OPTS.find(x=>x.id===st.color);
+  const opInfo = (OPENING_OPTS[st.type]||[]).find(x=>x.id===st.opening);
+  const gcInfo = GLASS_COLOR_OPTS.find(x=>x.id===st.glassColor);
+  const accNames = [...st.accessories].map(id=>ACCESSORY_OPTS.find(x=>x.id===id)?.name).filter(Boolean);
+  const matLabel = { pvc:'PVC', legno:'Legno', alluminio:'Alluminio' }[st.material] || 'PVC';
+  const divText  = st.divEnabled ? `Sì – traversa a ${st.divSymmetric?'centro':st.divPos1+' mm'}${st.divPos2?' + '+st.divPos2+' mm':''}` : 'No';
+  const date  = new Date().toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'});
+  const refNum = 'VC-' + Date.now().toString().slice(-6);
+  const svgPreview = buildPreviewSVG(false);
+
+  const specs = [
+    ['Materiale profilo', matLabel],
+    ['Tipo serramento',   tInfo?.name||'–'],
+    ['Dimensioni',        `${st.width} × ${st.height} mm`],
+    ['Apertura',          opInfo?.name||'–'],
+    ['Divisioni',         divText],
+    ['Canalina calda',    st.warmEdge?'Sì (warm edge spacer)':'No'],
+    ['Colore profilo',    `${cInfo?.name||'–'} (${cInfo?.code||''})`],
+    ['Tipo vetro',        gInfo?.name||'–'],
+    ['Composizione vetro',gInfo?.spec||'–'],
+    ['Colore vetro',      gcInfo?.name||'–'],
+    ['Accessori',         accNames.length?accNames.join(', '):'Nessuno'],
+  ];
+
+  const specsHtml = specs.map(([k,v])=>`
+    <tr><td class="k">${k}</td><td class="v">${v}</td></tr>`).join('');
+
+  const html = `<!DOCTYPE html><html lang="it"><head><meta charset="UTF-8">
+<title>Preventivo ${refNum} – Vetro Connections</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Open Sans',sans-serif;font-size:13.5px;color:#1E293B;background:#fff;}
+.page{max-width:780px;margin:0 auto;padding:48px 40px;}
+.hdr{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:22px;border-bottom:2px solid #1E40AF;margin-bottom:32px;}
+.logo{font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:800;color:#1E3A8A;}
+.logo span{color:#16A34A;}
+.co{font-size:.75rem;color:#475569;line-height:1.7;margin-top:6px;}
+.ref-box{text-align:right;}
+.ref{font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;color:#1E40AF;}
+.dt{font-size:.78rem;color:#475569;margin-top:3px;}
+h2{font-family:'Poppins',sans-serif;font-size:.95rem;color:#1E3A8A;text-transform:uppercase;letter-spacing:.05em;margin:28px 0 14px;}
+.grid{display:grid;grid-template-columns:220px 1fr;gap:28px;align-items:start;}
+.svg-box{background:#F8FAFD;border:1px solid #BFDBFE;border-radius:12px;padding:18px;display:flex;justify-content:center;align-items:center;}
+table{width:100%;border-collapse:collapse;}
+td{padding:8px 6px;border-bottom:1px solid #F1F5F9;}
+td.k{color:#64748B;font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;width:140px;}
+td.v{font-weight:600;color:#1E293B;}
+.uw{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:14px 16px;margin-top:16px;}
+.uw-lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;color:#64748B;letter-spacing:.04em;}
+.uw-val{font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:800;color:#1E40AF;}
+.uw-sub{font-size:.72rem;color:#475569;margin-top:2px;}
+.note{background:#F0FDF4;border:1px solid #86EFAC;border-radius:10px;padding:16px 18px;margin-top:28px;}
+.note-t{font-weight:700;color:#15803D;font-size:.82rem;margin-bottom:6px;}
+.note-b{font-size:.8rem;color:#166534;line-height:1.65;}
+.sigs{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:36px;}
+.sig{border-top:1px solid #CBD5E1;padding-top:7px;font-size:.7rem;color:#94A3B8;}
+.ftr{margin-top:36px;padding-top:16px;border-top:1px solid #E2E8F0;display:flex;justify-content:space-between;font-size:.72rem;color:#94A3B8;}
+.print-btn{position:fixed;bottom:20px;right:20px;background:#1E40AF;color:#fff;border:none;border-radius:8px;padding:11px 22px;font-size:.875rem;font-weight:600;cursor:pointer;font-family:'Open Sans',sans-serif;box-shadow:0 4px 14px rgba(30,64,175,.3);}
+.print-btn:hover{background:#1E3A8A;}
+@media print{.print-btn{display:none;}}
+</style></head><body>
+<div class="page">
+  <div class="hdr">
+    <div>
+      <div class="logo">Vetro<span>Connections</span></div>
+      <div class="co">Via Levada 34, 31050 Povegliano (TV)<br>vetroconnections@gmail.com · +39 345 5086065<br>P.IVA 05516400263</div>
+    </div>
+    <div class="ref-box">
+      <div class="ref">Preventivo ${refNum}</div>
+      <div class="dt">Data: ${date}</div>
+      <div class="dt" style="color:#94A3B8;font-style:italic;margin-top:4px;">Valido 30 giorni · Senza impegno</div>
+    </div>
+  </div>
+
+  <h2>Configurazione Serramento</h2>
+  <div class="grid">
+    <div class="svg-box">${svgPreview}</div>
+    <div>
+      <table>${specsHtml}</table>
+      <div class="uw">
+        <div class="uw-lbl">Trasmittanza termica Uw</div>
+        <div class="uw-val">${gInfo?.uw||'–'} W/m²K</div>
+        <div class="uw-sub">${gInfo?.name||''} · ${gInfo?.spec||''}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <div class="note-t">Prossimi passi</div>
+    <div class="note-b">Questo documento è un preventivo indicativo basato sulla configurazione selezionata. Il prezzo definitivo sarà confermato dopo sopralluogo gratuito in loco.<br>Contattaci entro 30 giorni per bloccare le condizioni attuali.<br><br><strong>+39 345 5086065</strong> &nbsp;·&nbsp; <strong>vetroconnections@gmail.com</strong></div>
+  </div>
+
+  <div class="sigs">
+    <div class="sig">Firma Cliente &nbsp;_________________________________</div>
+    <div class="sig">Vetro Connections &nbsp;_________________________________</div>
+  </div>
+
+  <div class="ftr">
+    <span>Vetro Connections · P.IVA 05516400263 · Via Levada 34, 31050 Povegliano (TV)</span>
+    <span>${refNum} · ${date}</span>
+  </div>
+</div>
+<button class="print-btn" onclick="window.print()">Stampa / Salva PDF</button>
+</body></html>`;
+
+  const w = window.open('', '_blank');
+  w.document.write(html);
+  w.document.close();
+}
 
 // Divisioni handlers
 function onDivToggle(checked) {
