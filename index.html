@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vetro Connections – Finestre e Porte in PVC, Legno e Alluminio</title>
+  <meta name="description" content="Finestre e porte in PVC, legno e alluminio su misura. Configura online, prezzi diretti dal produttore. Rilievi in situ e installazione professionale.">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary:     #1E40AF;
+      --primary-dark:#1E3A8A;
+      --secondary:   #3B82F6;
+      --accent:      #16A34A;
+      --accent-dark: #15803D;
+      --bg:          #EFF6FF;
+      --bg-white:    #FFFFFF;
+      --muted:       #F1F5F9;
+      --border:      #BFDBFE;
+      --text-dark:   #1E293B;
+      --text-mid:    #475569;
+      --text-light:  #94A3B8;
+      --radius-sm:   6px;
+      --radius-md:   12px;
+      --radius-lg:   20px;
+      --shadow-sm:   0 1px 4px rgba(30,64,175,.08);
+      --shadow-md:   0 4px 20px rgba(30,64,175,.12);
+      --shadow-lg:   0 12px 40px rgba(30,64,175,.16);
+      --transition:  150ms ease;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family:'Open Sans',sans-serif; font-size:16px; line-height:1.6; color:var(--text-dark); background:var(--bg-white); overflow-x:hidden; }
+    h1,h2,h3,h4,h5 { font-family:'Poppins',sans-serif; line-height:1.25; }
+    a { text-decoration:none; color:inherit; }
+    img { max-width:100%; display:block; }
+    .container { max-width:1200px; margin:0 auto; padding:0 24px; }
+
+    /* NAVBAR */
+    .navbar { position:sticky; top:0; z-index:100; background:var(--bg-white); border-bottom:1px solid var(--border); box-shadow:var(--shadow-sm); }
+    .navbar-inner { display:flex; align-items:center; justify-content:space-between; height:68px; }
+    .logo { display:flex; align-items:center; gap:10px; }
+    .logo-icon { width:38px; height:38px; background:var(--primary); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; }
+    .logo-icon svg { width:22px; height:22px; fill:#fff; }
+    .logo-text { font-family:'Poppins',sans-serif; font-size:1.25rem; font-weight:700; color:var(--primary-dark); }
+    .logo-text span { color:var(--accent); }
+    .nav-links { display:flex; align-items:center; gap:4px; list-style:none; }
+    .nav-links a { font-size:0.875rem; font-weight:500; color:var(--text-mid); padding:8px 12px; border-radius:var(--radius-sm); transition:color var(--transition),background var(--transition); }
+    .nav-links a:hover { color:var(--primary); background:var(--bg); }
+    .nav-cta { background:var(--accent)!important; color:#fff!important; border-radius:var(--radius-sm)!important; padding:10px 18px!important; font-weight:600!important; box-shadow:0 2px 8px rgba(22,163,74,.3); transition:background var(--transition),transform var(--transition),box-shadow var(--transition)!important; }
+    .nav-cta:hover { background:var(--accent-dark)!important; transform:translateY(-1px); box-shadow:0 4px 16px rgba(22,163,74,.4)!important; }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:8px; border:none; background:none; }
+    .hamburger span { display:block; width:24px; height:2px; background:var(--text-dark); border-radius:2px; transition:transform 300ms ease,opacity 300ms ease; }
+    .mobile-menu { display:none; position:fixed; top:68px; left:0; right:0; bottom:0; background:#fff; z-index:99; padding:24px; overflow-y:auto; }
+    .mobile-menu.open { display:flex; flex-direction:column; gap:8px; }
+    .mobile-menu a { font-size:1.05rem; font-weight:500; color:var(--text-dark); padding:14px 16px; border-radius:var(--radius-md); border:1px solid var(--border); display:block; }
+    .mobile-menu a:hover { background:var(--bg); }
+    .mobile-menu-cta { background:var(--accent)!important; color:#fff!important; border-color:var(--accent)!important; font-weight:700!important; text-align:center; margin-top:8px; }
+
+    /* HERO */
+    .hero { background:linear-gradient(135deg,var(--primary-dark) 0%,var(--primary) 50%,#2563EB 100%); color:#fff; padding:90px 0 80px; position:relative; overflow:hidden; }
+    .hero::before { content:''; position:absolute; inset:0; background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat; pointer-events:none; }
+    .hero-grid { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; position:relative; }
+    .hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.25); border-radius:100px; padding:6px 16px; font-size:0.8rem; font-weight:600; letter-spacing:.04em; text-transform:uppercase; margin-bottom:20px; backdrop-filter:blur(8px); }
+    .hero-badge svg { width:14px; height:14px; fill:#FCD34D; }
+    .hero h1 { font-size:clamp(2rem,4vw,3.2rem); font-weight:800; line-height:1.15; margin-bottom:20px; }
+    .hero h1 em { font-style:normal; color:#FCD34D; }
+    .hero-sub { font-size:1.05rem; opacity:.88; margin-bottom:36px; max-width:480px; line-height:1.7; }
+    .hero-actions { display:flex; gap:16px; flex-wrap:wrap; }
+    .btn-primary { display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:#fff; font-family:'Poppins',sans-serif; font-size:1rem; font-weight:600; padding:14px 28px; border-radius:var(--radius-sm); border:none; cursor:pointer; transition:background 200ms ease,transform 200ms ease,box-shadow 200ms ease; box-shadow:0 4px 16px rgba(22,163,74,.4); }
+    .btn-primary:hover { background:var(--accent-dark); transform:translateY(-2px); box-shadow:0 8px 24px rgba(22,163,74,.45); }
+    .btn-primary svg { width:18px; height:18px; fill:#fff; flex-shrink:0; }
+    .btn-outline { display:inline-flex; align-items:center; gap:8px; background:transparent; color:#fff; font-family:'Poppins',sans-serif; font-size:1rem; font-weight:600; padding:14px 28px; border-radius:var(--radius-sm); border:2px solid rgba(255,255,255,.5); cursor:pointer; transition:background 200ms ease,border-color 200ms ease,transform 200ms ease; }
+    .btn-outline:hover { background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.8); transform:translateY(-2px); }
+    .btn-outline svg { width:18px; height:18px; stroke:#fff; fill:none; flex-shrink:0; }
+    .hero-stats { display:flex; gap:32px; margin-top:44px; flex-wrap:wrap; }
+    .hero-stat-num { font-family:'Poppins',sans-serif; font-size:1.8rem; font-weight:700; color:#FCD34D; }
+    .hero-stat-label { font-size:0.78rem; opacity:.75; margin-top:2px; }
+    .hero-visual { display:flex; justify-content:center; align-items:center; }
+    .window-showcase { width:100%; max-width:460px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18); border-radius:var(--radius-lg); backdrop-filter:blur(16px); padding:28px; box-shadow:0 24px 60px rgba(0,0,0,.25); }
+    .window-showcase-title { font-family:'Poppins',sans-serif; font-size:1rem; font-weight:600; margin-bottom:20px; opacity:.9; }
+    .window-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px; }
+    .window-card { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:var(--radius-md); padding:16px; cursor:pointer; transition:background 200ms ease,transform 200ms ease; text-align:center; }
+    .window-card:hover { background:rgba(255,255,255,.22); transform:translateY(-2px); }
+    .window-card.active { background:rgba(255,255,255,.25); border-color:#FCD34D; }
+    .window-card-icon { font-size:2rem; margin-bottom:8px; }
+    .window-card-name { font-size:0.82rem; font-weight:600; }
+    .config-row { background:rgba(255,255,255,.1); border-radius:var(--radius-sm); padding:12px 16px; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+    .config-row-badge { background:var(--accent); color:#fff; font-size:0.72rem; font-weight:700; padding:3px 10px; border-radius:100px; }
+    .hero-form-btn { width:100%; background:var(--accent); color:#fff; font-family:'Poppins',sans-serif; font-size:1rem; font-weight:700; padding:14px; border:none; border-radius:var(--radius-sm); cursor:pointer; transition:background 200ms ease,transform 200ms ease; margin-top:4px; }
+    .hero-form-btn:hover { background:var(--accent-dark); transform:translateY(-1px); }
+
+    /* TRUST BAR */
+    .trust-bar { background:var(--primary-dark); padding:18px 0; }
+    .trust-bar-inner { display:flex; align-items:center; justify-content:center; gap:40px; flex-wrap:wrap; }
+    .trust-item { display:flex; align-items:center; gap:10px; color:rgba(255,255,255,.85); font-size:0.85rem; font-weight:500; }
+    .trust-item svg { width:20px; height:20px; fill:#FCD34D; flex-shrink:0; }
+
+    /* SECTION BASE */
+    .section { padding:88px 0; }
+    .section-alt { background:var(--bg); }
+    .section-label { display:inline-block; font-size:0.75rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+    .section-title { font-size:clamp(1.7rem,3vw,2.5rem); font-weight:700; color:var(--primary-dark); margin-bottom:16px; }
+    .section-sub { font-size:1.05rem; color:var(--text-mid); max-width:560px; line-height:1.7; }
+    .section-header { margin-bottom:56px; }
+    .section-header.center { text-align:center; }
+    .section-header.center .section-sub { margin:0 auto; }
+
+    /* FEATURES */
+    .features-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+    .feature-card { background:var(--bg-white); border:1px solid var(--border); border-radius:var(--radius-md); padding:32px 28px; transition:box-shadow 200ms ease,transform 200ms ease,border-color 200ms ease; }
+    .feature-card:hover { box-shadow:var(--shadow-lg); transform:translateY(-4px); border-color:var(--secondary); }
+    .feature-icon { width:52px; height:52px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; margin-bottom:20px; }
+    .feature-icon svg { width:26px; height:26px; }
+    .feature-icon.blue   { background:#DBEAFE; } .feature-icon.blue svg   { fill:var(--primary); }
+    .feature-icon.green  { background:#DCFCE7; } .feature-icon.green svg  { fill:var(--accent); }
+    .feature-icon.yellow { background:#FEF9C3; } .feature-icon.yellow svg { fill:#B45309; }
+    .feature-icon.purple { background:#F3E8FF; } .feature-icon.purple svg { fill:#7C3AED; }
+    .feature-icon.red    { background:#FEE2E2; } .feature-icon.red svg    { fill:#DC2626; }
+    .feature-icon.cyan   { background:#CFFAFE; } .feature-icon.cyan svg   { fill:#0891B2; }
+    .feature-card h3 { font-size:1.1rem; font-weight:600; color:var(--primary-dark); margin-bottom:10px; }
+    .feature-card p { font-size:0.9rem; color:var(--text-mid); line-height:1.65; }
+
+    /* PRODUCTS */
+    .products-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+    .product-card { background:var(--bg-white); border:1px solid var(--border); border-radius:var(--radius-md); overflow:hidden; transition:box-shadow 250ms ease,transform 250ms ease; cursor:pointer; }
+    .product-card:hover { box-shadow:var(--shadow-lg); transform:translateY(-5px); }
+    .product-img { width:100%; height:220px; background:var(--bg); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+    .product-badge { position:absolute; top:14px; left:14px; background:var(--accent); color:#fff; font-size:0.72rem; font-weight:700; padding:4px 12px; border-radius:100px; }
+    .product-body { padding:22px; }
+    .product-body h3 { font-size:1.05rem; font-weight:600; color:var(--primary-dark); margin-bottom:8px; }
+    .product-body p { font-size:0.875rem; color:var(--text-mid); margin-bottom:16px; line-height:1.6; }
+    .btn-sm { display:inline-flex; align-items:center; gap:6px; background:var(--primary); color:#fff; font-size:0.875rem; font-weight:600; padding:10px 20px; border-radius:var(--radius-sm); border:none; cursor:pointer; transition:background 200ms ease,transform 200ms ease; }
+    .btn-sm:hover { background:var(--primary-dark); transform:translateY(-1px); }
+    .btn-sm svg { width:15px; height:15px; fill:#fff; }
+
+    /* MATERIALS */
+    .materials-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+    .material-card { border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--border); transition:box-shadow 250ms ease,transform 250ms ease; }
+    .material-card:hover { box-shadow:var(--shadow-lg); transform:translateY(-5px); }
+    .material-header { padding:36px 28px 24px; position:relative; }
+    .material-header.pvc { background:linear-gradient(135deg,#1E40AF,#3B82F6); }
+    .material-header.legno { background:linear-gradient(135deg,#92400E,#D97706); }
+    .material-header.alluminio { background:linear-gradient(135deg,#374151,#6B7280); }
+    .material-icon { width:56px; height:56px; background:rgba(255,255,255,.2); border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
+    .material-icon svg { width:28px; height:28px; fill:#fff; }
+    .material-header h3 { font-size:1.3rem; font-weight:700; color:#fff; margin-bottom:6px; }
+    .material-header p { font-size:0.85rem; color:rgba(255,255,255,.8); }
+    .material-body { background:#fff; padding:24px 28px; }
+    .material-feature { display:flex; align-items:center; gap:10px; font-size:0.875rem; color:var(--text-mid); margin-bottom:10px; }
+    .material-feature:last-child { margin-bottom:0; }
+    .material-feature svg { width:16px; height:16px; fill:var(--accent); flex-shrink:0; }
+
+    /* HOW IT WORKS */
+    .steps-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:32px; position:relative; }
+    .steps-grid::before { content:''; position:absolute; top:32px; left:calc(12.5% + 16px); right:calc(12.5% + 16px); height:2px; background:linear-gradient(90deg,var(--border),var(--secondary),var(--border)); z-index:0; }
+    .step-card { text-align:center; position:relative; z-index:1; }
+    .step-num { width:64px; height:64px; background:var(--primary); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-family:'Poppins',sans-serif; font-size:1.4rem; font-weight:700; color:#fff; box-shadow:0 4px 16px rgba(30,64,175,.35); }
+    .step-card h3 { font-size:1rem; font-weight:600; color:var(--primary-dark); margin-bottom:8px; }
+    .step-card p { font-size:0.875rem; color:var(--text-mid); line-height:1.6; }
+
+    /* WHY US */
+    .why-grid { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; }
+    .why-visual { display:flex; justify-content:center; }
+    .why-visual-inner { width:100%; max-width:420px; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-lg); padding:32px; }
+    .why-stat-row { display:flex; gap:20px; margin-bottom:20px; }
+    .why-stat-box { flex:1; background:#fff; border:1px solid var(--border); border-radius:var(--radius-md); padding:20px; text-align:center; }
+    .why-stat-box .num { font-family:'Poppins',sans-serif; font-size:2rem; font-weight:700; color:var(--primary); }
+    .why-stat-box .lbl { font-size:0.78rem; color:var(--text-mid); margin-top:4px; }
+    .why-cert { display:flex; align-items:center; gap:12px; background:#fff; border:1px solid var(--border); border-radius:var(--radius-md); padding:16px 20px; margin-bottom:12px; }
+    .why-cert-icon { width:44px; height:44px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .why-cert-icon.blue { background:#DBEAFE; } .why-cert-icon.blue svg { fill:var(--primary); }
+    .why-cert-icon.green { background:#DCFCE7; } .why-cert-icon.green svg { fill:var(--accent); }
+    .why-cert-icon.yellow { background:#FEF9C3; } .why-cert-icon.yellow svg { fill:#B45309; }
+    .why-cert-icon svg { width:22px; height:22px; }
+    .why-cert-text strong { display:block; font-size:0.9rem; font-weight:600; color:var(--text-dark); }
+    .why-cert-text span { font-size:0.8rem; color:var(--text-mid); }
+    .why-points { list-style:none; display:flex; flex-direction:column; gap:16px; }
+    .why-point { display:flex; gap:14px; align-items:flex-start; }
+    .why-point-icon { width:36px; height:36px; background:var(--bg); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+    .why-point-icon svg { width:18px; height:18px; fill:var(--accent); }
+    .why-point h4 { font-size:0.95rem; font-weight:600; color:var(--primary-dark); margin-bottom:4px; }
+    .why-point p { font-size:0.875rem; color:var(--text-mid); line-height:1.6; }
+
+    /* PROJECTS */
+    .projects-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+    .project-card { border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--border); transition:box-shadow 250ms ease,transform 250ms ease; cursor:pointer; }
+    .project-card:hover { box-shadow:var(--shadow-lg); transform:translateY(-4px); }
+    .project-img { width:100%; height:200px; display:flex; align-items:center; justify-content:center; position:relative; }
+    .project-img.p1 { background:linear-gradient(135deg,#1E3A8A 0%,#3B82F6 100%); }
+    .project-img.p2 { background:linear-gradient(135deg,#78350F 0%,#D97706 100%); }
+    .project-img.p3 { background:linear-gradient(135deg,#374151 0%,#9CA3AF 100%); }
+    .project-img.p4 { background:linear-gradient(135deg,#1E40AF 0%,#60A5FA 100%); }
+    .project-img.p5 { background:linear-gradient(135deg,#92400E 0%,#F59E0B 100%); }
+    .project-img.p6 { background:linear-gradient(135deg,#1F2937 0%,#6B7280 100%); }
+    .project-img-svg { opacity:.3; }
+    .project-label { position:absolute; bottom:12px; left:12px; background:rgba(0,0,0,.5); color:#fff; font-size:0.72rem; font-weight:700; padding:4px 10px; border-radius:100px; backdrop-filter:blur(4px); }
+    .project-body { background:#fff; padding:16px 20px; }
+    .project-body h4 { font-size:0.95rem; font-weight:600; color:var(--primary-dark); margin-bottom:4px; }
+    .project-body p { font-size:0.82rem; color:var(--text-mid); }
+    .projects-cta { text-align:center; margin-top:40px; }
+
+    /* RILIEVI */
+    .rilievi-grid { display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
+    .rilievi-content h2 { font-size:clamp(1.6rem,3vw,2.2rem); font-weight:700; color:var(--primary-dark); margin-bottom:16px; }
+    .rilievi-content p { font-size:1rem; color:var(--text-mid); line-height:1.7; margin-bottom:24px; }
+    .rilievi-steps { display:flex; flex-direction:column; gap:16px; margin-bottom:32px; }
+    .rilievo-step { display:flex; gap:16px; align-items:flex-start; }
+    .rilievo-step-num { width:36px; height:36px; background:var(--primary); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Poppins',sans-serif; font-size:0.9rem; font-weight:700; color:#fff; flex-shrink:0; }
+    .rilievo-step-text strong { display:block; font-size:0.95rem; font-weight:600; color:var(--text-dark); margin-bottom:2px; }
+    .rilievo-step-text span { font-size:0.875rem; color:var(--text-mid); }
+    .rilievi-form { background:#fff; border:1px solid var(--border); border-radius:var(--radius-lg); padding:36px; box-shadow:var(--shadow-md); }
+    .rilievi-form h3 { font-size:1.2rem; font-weight:700; color:var(--primary-dark); margin-bottom:24px; }
+    .form-group { margin-bottom:18px; }
+    .form-group label { display:block; font-size:0.875rem; font-weight:600; color:var(--text-dark); margin-bottom:6px; }
+    .form-group input, .form-group select, .form-group textarea { width:100%; padding:12px 14px; border:1px solid var(--border); border-radius:var(--radius-sm); font-family:'Open Sans',sans-serif; font-size:0.9rem; color:var(--text-dark); background:#fff; transition:border-color 200ms ease,box-shadow 200ms ease; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline:none; border-color:var(--secondary); box-shadow:0 0 0 3px rgba(59,130,246,.12); }
+    .form-group textarea { resize:vertical; min-height:100px; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .btn-form { width:100%; background:var(--accent); color:#fff; font-family:'Poppins',sans-serif; font-size:1rem; font-weight:700; padding:14px; border:none; border-radius:var(--radius-sm); cursor:pointer; transition:background 200ms ease,transform 200ms ease; box-shadow:0 4px 14px rgba(22,163,74,.3); }
+    .btn-form:hover { background:var(--accent-dark); transform:translateY(-1px); }
+
+    /* RIPRISTINO */
+    .ripristino-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+    .ripristino-card { background:#fff; border:1px solid var(--border); border-radius:var(--radius-md); padding:28px; transition:box-shadow 200ms ease,transform 200ms ease; }
+    .ripristino-card:hover { box-shadow:var(--shadow-lg); transform:translateY(-4px); }
+    .ripristino-icon { width:52px; height:52px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; margin-bottom:18px; }
+    .ripristino-icon svg { width:26px; height:26px; }
+    .ripristino-icon.blue { background:#DBEAFE; } .ripristino-icon.blue svg { fill:var(--primary); }
+    .ripristino-icon.green { background:#DCFCE7; } .ripristino-icon.green svg { fill:var(--accent); }
+    .ripristino-icon.orange { background:#FEF3C7; } .ripristino-icon.orange svg { fill:#D97706; }
+    .ripristino-icon.purple { background:#F3E8FF; } .ripristino-icon.purple svg { fill:#7C3AED; }
+    .ripristino-card h3 { font-size:1rem; font-weight:600; color:var(--primary-dark); margin-bottom:8px; }
+    .ripristino-card p { font-size:0.875rem; color:var(--text-mid); line-height:1.6; }
+
+    /* REVIEWS */
+    .reviews-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+    .review-card { background:#fff; border:1px solid var(--border); border-radius:var(--radius-md); padding:28px; transition:box-shadow 200ms ease,transform 200ms ease; }
+    .review-card:hover { box-shadow:var(--shadow-md); transform:translateY(-3px); }
+    .review-stars { display:flex; gap:3px; margin-bottom:14px; }
+    .review-stars svg { width:18px; height:18px; fill:#FBBF24; }
+    .review-text { font-size:0.9rem; color:var(--text-mid); line-height:1.7; margin-bottom:18px; font-style:italic; }
+    .review-author { display:flex; align-items:center; gap:12px; }
+    .review-avatar { width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Poppins',sans-serif; font-size:1rem; font-weight:700; color:#fff; flex-shrink:0; }
+    .review-avatar.a { background:#1E40AF; }
+    .review-avatar.b { background:#16A34A; }
+    .review-avatar.c { background:#7C3AED; }
+    .review-author-info strong { display:block; font-size:0.9rem; font-weight:600; color:var(--text-dark); }
+    .review-author-info span { font-size:0.78rem; color:var(--text-light); }
+    .review-google-badge { display:inline-flex; align-items:center; gap:6px; background:var(--bg); border:1px solid var(--border); border-radius:100px; padding:4px 12px; font-size:0.72rem; font-weight:600; color:var(--text-mid); margin-bottom:32px; }
+    .review-google-badge svg { width:14px; height:14px; }
+
+    /* FAQ */
+    .faq-list { max-width:760px; margin:0 auto; display:flex; flex-direction:column; gap:12px; }
+    details.faq-item { background:#fff; border:1px solid var(--border); border-radius:var(--radius-md); overflow:hidden; }
+    details.faq-item[open] { border-color:var(--secondary); }
+    summary.faq-q { padding:20px 24px; font-weight:600; font-size:0.95rem; color:var(--primary-dark); cursor:pointer; display:flex; justify-content:space-between; align-items:center; list-style:none; gap:12px; }
+    summary.faq-q::-webkit-details-marker { display:none; }
+    summary.faq-q::after { content:''; width:20px; height:20px; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E40AF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") center/cover; flex-shrink:0; transition:transform 250ms ease; }
+    details.faq-item[open] summary.faq-q::after { transform:rotate(180deg); }
+    .faq-a { padding:0 24px 20px; font-size:0.9rem; color:var(--text-mid); line-height:1.7; border-top:1px solid var(--border); padding-top:16px; }
+
+    /* CTA BANNER */
+    .cta-banner { background:linear-gradient(135deg,var(--primary-dark),var(--primary)); padding:72px 0; text-align:center; color:#fff; }
+    .cta-banner h2 { font-size:clamp(1.8rem,3.5vw,2.6rem); font-weight:700; margin-bottom:16px; }
+    .cta-banner p { font-size:1.05rem; opacity:.85; margin-bottom:36px; max-width:500px; margin-left:auto; margin-right:auto; }
+    .cta-banner-actions { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+
+    /* CONTACT */
+    .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start; }
+    .contact-info { display:flex; flex-direction:column; gap:24px; }
+    .contact-info-item { display:flex; gap:16px; align-items:flex-start; }
+    .contact-info-icon { width:44px; height:44px; background:var(--bg); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .contact-info-icon svg { width:22px; height:22px; fill:var(--primary); }
+    .contact-info-item strong { display:block; font-weight:600; color:var(--text-dark); margin-bottom:2px; }
+    .contact-info-item span { font-size:0.875rem; color:var(--text-mid); }
+
+    /* FOOTER */
+    .footer { background:var(--primary-dark); color:rgba(255,255,255,.75); padding:56px 0 32px; }
+    .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:40px; margin-bottom:48px; }
+    .footer-brand .logo-text { color:#fff; font-size:1.2rem; }
+    .footer-brand p { font-size:0.875rem; line-height:1.7; margin-top:14px; max-width:280px; }
+    .footer-col h4 { font-family:'Poppins',sans-serif; font-size:0.875rem; font-weight:600; color:#fff; margin-bottom:16px; }
+    .footer-col ul { list-style:none; display:flex; flex-direction:column; gap:10px; }
+    .footer-col ul li a { font-size:0.85rem; color:rgba(255,255,255,.65); transition:color var(--transition); }
+    .footer-col ul li a:hover { color:#fff; }
+    .footer-bottom { border-top:1px solid rgba(255,255,255,.12); padding-top:28px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; font-size:0.8rem; }
+    .footer-bottom a { color:rgba(255,255,255,.5); }
+    .footer-bottom a:hover { color:#fff; }
+
+    /* SCROLL ANIMATIONS */
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity 500ms ease,transform 500ms ease; }
+    .reveal.visible { opacity:1; transform:none; }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .features-grid, .products-grid, .materials-grid, .ripristino-grid, .reviews-grid { grid-template-columns:repeat(2,1fr); }
+      .steps-grid { grid-template-columns:repeat(2,1fr); }
+      .steps-grid::before { display:none; }
+      .footer-grid { grid-template-columns:1fr 1fr; gap:32px; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display:none; }
+      .hamburger { display:flex; }
+      .hero { padding:60px 0 50px; }
+      .hero-grid { grid-template-columns:1fr; gap:40px; }
+      .hero-visual { display:none; }
+      .hero-stats { gap:20px; }
+      .section { padding:64px 0; }
+      .features-grid, .products-grid, .materials-grid, .ripristino-grid, .reviews-grid, .projects-grid { grid-template-columns:1fr; }
+      .steps-grid { grid-template-columns:1fr; gap:24px; }
+      .why-grid, .rilievi-grid, .contact-grid { grid-template-columns:1fr; gap:40px; }
+      .form-row { grid-template-columns:1fr; }
+      .footer-grid { grid-template-columns:1fr; gap:28px; }
+      .footer-bottom { flex-direction:column; text-align:center; }
+      .trust-bar-inner { gap:20px; }
+      .hero-actions { flex-direction:column; }
+      .btn-primary, .btn-outline { width:100%; justify-content:center; }
+      .hero-stats { flex-wrap:wrap; }
+      .why-stat-row { flex-direction:column; }
+      .cta-banner-actions { flex-direction:column; align-items:center; }
+    }
+    @media (max-width: 480px) {
+      .container { padding:0 16px; }
+      .hero h1 { font-size:1.8rem; }
+      .section-title { font-size:1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 3h18v18H3V3zm2 2v14h14V5H5zm2 2h10v10H7V7zm2 2v6h6V9H9z"/></svg>
+        </div>
+        <span class="logo-text">Vetro<span>Connections</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#prodotti">Prodotti</a></li>
+        <li><a href="#materiali">Materiali</a></li>
+        <li><a href="progetti.html">Progetti</a></li>
+        <li><a href="#servizi">Servizi</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contatti">Contatti</a></li>
+        <li><a href="configuratore.html" class="nav-cta">Configura Ora</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#prodotti" onclick="closeMobileMenu()">Prodotti</a>
+  <a href="#materiali" onclick="closeMobileMenu()">Materiali</a>
+  <a href="progetti.html">Progetti</a>
+  <a href="#servizi" onclick="closeMobileMenu()">Servizi</a>
+  <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
+  <a href="#contatti" onclick="closeMobileMenu()">Contatti</a>
+  <a href="configuratore.html" class="mobile-menu-cta">Configura Ora →</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Diretto dal Produttore · Qualità CE
+        </div>
+        <h1>Finestre e porte in <em>PVC, legno e alluminio</em> su misura</h1>
+        <p class="hero-sub">Configura online in 5 minuti, ricevi il preventivo immediato. Produzione europea certificata, consegna in tutta Italia. Rilievi in situ su richiesta.</p>
+        <div class="hero-actions">
+          <a href="configuratore.html" class="btn-primary">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+            Configura Ora — Gratis
+          </a>
+          <a href="#prodotti" class="btn-outline">
+            <svg viewBox="0 0 24 24" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            Scopri i Prodotti
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div>
+            <div class="hero-stat-num">500+</div>
+            <div class="hero-stat-label">Finestre installate</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">Uw 0.5</div>
+            <div class="hero-stat-label">Triplo vetro low-e</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">CE</div>
+            <div class="hero-stat-label">Certificato marcatura</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="window-showcase">
+          <div class="window-showcase-title">Configuratore rapido</div>
+          <div class="window-grid">
+            <div class="window-card active" onclick="selectWindow(this)">
+              <div class="window-card-icon">🪟</div>
+              <div class="window-card-name">Finestra 2 ante</div>
+            </div>
+            <div class="window-card" onclick="selectWindow(this)">
+              <div class="window-card-icon">🚪</div>
+              <div class="window-card-name">Porta finestra</div>
+            </div>
+            <div class="window-card" onclick="selectWindow(this)">
+              <div class="window-card-icon">🔲</div>
+              <div class="window-card-name">Finestra 1 anta</div>
+            </div>
+            <div class="window-card" onclick="selectWindow(this)">
+              <div class="window-card-icon">↕️</div>
+              <div class="window-card-name">Ribalta</div>
+            </div>
+          </div>
+          <div class="config-row">
+            <span>Materiale</span>
+            <span class="config-row-badge">PVC · Legno · Alluminio</span>
+          </div>
+          <div class="config-row">
+            <span>Vetro</span>
+            <span class="config-row-badge">Triplo low-e</span>
+          </div>
+          <button class="hero-form-btn" onclick="location.href='configuratore.html'">Configura e ottieni preventivo →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="container">
+    <div class="trust-bar-inner">
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Qualità garantita DECCO 71
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        Marcatura CE certificata
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Consegna in 3–4 settimane
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Rilievi in situ disponibili
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="section" id="prodotti">
+  <div class="container">
+    <div class="section-header center">
+      <div class="section-label">Perché sceglierci</div>
+      <h2 class="section-title">Tecnologia e qualità senza compromessi</h2>
+      <p class="section-sub">Finestre e porte in PVC, legno e alluminio prodotte in Europa con i più alti standard di efficienza energetica.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon blue">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+        </div>
+        <h3>Configuratore Online</h3>
+        <p>Configura dimensioni, apertura, colore e vetro in 5 minuti. Preventivo immediato e preciso.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon green">
+          <svg viewBox="0 0 24 24"><path d="M17 8C8 10 5.9 16.17 3.82 21c1.06-1.06 3.43-2.9 6.82-3.5 1.07 2.11 2.18 3.94 3.18 5.5C19.5 19 22 13 22 8h-5z"/></svg>
+        </div>
+        <h3>Alta Efficienza Energetica</h3>
+        <p>Triplo vetro con canalina calda fino a Uw 0.5. Risparmi evidenti sulla bolletta energetica.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon yellow">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Certif. Europea DECCO 71</h3>
+        <p>Profilo PVC di alta qualità DECCO 71 con marcatura CE. Standard europei di sicurezza e durabilità.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon purple">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <h3>Consegna Rapida</h3>
+        <p>Produzione e consegna in 3–4 settimane. Avviso telefonico 1 settimana prima, poi 1 giorno prima.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon cyan">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/></svg>
+        </div>
+        <h3>Rilievi in Situ</h3>
+        <p>Tecnico specializzato disponibile per misurazioni professionali a domicilio. Risultato preciso garantito.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon red">
+          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <h3>Microventilazione di Serie</h3>
+        <p>Ribalta e microventilazione incluse di serie. Gestione ottimale dell'aria senza rinunciare alla sicurezza.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header center">
+      <div class="section-label">I nostri prodotti</div>
+      <h2 class="section-title">Finestre e porte su misura</h2>
+      <p class="section-sub">Ogni prodotto è configurabile nelle dimensioni, colore, vetro e accessori. Realizzato su misura per la tua abitazione.</p>
+    </div>
+    <div class="products-grid">
+      <div class="product-card reveal">
+        <div class="product-img">
+          <svg width="140" height="160" viewBox="0 0 140 160" class="product-window-svg">
+            <rect x="10" y="10" width="120" height="140" rx="3" fill="#BFDBFE" stroke="#1E40AF" stroke-width="6"/>
+            <rect x="22" y="22" width="96" height="116" rx="2" fill="#EFF6FF" stroke="#3B82F6" stroke-width="3"/>
+            <rect x="30" y="30" width="80" height="100" fill="rgba(147,197,253,0.3)" stroke="#93C5FD" stroke-width="1.5"/>
+            <line x1="70" y1="22" x2="70" y2="138" stroke="#1E40AF" stroke-width="3"/>
+            <line x1="30" y1="80" x2="110" y2="30" stroke="#3B82F6" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.6"/>
+          </svg>
+          <span class="product-badge">PVC · Legno · Alluminio</span>
+        </div>
+        <div class="product-body">
+          <h3>Finestre Standard</h3>
+          <p>1 o 2 ante, ribalta, ribalta-basculante. Disponibili in PVC, legno e alluminio. Dimensioni su misura.</p>
+          <button class="btn-sm" onclick="location.href='configuratore.html'">
+            <svg viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
+            Configura ora
+          </button>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-img">
+          <svg width="120" height="160" viewBox="0 0 120 200" class="product-window-svg">
+            <rect x="8" y="8" width="104" height="184" rx="3" fill="#BFDBFE" stroke="#1E40AF" stroke-width="6"/>
+            <rect x="20" y="20" width="80" height="160" rx="2" fill="#EFF6FF" stroke="#3B82F6" stroke-width="3"/>
+            <rect x="28" y="28" width="64" height="144" fill="rgba(147,197,253,0.3)" stroke="#93C5FD" stroke-width="1.5"/>
+            <line x1="28" y1="172" x2="92" y2="100" stroke="#3B82F6" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.6"/>
+          </svg>
+          <span class="product-badge">Su misura</span>
+        </div>
+        <div class="product-body">
+          <h3>Porte Finestra</h3>
+          <p>1 o 2 ante, altezze fino a 2.8 m. Perfette per terrazze e balconi. Con o senza soglia rialzata.</p>
+          <button class="btn-sm" onclick="location.href='configuratore.html'">
+            <svg viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
+            Configura ora
+          </button>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-img">
+          <svg width="160" height="140" viewBox="0 0 200 160" class="product-window-svg">
+            <rect x="10" y="10" width="180" height="140" rx="3" fill="#BFDBFE" stroke="#1E40AF" stroke-width="6"/>
+            <rect x="22" y="22" width="156" height="116" rx="2" fill="#EFF6FF" stroke="#3B82F6" stroke-width="3"/>
+            <line x1="100" y1="22" x2="100" y2="138" stroke="#1E40AF" stroke-width="3"/>
+            <rect x="30" y="30" width="62" height="100" fill="rgba(147,197,253,0.3)" stroke="#93C5FD" stroke-width="1.5"/>
+            <rect x="108" y="30" width="62" height="100" fill="rgba(147,197,253,0.3)" stroke="#93C5FD" stroke-width="1.5"/>
+            <line x1="100" y1="60" x2="30" y2="30" stroke="#16A34A" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5"/>
+          </svg>
+          <span class="product-badge">Triplo vetro</span>
+        </div>
+        <div class="product-body">
+          <h3>Finestre Scorrevoli & Speciali</h3>
+          <p>Sistemi scorrevoli, alzanti-scorrevoli, fissi e geometrie speciali. Massima luminosità e praticità.</p>
+          <button class="btn-sm" onclick="location.href='configuratore.html'">
+            <svg viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
+            Configura ora
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MATERIALS -->
+<section class="section" id="materiali">
+  <div class="container">
+    <div class="section-header center">
+      <div class="section-label">I nostri materiali</div>
+      <h2 class="section-title">PVC, Legno e Alluminio</h2>
+      <p class="section-sub">Tre famiglie di materiali per rispondere ad ogni esigenza estetica, energetica e di budget.</p>
+    </div>
+    <div class="materials-grid">
+      <div class="material-card reveal">
+        <div class="material-header pvc">
+          <div class="material-icon">
+            <svg viewBox="0 0 24 24"><path d="M3 3h18v18H3V3zm2 2v14h14V5H5zm2 2h10v10H7V7zm2 2v6h6V9H9z"/></svg>
+          </div>
+          <h3>PVC</h3>
+          <p>Il più diffuso. Eccellente rapporto qualità/prezzo</p>
+        </div>
+        <div class="material-body">
+          <div class="material-feature">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Profilo DECCO 71 – qualità premium
+          </div>
+          <div class="material-feature">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Uw fino a 0.5 con triplo vetro
+          </div>
+          <div class="material-feature">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Manutenzione minima, lunga durata
+          </div>
+          <div class="material-feature">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            30+ colori RAL disponibili
+          </div>
+        </div>
+      </div>
+      <div class="material-card reveal">
+        <div class="material-header legno">
+          <div class="material-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 8C8 10 5.9 16.17 3.82 21c1.06-1.06 3.43-2.9 6.82-3.5 1.07 2.11 2.18 3.94 3.18 5.5C19.5 19 22 13 22 8h-5z"/></svg>
+          </div>
+          <h3>Legno</h3>
+          <p>Calore naturale. Ideale per contesti storici e rustici</p>
+        </div>
+        <div class="material-body">
+          <div class="material-feature">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Estetica naturale e pregiata
+          </div>
+          <div class="material-feature">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Eccellente isolamento termico naturale
+          </div>
+          <div class="material-feature">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Compatibile con edifici storici e vincolati
+          </div>
+          <div class="material-feature">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Legni certificati FSC su richiesta
+          </div>
+        </div>
+      </div>
+      <div class="material-card reveal">
+        <div class="material-header alluminio">
+          <div class="material-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4V4zm2 6h12v4H6v-4z"/></svg>
+          </div>
+          <h3>Alluminio</h3>
+          <p>Design moderno. Massima libertà di forma e colore</p>
+        </div>
+        <div class="material-body">
+          <div class="material-feature">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Profili sottili e design minimalista
+          </div>
+          <div class="material-feature">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Taglio termico per alta efficienza
+          </div>
+          <div class="material-feature">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Inossidabile e resistente alle intemperie
+          </div>
+          <div class="material-feature">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Forme speciali e grandi dimensioni
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header center">
+      <div class="section-label">Come funziona</div>
+      <h2 class="section-title">Dal configuratore alla consegna</h2>
+      <p class="section-sub">Processo semplice e trasparente in 4 passi.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card reveal">
+        <div class="step-num">1</div>
+        <h3>Configura Online</h3>
+        <p>Scegli tipo, dimensioni, colore, vetro e accessori nel nostro configuratore guidato.</p>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">2</div>
+        <h3>Ricevi il Preventivo</h3>
+        <p>Preventivo personalizzato senza impegno. Pagamento solo tramite bonifico bancario.</p>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">3</div>
+        <h3>Produzione Europea</h3>
+        <p>Le tue finestre vengono prodotte in Europa in 3–4 settimane con controllo qualità CE.</p>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">4</div>
+        <h3>Consegna a Domicilio</h3>
+        <p>Consegna con camion dedicato. Ti avvisiamo 1 settimana prima e il giorno precedente.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS PREVIEW -->
+<section class="section" id="progetti">
+  <div class="container">
+    <div class="section-header center">
+      <div class="section-label">I nostri progetti</div>
+      <h2 class="section-title">Installazioni reali in tutta Italia</h2>
+      <p class="section-sub">Ogni progetto è unico. Ecco alcuni esempi di finestre e porte installate dai nostri clienti.</p>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card reveal">
+        <div class="project-img p1">
+          <svg width="80" height="90" viewBox="0 0 140 160" class="project-img-svg">
+            <rect x="10" y="10" width="120" height="140" rx="3" fill="none" stroke="#fff" stroke-width="6"/>
+            <line x1="70" y1="10" x2="70" y2="150" stroke="#fff" stroke-width="3"/>
+          </svg>
+          <span class="project-label">PVC · Bianco</span>
+        </div>
+        <div class="project-body">
+          <h4>Appartamento · Treviso</h4>
+          <p>Finestre 2 ante PVC bianco, triplo vetro low-e · 8 unità</p>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-img p2">
+          <svg width="80" height="110" viewBox="0 0 120 180" class="project-img-svg">
+            <rect x="8" y="8" width="104" height="164" rx="3" fill="none" stroke="#fff" stroke-width="6"/>
+            <rect x="20" y="20" width="80" height="140" fill="none" stroke="#fff" stroke-width="2"/>
+          </svg>
+          <span class="project-label">Legno · Rovere</span>
+        </div>
+        <div class="project-body">
+          <h4>Villa · Venezia</h4>
+          <p>Porte finestra in legno rovere, doppio vetro · 4 unità</p>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-img p3">
+          <svg width="110" height="80" viewBox="0 0 200 140" class="project-img-svg">
+            <rect x="10" y="10" width="180" height="120" rx="3" fill="none" stroke="#fff" stroke-width="6"/>
+            <line x1="100" y1="10" x2="100" y2="130" stroke="#fff" stroke-width="3"/>
+          </svg>
+          <span class="project-label">Alluminio · Antracite</span>
+        </div>
+        <div class="project-body">
+          <h4>Uffici · Padova</h4>
+          <p>Finestre scorrevoli alluminio antracite · 12 unità</p>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-img p4">
+          <svg width="80" height="90" viewBox="0 0 140 160" class="project-img-svg">
+            <rect x="10" y="10" width="120" height="140" rx="3" fill="none" stroke="#fff" stroke-width="6"/>
+            <line x1="70" y1="10" x2="70" y2="150" stroke="#fff" stroke-width="3"/>
+            <line x1="10" y1="80" x2="70" y2="30" stroke="#fff" stroke-width="1.5" stroke-dasharray="4,3"/>
+          </svg>
+          <span class="project-label">PVC · Grigio</span>
+        </div>
+        <div class="project-body">
+          <h4>Casa indipendente · Mestre</h4>
+          <p>Finestre PVC grigio antracite, triplo vetro · 10 unità</p>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-img p5">
+          <svg width="80" height="110" viewBox="0 0 120 180" class="project-img-svg">
+            <rect x="8" y="8" width="104" height="164" rx="3" fill="none" stroke="#fff" stroke-width="6"/>
+          </svg>
+          <span class="project-label">Legno · Pino</span>
+        </div>
+        <div class="project-body">
+          <h4>Casale · Treviso</h4>
+          <p>Porte finestra in legno di pino, doppio vetro basso emissivo · 6 unità</p>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-img p6">
+          <svg width="110" height="80" viewBox="0 0 200 140" class="project-img-svg">
+            <rect x="10" y="10" width="180" height="120" rx="3" fill="none" stroke="#fff" stroke-width="6"/>
+            <line x1="100" y1="10" x2="100" y2="130" stroke="#fff" stroke-width="3"/>
+            <line x1="10" y1="70" x2="100" y2="30" stroke="#fff" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="100" y1="30" x2="190" y2="70" stroke="#fff" stroke-width="1.5" stroke-dasharray="4,3"/>
+          </svg>
+          <span class="project-label">Alluminio · Nero</span>
+        </div>
+        <div class="project-body">
+          <h4>Appartamento · Vicenza</h4>
+          <p>Finestre alluminio nero opaco, triplo vetro · 5 unità</p>
+        </div>
+      </div>
+    </div>
+    <div class="projects-cta">
+      <a href="progetti.html" class="btn-primary">
+        <svg viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        Vedi tutti i progetti
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- RILIEVI IN SITU -->
+<section class="section section-alt" id="servizi">
+  <div class="container">
+    <div class="rilievi-grid">
+      <div class="rilievi-content reveal">
+        <div class="section-label">Servizio professionale</div>
+        <h2>Rilievi in Situ</h2>
+        <p>Non sei sicuro delle misure? Il nostro tecnico specializzato viene a domicilio per rilevare con precisione le dimensioni di ogni apertura. Un servizio che elimina ogni rischio di errore.</p>
+        <div class="rilievi-steps">
+          <div class="rilievo-step">
+            <div class="rilievo-step-num">1</div>
+            <div class="rilievo-step-text">
+              <strong>Richiesta appuntamento</strong>
+              <span>Compila il modulo o chiamaci. Ti confermiamo in 24h.</span>
+            </div>
+          </div>
+          <div class="rilievo-step">
+            <div class="rilievo-step-num">2</div>
+            <div class="rilievo-step-text">
+              <strong>Sopralluogo tecnico</strong>
+              <span>Il tecnico rileva tutte le aperture con strumenti di precisione.</span>
+            </div>
+          </div>
+          <div class="rilievo-step">
+            <div class="rilievo-step-num">3</div>
+            <div class="rilievo-step-text">
+              <strong>Preventivo personalizzato</strong>
+              <span>Ricevi il preventivo preciso basato sui rilievi reali.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="rilievi-form reveal">
+        <h3>Richiedi un rilievo in situ</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nome *</label>
+            <input type="text" placeholder="Mario" required />
+          </div>
+          <div class="form-group">
+            <label>Cognome *</label>
+            <input type="text" placeholder="Rossi" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Telefono *</label>
+          <input type="tel" placeholder="+39 000 0000000" required />
+        </div>
+        <div class="form-group">
+          <label>Indirizzo sopralluogo *</label>
+          <input type="text" placeholder="Via Roma 1, Treviso" required />
+        </div>
+        <div class="form-group">
+          <label>Numero di aperture</label>
+          <select>
+            <option>1–3 finestre</option>
+            <option>4–7 finestre</option>
+            <option>8–15 finestre</option>
+            <option>Più di 15</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Note aggiuntive</label>
+          <textarea placeholder="Descrivi brevemente la situazione..."></textarea>
+        </div>
+        <button class="btn-form">Richiedi sopralluogo gratuito →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RIPRISTINO E RISTRUTTURAZIONE -->
+<section class="section">
+  <div class="container">
+    <div class="section-header center">
+      <div class="section-label">Servizi di intervento</div>
+      <h2 class="section-title">Ripristino e Ristrutturazione</h2>
+      <p class="section-sub">Le tue finestre esistenti perdono calore o presentano problemi? Interveniamo con soluzioni mirate senza necessariamente sostituire tutto.</p>
+    </div>
+    <div class="ripristino-grid">
+      <div class="ripristino-card reveal">
+        <div class="ripristino-icon blue">
+          <svg viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+        <h3>Regolazione e manutenzione</h3>
+        <p>Regolazione di ferramenta, guarnizioni usurate, cerniere disallineate. Ripristino funzionalità completa senza sostituzione.</p>
+      </div>
+      <div class="ripristino-card reveal">
+        <div class="ripristino-icon green">
+          <svg viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        </div>
+        <h3>Sostituzione vetri</h3>
+        <p>Sostituzione del solo vetro con doppio o triplo vetro low-e. Miglioramento energetico senza toccare il telaio esistente.</p>
+      </div>
+      <div class="ripristino-card reveal">
+        <div class="ripristino-icon orange">
+          <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        </div>
+        <h3>Ristrutturazione con nuovo serramento</h3>
+        <p>Sostituzione completa di finestre e porte con nuovi serramenti in PVC, legno o alluminio. Rimozione e smaltimento inclusi.</p>
+      </div>
+      <div class="ripristino-card reveal">
+        <div class="ripristino-icon purple">
+          <svg viewBox="0 0 24 24"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        </div>
+        <h3>Risanamento energetico</h3>
+        <p>Diagnosi energetica completa, installazione guarnizioni ad alta tenuta, canalina calda per ridurre ponti termici e condensazione.</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:40px;">
+      <a href="#contatti" class="btn-primary">
+        <svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        Richiedi intervento
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header center">
+      <div class="section-label">Recensioni verificate</div>
+      <h2 class="section-title">Cosa dicono del nostro produttore</h2>
+      <p class="section-sub">Le nostre finestre sono prodotte dal nostro produttore europeo certificato, con eccellenti valutazioni su Google Maps.</p>
+    </div>
+    <div style="text-align:center; margin-bottom:32px;">
+      <div class="review-google-badge">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        ★ 4.9 su Google Maps · Il nostro Produttore
+      </div>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card reveal">
+        <div class="review-stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="review-text">"Qualità dei serramenti eccellente. Il profilo PVC è solido e ben rifinito, le guarnizioni perfette. Siamo rimasti sorpresi dal livello di precisione nella produzione. Consegna puntuale e imballaggio ottimale."</p>
+        <div class="review-author">
+          <div class="review-avatar a">M</div>
+          <div class="review-author-info">
+            <strong>Marco T.</strong>
+            <span>Verificato · Google Maps</span>
+          </div>
+        </div>
+      </div>
+      <div class="review-card reveal">
+        <div class="review-stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="review-text">"Ho ordinato 14 finestre in PVC con triplo vetro. La qualità è notevole: ottima tenuta termica, nessun ponte termico. Il servizio clienti è stato disponibile e preciso nelle risposte. Consigliatissimo."</p>
+        <div class="review-author">
+          <div class="review-avatar b">A</div>
+          <div class="review-author-info">
+            <strong>Ana S.</strong>
+            <span>Verificato · Google Maps</span>
+          </div>
+        </div>
+      </div>
+      <div class="review-card reveal">
+        <div class="review-stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="review-text">"Produttore molto affidabile. Le finestre corrispondono esattamente alle specifiche ordinate. La canalina calda fa davvero la differenza in inverno: zero condensa sui vetri. Tempi rispettati, qualità top."</p>
+        <div class="review-author">
+          <div class="review-avatar c">R</div>
+          <div class="review-author-info">
+            <strong>Ricardo F.</strong>
+            <span>Verificato · Google Maps</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="container">
+    <div class="section-header center">
+      <div class="section-label">Domande frequenti</div>
+      <h2 class="section-title">Tutto quello che devi sapere</h2>
+      <p class="section-sub">Risposte chiare alle domande più comuni sui nostri prodotti e servizi.</p>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary class="faq-q">Che marca di profilo PVC usate?</summary>
+        <div class="faq-a">Utilizziamo il profilo <strong>DECCO 71</strong>, un profilo PVC di alta qualità con camera a 6 camere, guarnizioni EPDM e ferramenta di qualità europea. Garantisce ottime performance termiche e acustiche.</div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Quali sono i tempi di produzione e consegna?</summary>
+        <div class="faq-a">I tempi di produzione sono di <strong>3–4 settimane</strong> dalla conferma dell'ordine. La consegna avviene con camion dedicato entro 2–5 giorni dalla fine della produzione. Ti avvisiamo telefonicamente <strong>1 settimana prima</strong> e poi <strong>1 giorno prima</strong> della consegna.</div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Come avviene il pagamento?</summary>
+        <div class="faq-a">Il pagamento avviene <strong>esclusivamente tramite bonifico bancario</strong>. Non accettiamo altri metodi di pagamento. Le coordinate bancarie vengono fornite dopo la conferma del preventivo.</div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Cos'è il valore Uw e come si raggiunge 1.3 o inferiore?</summary>
+        <div class="faq-a">Il valore Uw indica la trasmittanza termica del serramento (più basso = più isolante). Per raggiungere <strong>Uw ≤ 1.3</strong> utilizziamo vetro triplo con composizione <strong>4/16/16/4</strong> e la <strong>canalina calda</strong> (warm edge spacer) che riduce il ponte termico perimetrale.</div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Cos'è la canalina calda e a cosa serve?</summary>
+        <div class="faq-a">La <strong>canalina calda</strong> (warm edge spacer) è un distanziatore non conduttore posizionato tra i vetri del doppio o triplo vetro. Riduce significativamente il ponte termico nella zona perimetrale del vetro, abbassando il valore Uw e riducendo il rischio di <strong>condensa e appannamento</strong> sul bordo dei vetri.</div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">I prodotti hanno certificazioni?</summary>
+        <div class="faq-a">Sì, tutti i nostri serramenti hanno la <strong>marcatura CE</strong>, obbligatoria per la commercializzazione in Europa. Garantisce il rispetto delle normative europee in termini di resistenza, isolamento termico e acustico, e tenuta all'aria e all'acqua.</div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Cosa è incluso di serie in ogni finestra?</summary>
+        <div class="faq-a">Ogni finestra include di serie: <strong>microventilazione</strong> (posizione di aerazione sicura) e apertura a <strong>ribalta</strong>. Queste funzionalità sono standard su tutti i nostri serramenti senza costi aggiuntivi.</div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Come avviene il trasporto?</summary>
+        <div class="faq-a">Le finestre vengono trasportate su <strong>camion dedicato</strong> direttamente dalla fabbrica. Il camion arriva <strong>2–5 giorni</strong> dopo il completamento della produzione. Tutto viene imballato in modo sicuro per garantire l'integrità durante il trasporto.</div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Chi scarica le finestre dal camion?</summary>
+        <div class="faq-a">Lo scarico è a carico del cliente. È necessario che il cliente organizzi il <strong>personale e/o l'attrezzatura necessaria</strong> per lo scarico dal camion. L'autista non è responsabile dello scarico.</div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Come posso contattare un operatore?</summary>
+        <div class="faq-a">Puoi contattarci tramite la <strong>chat sul sito</strong> oppure per telefono al numero <strong>+39 345 5086065</strong>. Siamo disponibili per rispondere a tutte le tue domande su prodotti, prezzi e configurazioni.</div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Offrite il servizio di montaggio?</summary>
+        <div class="faq-a">Le finestre vengono consegnate <strong>direttamente dalla Polonia</strong> senza servizio di montaggio incluso. L'installazione è a cura del cliente o di un installatore locale. Siamo disponibili per indicarti le migliori pratiche di installazione.</div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Offrite il servizio di rilevazione misure a domicilio?</summary>
+        <div class="faq-a">Sì! Offriamo il servizio di <strong>rilievi in situ</strong>: un tecnico specializzato viene presso la tua abitazione per misurare con precisione ogni apertura. Contattaci per richiedere un appuntamento. Vedi la sezione "Rilievi in Situ" per maggiori dettagli.</div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Come misuro correttamente le finestre da solo?</summary>
+        <div class="faq-a">Per misurare correttamente: misura in <strong>3 punti</strong> (alto, centro, basso per la larghezza; sinistra, centro, destra per l'altezza) e usa sempre la <strong>misura più piccola</strong>. Per il restauro, misura la luce interna del telaio esistente. In caso di dubbio, richiedi il nostro servizio di rilievo professionale.</div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Posso richiedere colori personalizzati RAL?</summary>
+        <div class="faq-a">Sì, offriamo oltre 30 colori RAL per i profili PVC e alluminio. I colori più richiesti (bianco RAL 9016, antracite RAL 7016, grigio RAL 7015) sono disponibili senza sovrapprezzo. Altri colori personalizzati possono comportare un leggero supplemento di prezzo e tempo di produzione.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<div class="cta-banner">
+  <div class="container">
+    <h2>Pronto a configurare le tue finestre?</h2>
+    <p>Usa il nostro configuratore gratuito e ricevi un preventivo immediato. Nessun impegno.</p>
+    <div class="cta-banner-actions">
+      <a href="configuratore.html" class="btn-primary">
+        <svg viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
+        Configura Ora — Gratis
+      </a>
+      <a href="#contatti" class="btn-outline">Contattaci</a>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section class="section" id="contatti">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Contatti</div>
+      <h2 class="section-title">Parlaci del tuo progetto</h2>
+      <p class="section-sub">Siamo qui per rispondere a ogni tua domanda. Scrivici o chiamaci.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-info-item">
+          <div class="contact-info-icon">
+            <svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </div>
+          <div>
+            <strong>Indirizzo</strong>
+            <span>Via Levada 34, 31050 Povegliano, Italia</span>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-icon">
+            <svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </div>
+          <div>
+            <strong>Email</strong>
+            <span>vetroconnections@gmail.com</span>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-icon">
+            <svg viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+          </div>
+          <div>
+            <strong>Telefono / WhatsApp</strong>
+            <span>+39 345 5086065</span>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-icon">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <div>
+            <strong>P.IVA</strong>
+            <span>05516400263</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="rilievi-form">
+          <h3>Inviaci un messaggio</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nome *</label>
+              <input type="text" placeholder="Mario" required />
+            </div>
+            <div class="form-group">
+              <label>Cognome *</label>
+              <input type="text" placeholder="Rossi" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" placeholder="mario@email.com" required />
+          </div>
+          <div class="form-group">
+            <label>Oggetto</label>
+            <select>
+              <option>Richiesta preventivo</option>
+              <option>Informazioni prodotti</option>
+              <option>Rilievo in situ</option>
+              <option>Ripristino / ristrutturazione</option>
+              <option>Altro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Messaggio *</label>
+            <textarea placeholder="Descrivici il tuo progetto..." required></textarea>
+          </div>
+          <button class="btn-form">Invia messaggio →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24"><path d="M3 3h18v18H3V3zm2 2v14h14V5H5zm2 2h10v10H7V7zm2 2v6h6V9H9z"/></svg>
+          </div>
+          <span class="logo-text">Vetro<span>Connections</span></span>
+        </div>
+        <p>Finestre e porte in PVC, legno e alluminio su misura. Qualità europea, consegna in tutta Italia. Rilievi in situ e assistenza professionale.</p>
+        <p style="margin-top:12px; font-size:0.8rem; opacity:.6;">Via Levada 34, 31050 Povegliano, Italia<br>P.IVA: 05516400263</p>
+      </div>
+      <div class="footer-col">
+        <h4>Prodotti</h4>
+        <ul>
+          <li><a href="#prodotti">Finestre PVC</a></li>
+          <li><a href="#prodotti">Finestre in Legno</a></li>
+          <li><a href="#prodotti">Finestre in Alluminio</a></li>
+          <li><a href="#prodotti">Porte Finestra</a></li>
+          <li><a href="configuratore.html">Configuratore</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Servizi</h4>
+        <ul>
+          <li><a href="#servizi">Rilievi in Situ</a></li>
+          <li><a href="#servizi">Ripristino</a></li>
+          <li><a href="#servizi">Ristrutturazione</a></li>
+          <li><a href="progetti.html">Progetti Realizzati</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contatti</h4>
+        <ul>
+          <li><a href="mailto:vetroconnections@gmail.com">vetroconnections@gmail.com</a></li>
+          <li><a href="tel:+393455086065">+39 345 5086065</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contatti">Scrivici</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Vetro Connections · P.IVA 05516400263</span>
+      <span>Via Levada 34, 31050 Povegliano (TV), Italia</span>
+      <span>Tutti i diritti riservati</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Hamburger
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+  function closeMobileMenu() { mobileMenu.classList.remove('open'); }
+
+  // Hero window selector
+  function selectWindow(el) {
+    document.querySelectorAll('.window-card').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
