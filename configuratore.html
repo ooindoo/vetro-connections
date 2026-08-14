@@ -37,45 +37,36 @@
     html { scroll-behavior: smooth; }
     body {
       font-family: 'Open Sans', sans-serif;
-      font-size: 15px;
+      font-size: 16px;
       line-height: 1.6;
       color: var(--text-dark);
       background: var(--muted);
       min-height: 100vh;
       overflow-x: hidden;
     }
+    .container { max-width:1200px; margin:0 auto; padding:0 24px; }
     h1,h2,h3,h4 { font-family: 'Poppins', sans-serif; line-height: 1.25; }
 
     /* ── NAVBAR ─────────────────────────────── */
-    .navbar {
-      position: sticky; top: 0; z-index: 100;
-      background: #fff;
-      border-bottom: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
-    }
-    .navbar-inner {
-      max-width: 1280px; margin: 0 auto; padding: 0 24px;
-      display: flex; align-items: center; justify-content: space-between;
-      height: 64px;
-    }
-    .logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
-    .logo-icon {
-      width: 34px; height: 34px; background: var(--primary);
-      border-radius: var(--radius-sm);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .logo-icon svg { width: 20px; height: 20px; fill: #fff; }
-    .logo-text { font-family: 'Poppins',sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--primary-dark); }
-    .logo-text span { color: var(--accent); }
-    .nav-back {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 0.85rem; font-weight: 600; color: var(--text-mid);
-      text-decoration: none; padding: 8px 14px;
-      border: 1px solid var(--border); border-radius: var(--radius-sm);
-      transition: color var(--t), border-color var(--t), background var(--t);
-    }
-    .nav-back:hover { color: var(--primary); border-color: var(--secondary); background: var(--bg); }
-    .nav-back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+    .navbar { position:sticky; top:0; z-index:100; background:var(--bg-white); border-bottom:1px solid var(--border); box-shadow:var(--shadow-sm); }
+    .navbar-inner { display:flex; align-items:center; justify-content:space-between; height:68px; }
+    .logo { display:flex; align-items:center; gap:10px; }
+    .logo-icon { width:38px; height:38px; background:var(--primary); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; }
+    .logo-icon svg { width:22px; height:22px; fill:#fff; }
+    .logo-text { font-family:'Poppins',sans-serif; font-size:1.25rem; font-weight:700; color:var(--primary-dark); }
+    .logo-text span { color:var(--accent); }
+    .nav-links { display:flex; align-items:center; gap:4px; list-style:none; }
+    .nav-links a { font-size:0.875rem; font-weight:500; color:var(--text-mid); padding:8px 12px; border-radius:var(--radius-sm); transition:color var(--t),background var(--t); }
+    .nav-links a:hover { color:var(--primary); background:var(--bg); }
+    .nav-cta { background:var(--accent)!important; color:#fff!important; border-radius:var(--radius-sm)!important; padding:10px 18px!important; font-weight:600!important; box-shadow:0 2px 8px rgba(22,163,74,.3); transition:background var(--t),transform var(--t),box-shadow var(--t)!important; }
+    .nav-cta:hover { background:var(--accent-dark)!important; transform:translateY(-1px); box-shadow:0 4px 16px rgba(22,163,74,.4)!important; }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:8px; border:none; background:none; }
+    .hamburger span { display:block; width:24px; height:2px; background:var(--text-dark); border-radius:2px; transition:transform 300ms ease,opacity 300ms ease; }
+    .mobile-menu { display:none; position:fixed; top:68px; left:0; right:0; bottom:0; background:#fff; z-index:99; padding:24px; overflow-y:auto; }
+    .mobile-menu.open { display:flex; flex-direction:column; gap:8px; }
+    .mobile-menu a { font-size:1.05rem; font-weight:500; color:var(--text-dark); padding:14px 16px; border-radius:var(--radius-md); border:1px solid var(--border); display:block; }
+    .mobile-menu a:hover { background:var(--bg); }
+    .mobile-menu-cta { background:var(--accent)!important; color:#fff!important; border-color:var(--accent)!important; font-weight:700!important; text-align:center; margin-top:8px; }
 
     /* ── CONFIG HEADER ────────────────────── */
     .config-header {
@@ -84,7 +75,7 @@
       padding: 28px 0 20px;
     }
     .config-header .inner {
-      max-width: 1280px; margin: 0 auto; padding: 0 24px;
+      max-width: 1200px; margin: 0 auto; padding: 0 24px;
       display: flex; align-items: center; justify-content: space-between; gap: 20px;
     }
     .config-header h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
@@ -514,6 +505,10 @@
     .val-error.show { display: block; animation: fadeUp 200ms ease; }
 
     /* ── RESPONSIVE ─────────────────────────── */
+    @media (max-width: 768px) {
+      .nav-links { display:none; }
+      .hamburger { display:flex; }
+    }
     @media (max-width: 1024px) {
       .config-main { grid-template-columns: 1fr; }
       .preview-panel { position: static; }
@@ -541,19 +536,38 @@
 
 <!-- ══ NAVBAR ══════════════════════════════════════════ -->
 <nav class="navbar">
-  <div class="navbar-inner">
-    <a href="index.html" class="logo">
-      <div class="logo-icon">
-        <svg viewBox="0 0 24 24"><path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm8-2h8v8h-8v-8zm2 2v4h4v-4h-4z"/></svg>
-      </div>
-      <span class="logo-text">Vetro<span>Connections</span></span>
-    </a>
-    <a href="index.html" class="nav-back">
-      <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-      Torna al sito
-    </a>
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 3h18v18H3V3zm2 2v14h14V5H5zm2 2h10v10H7V7zm2 2v6h6V9H9z"/></svg>
+        </div>
+        <span class="logo-text">Vetro<span>Connections</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html#prodotti">Prodotti</a></li>
+        <li><a href="index.html#materiali">Materiali</a></li>
+        <li><a href="progetti.html">Progetti</a></li>
+        <li><a href="index.html#servizi">Servizi</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
+        <li><a href="index.html#contatti">Contatti</a></li>
+        <li><a href="configuratore.html" class="nav-cta">Configura Ora</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html#prodotti">Prodotti</a>
+  <a href="index.html#materiali">Materiali</a>
+  <a href="progetti.html">Progetti</a>
+  <a href="index.html#servizi">Servizi</a>
+  <a href="index.html#faq">FAQ</a>
+  <a href="index.html#contatti">Contatti</a>
+  <a href="configuratore.html" class="mobile-menu-cta">Configura Ora →</a>
+</div>
 
 <!-- ══ CONFIG HEADER ═══════════════════════════════════ -->
 <div class="config-header">
@@ -1614,6 +1628,10 @@ document.addEventListener('keydown', e => {
   renderTypeGrid();
   updateNavButtons();
   updatePreviewPanel();
+
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
 })();
 </script>
 </body>
