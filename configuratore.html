@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Configuratore Finestre – Vetro Connections</title>
+  <title>Configuratore Finestre | Vetro Connections</title>
   <meta name="description" content="Configura la tua finestra o porta in PVC, legno e alluminio su misura. Scegli tipo, dimensioni, colore e vetro e ricevi un preventivo gratuito.">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -693,12 +693,12 @@
           <div class="form-group">
             <label for="inp-width">Larghezza (mm)</label>
             <input type="number" id="inp-width" min="400" max="2500" value="1000" step="10" />
-            <span class="hint" id="hint-width">Min 400 – Max 2500 mm</span>
+            <span class="hint" id="hint-width">Min 400, Max 2500 mm</span>
           </div>
           <div class="form-group">
             <label for="inp-height">Altezza (mm)</label>
             <input type="number" id="inp-height" min="400" max="2500" value="1200" step="10" />
-            <span class="hint" id="hint-height">Min 400 – Max 2500 mm</span>
+            <span class="hint" id="hint-height">Min 400, Max 2500 mm</span>
           </div>
         </div>
         <div class="size-presets">
@@ -712,7 +712,7 @@
 
       <!-- ── STEP 3: DIVISIONI ─────────────────────────── -->
       <div class="step-content" id="sc-3">
-        <p style="font-size:.875rem;color:var(--text-mid);margin-bottom:20px;">Aggiungi traverse orizzontali per dividere il vetro in più sezioni. Opzionale — puoi procedere senza.</p>
+        <p style="font-size:.875rem;color:var(--text-mid);margin-bottom:20px;">Aggiungi traverse orizzontali per dividere il vetro in più sezioni. Opzionale, puoi procedere senza.</p>
         <div style="display:flex;flex-direction:column;gap:14px;">
           <div class="opening-card" id="div-row" style="justify-content:space-between;">
             <div>
@@ -761,7 +761,7 @@
           <div class="opening-card" style="justify-content:space-between;border-color:var(--accent);background:#F0FDF4;">
             <div>
               <div class="opening-card-name" style="color:var(--accent);">Canalina calda (warm edge spacer)</div>
-              <div class="opening-card-desc">Distanziatore non conduttore — riduce ponti termici perimetrali e condensa sui bordi del vetro. Migliora il valore Uw.</div>
+              <div class="opening-card-desc">Distanziatore non conduttore, riduce ponti termici perimetrali e condensa sui bordi del vetro. Migliora il valore Uw.</div>
             </div>
             <label class="toggle-label">
               <input type="checkbox" id="warmEdge-main" onchange="st.warmEdge=this.checked; updatePreviewPanel();">
@@ -801,7 +801,7 @@
         <div class="opening-card" style="margin-top:20px;justify-content:space-between;border-color:var(--accent);background:#F0FDF4;">
           <div>
             <div class="opening-card-name" style="color:var(--accent);">Canalina calda (warm edge spacer)</div>
-            <div class="opening-card-desc">Distanziatore termicamente migliorato — riduce la condensa sui bordi, migliora il valore Uw della finestra fino a 0.1 W/m²K.</div>
+            <div class="opening-card-desc">Distanziatore termicamente migliorato, riduce la condensa sui bordi, migliora il valore Uw della finestra fino a 0.1 W/m²K.</div>
           </div>
           <label class="toggle-label">
             <input type="checkbox" id="warmEdge-glass" onchange="st.warmEdge=this.checked; document.getElementById('warmEdge-main').checked=this.checked; updatePreviewPanel();">
@@ -914,7 +914,7 @@ const STEPS = [
 const WINDOW_TYPES = [
   { id:'1-ante',    name:'Finestra 1 anta',         desc:'Apertura laterale',        rate:125, minW:400, maxW:1600, minH:400, maxH:2000 },
   { id:'2-ante',    name:'Finestra 2 ante',          desc:'Due ante apribili',        rate:112, minW:700, maxW:2500, minH:400, maxH:2000 },
-  { id:'ribalta-1', name:'Ribalta 1 anta',           desc:'Tilt & Turn – alta sicurezza', rate:148, minW:400, maxW:1600, minH:400, maxH:2000 },
+  { id:'ribalta-1', name:'Ribalta 1 anta',           desc:'Tilt & Turn, alta sicurezza', rate:148, minW:400, maxW:1600, minH:400, maxH:2000 },
   { id:'ribalta-2', name:'Ribalta 2 ante',           desc:'Tilt & Turn doppia',       rate:138, minW:700, maxW:2500, minH:400, maxH:2000 },
   { id:'porta-1',   name:'Porta finestra 1 anta',   desc:'Per terrazzo o balcone',   rate:155, minW:600, maxW:1200, minH:1800, maxH:2400 },
   { id:'porta-2',   name:'Porta finestra 2 ante',   desc:'Ampia porta finestra',     rate:142, minW:1000,maxW:2500, minH:1800, maxH:2400 },
@@ -956,8 +956,8 @@ const OPENING_OPTS = {
 const GLASS_OPTS = [
   { id:'doppio-std',    name:'Doppio standard',        spec:'4/16/4 mm, gas argon',                  uw:1.1, badge:null,              uwColor:'#F97316' },
   { id:'doppio-lowe',   name:'Doppio Low-E',           spec:'4/16/4 mm, coating basso emissivo',     uw:0.9, badge:'Consigliato',      uwColor:'#EAB308' },
-  { id:'doppio-acust',  name:'Doppio acustico',        spec:'6.8/18/4 mm VSG – 33 dB Rw',           uw:1.0, badge:'Anti-rumore',      uwColor:'#F97316' },
-  { id:'doppio-anti',   name:'Doppio antisfondamento', spec:'33.1/16/4 mm VSG – P1A certificato',   uw:1.0, badge:'Sicurezza',        uwColor:'#F97316' },
+  { id:'doppio-acust',  name:'Doppio acustico',        spec:'6.8/18/4 mm VSG, 33 dB Rw',           uw:1.0, badge:'Anti-rumore',      uwColor:'#F97316' },
+  { id:'doppio-anti',   name:'Doppio antisfondamento', spec:'33.1/16/4 mm VSG, P1A certificato',   uw:1.0, badge:'Sicurezza',        uwColor:'#F97316' },
   { id:'triplo-std',    name:'Triplo standard',        spec:'4/14/4/14/4 mm, gas argon',             uw:0.7, badge:null,              uwColor:'#84CC16' },
   { id:'triplo-lowe',   name:'Triplo Low-E premium',   spec:'4/14/4/14/4 mm, 2× coating Low-E',     uw:0.5, badge:'Max efficienza',   uwColor:'#16A34A' },
 ];
@@ -983,7 +983,7 @@ const ACCESSORY_OPTS = [
   { id:'zanzariera',  name:'Zanzariera a rullo',           desc:'Scomparsa, facile da usare, telaio in alluminio verniciato',         price:42 },
   { id:'griglia-v',   name:'Griglia di ventilazione',      desc:'Ventilazione silenziosa con filtro anti-insetti integrato',          price:35 },
   { id:'tapparella',  name:'Tapparella in PVC coibentata', desc:'Isolamento termico e acustico aggiuntivo, azionamento manuale',      price:95 },
-  { id:'cassonetto',  name:'Cassonetto coibentato',        desc:'Alloggiamento per tapparella, coibentazione 40mm – riduce dispersioni', price:130 },
+  { id:'cassonetto',  name:'Cassonetto coibentato',        desc:'Alloggiamento per tapparella, coibentazione 40mm, riduce dispersioni', price:130 },
   { id:'davanzale',   name:'Davanzale in alluminio',       desc:'Profilo esterno in alluminio con gocciolatoio, protegge il muro',    price:55 },
 ];
 
@@ -1340,8 +1340,8 @@ function renderSizeChips() {
     const ih = document.getElementById('inp-height');
     iw.min = t.minW; iw.max = t.maxW;
     ih.min = t.minH; ih.max = t.maxH;
-    document.getElementById('hint-width').textContent = `Min ${t.minW} – Max ${t.maxW} mm`;
-    document.getElementById('hint-height').textContent = `Min ${t.minH} – Max ${t.maxH} mm`;
+    document.getElementById('hint-width').textContent = `Min ${t.minW} / Max ${t.maxW} mm`;
+    document.getElementById('hint-height').textContent = `Min ${t.minH} / Max ${t.maxH} mm`;
   }
 }
 
@@ -1453,20 +1453,20 @@ function renderSummary() {
   const gcInfo = GLASS_COLOR_OPTS.find(x=>x.id===st.glassColor);
   const accNames = [...st.accessories].map(id=>ACCESSORY_OPTS.find(x=>x.id===id)?.name).filter(Boolean);
   const divText = st.divEnabled
-    ? `Sì – traversa a ${st.divSymmetric?'centro':st.divPos1+' mm'}${st.divPos2?' + '+st.divPos2+' mm':''}`
+    ? `Sì, traversa a ${st.divSymmetric?'centro':st.divPos1+' mm'}${st.divPos2?' + '+st.divPos2+' mm':''}`
     : 'No';
 
   const matLabel = { pvc:'PVC', legno:'Legno', alluminio:'Alluminio' }[st.material] || 'PVC';
   const specs = [
     { k:'Materiale',    v: matLabel },
-    { k:'Tipo',         v: tInfo?.name||'–' },
+    { k:'Tipo',         v: tInfo?.name||'N/D' },
     { k:'Dimensioni',   v: `${st.width} × ${st.height} mm` },
     { k:'Divisioni',    v: divText },
     { k:'Canalina calda',v: st.warmEdge ? 'Sì (warm edge spacer)' : 'No' },
-    { k:'Apertura',     v: opInfo?.name||'–' },
-    { k:'Profilo colore',v: `${cInfo?.name||'–'} (${cInfo?.code||''})` },
-    { k:'Vetro',        v: gInfo?.name||'–' },
-    { k:'Colore vetro', v: gcInfo?.name||'–' },
+    { k:'Apertura',     v: opInfo?.name||'N/D' },
+    { k:'Profilo colore',v: `${cInfo?.name||'N/D'} (${cInfo?.code||''})` },
+    { k:'Vetro',        v: gInfo?.name||'N/D' },
+    { k:'Colore vetro', v: gcInfo?.name||'N/D' },
     { k:'Accessori',    v: accNames.length ? accNames.join(', ') : 'Nessuno' },
   ];
   document.getElementById('summary-specs').innerHTML = specs.map(s=>
@@ -1495,9 +1495,9 @@ function updatePreviewPanel() {
   const cInfo = COLOR_OPTS.find(x=>x.id===st.color);
   const gInfo = GLASS_OPTS.find(x=>x.id===st.glass);
   const miniSpecs = [
-    { k:'Tipo',    v: tInfo?.name||'–' },
-    { k:'Profilo', v: cInfo?.name||'–' },
-    { k:'Vetro',   v: gInfo?.name||'–' },
+    { k:'Tipo',    v: tInfo?.name||'N/D' },
+    { k:'Profilo', v: cInfo?.name||'N/D' },
+    { k:'Vetro',   v: gInfo?.name||'N/D' },
     { k:'Accessori', v: st.accessories.size > 0 ? st.accessories.size+' selezionati' : 'Nessuno' },
   ];
   document.getElementById('preview-specs-mini').innerHTML = miniSpecs.map(s=>
@@ -1663,7 +1663,7 @@ document.getElementById('btn-next').addEventListener('click', () => {
   goToStep(st.step + 1);
 });
 
-// Summary action — generate PDF in new tab
+// Summary action: generate PDF in new tab
 document.getElementById('btn-quote').addEventListener('click', generateQuotePDF);
 
 function generateQuotePDF() {
@@ -1674,22 +1674,22 @@ function generateQuotePDF() {
   const gcInfo = GLASS_COLOR_OPTS.find(x=>x.id===st.glassColor);
   const accNames = [...st.accessories].map(id=>ACCESSORY_OPTS.find(x=>x.id===id)?.name).filter(Boolean);
   const matLabel = { pvc:'PVC', legno:'Legno', alluminio:'Alluminio' }[st.material] || 'PVC';
-  const divText  = st.divEnabled ? `Sì – traversa a ${st.divSymmetric?'centro':st.divPos1+' mm'}${st.divPos2?' + '+st.divPos2+' mm':''}` : 'No';
+  const divText  = st.divEnabled ? `Sì, traversa a ${st.divSymmetric?'centro':st.divPos1+' mm'}${st.divPos2?' + '+st.divPos2+' mm':''}` : 'No';
   const date  = new Date().toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'});
   const refNum = 'VC-' + Date.now().toString().slice(-6);
   const svgPreview = buildPreviewSVG(false);
 
   const specs = [
     ['Materiale profilo', matLabel],
-    ['Tipo serramento',   tInfo?.name||'–'],
+    ['Tipo serramento',   tInfo?.name||'N/D'],
     ['Dimensioni',        `${st.width} × ${st.height} mm`],
-    ['Apertura',          opInfo?.name||'–'],
+    ['Apertura',          opInfo?.name||'N/D'],
     ['Divisioni',         divText],
     ['Canalina calda',    st.warmEdge?'Sì (warm edge spacer)':'No'],
-    ['Colore profilo',    `${cInfo?.name||'–'} (${cInfo?.code||''})`],
-    ['Tipo vetro',        gInfo?.name||'–'],
-    ['Composizione vetro',gInfo?.spec||'–'],
-    ['Colore vetro',      gcInfo?.name||'–'],
+    ['Colore profilo',    `${cInfo?.name||'N/D'} (${cInfo?.code||''})`],
+    ['Tipo vetro',        gInfo?.name||'N/D'],
+    ['Composizione vetro',gInfo?.spec||'N/D'],
+    ['Colore vetro',      gcInfo?.name||'N/D'],
     ['Accessori',         accNames.length?accNames.join(', '):'Nessuno'],
   ];
 
@@ -1697,7 +1697,7 @@ function generateQuotePDF() {
     <tr><td class="k">${k}</td><td class="v">${v}</td></tr>`).join('');
 
   const html = `<!DOCTYPE html><html lang="it"><head><meta charset="UTF-8">
-<title>Preventivo ${refNum} – Vetro Connections</title>
+<title>Preventivo ${refNum} | Vetro Connections</title>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -1751,7 +1751,7 @@ td.v{font-weight:600;color:#1E293B;}
       <table>${specsHtml}</table>
       <div class="uw">
         <div class="uw-lbl">Trasmittanza termica Uw</div>
-        <div class="uw-val">${gInfo?.uw||'–'} W/m²K</div>
+        <div class="uw-val">${gInfo?.uw||'N/D'} W/m²K</div>
         <div class="uw-sub">${gInfo?.name||''} · ${gInfo?.spec||''}</div>
       </div>
     </div>
