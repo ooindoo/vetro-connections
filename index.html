@@ -316,6 +316,16 @@
       .footer-grid { grid-template-columns:1fr; gap:28px; }
       .footer-bottom { flex-direction:column; text-align:center; }
       .trust-bar-inner { gap:20px; }
+    }
+    /* TRUST BAR CAROUSEL (mobile) */
+    .trust-dots { display:none; justify-content:center; gap:7px; margin-top:10px; }
+    .trust-dot { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.3); cursor:pointer; transition:background 250ms,transform 250ms; border:none; padding:0; }
+    .trust-dot.active { background:#FCD34D; transform:scale(1.3); }
+    @media (max-width:640px) {
+      .trust-bar .container { overflow:hidden; padding:0 24px; }
+      .trust-bar-inner { flex-wrap:nowrap; justify-content:flex-start; gap:0; transition:transform 420ms cubic-bezier(.4,0,.2,1); }
+      .trust-item { min-width:100%; flex-shrink:0; justify-content:center; font-size:.9rem; }
+      .trust-dots { display:flex; }
       .hero-actions { flex-direction:column; }
       .btn-primary, .btn-outline { width:100%; justify-content:center; }
       .hero-stats { flex-wrap:wrap; }
@@ -1261,6 +1271,40 @@
     document.querySelectorAll('.window-card').forEach(c => c.classList.remove('active'));
     el.classList.add('active');
   }
+
+  // Trust bar carousel (mobile only)
+  (function() {
+    const inner = document.querySelector('.trust-bar-inner');
+    const items = inner ? inner.querySelectorAll('.trust-item') : [];
+    if(!inner || items.length === 0) return;
+    let cur = 0, timer, touchX = 0;
+    // Create dots container inside .trust-bar .container
+    const dotsWrap = document.createElement('div');
+    dotsWrap.className = 'trust-dots';
+    const dots = Array.from(items).map((_, i) => {
+      const d = document.createElement('button');
+      d.className = 'trust-dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('aria-label', 'Slide ' + (i+1));
+      d.addEventListener('click', () => { cur = i; update(); resetTimer(); });
+      dotsWrap.appendChild(d);
+      return d;
+    });
+    inner.parentElement.appendChild(dotsWrap);
+    function update() {
+      inner.style.transform = `translateX(-${cur * 100}%)`;
+      dots.forEach((d, i) => d.classList.toggle('active', i === cur));
+    }
+    function next() { cur = (cur + 1) % items.length; update(); }
+    function resetTimer() { clearInterval(timer); timer = setInterval(next, 3200); }
+    // Touch swipe
+    inner.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; clearInterval(timer); }, {passive:true});
+    inner.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - touchX;
+      if(Math.abs(dx) > 40) { cur = dx < 0 ? (cur+1)%items.length : (cur-1+items.length)%items.length; update(); }
+      resetTimer();
+    }, {passive:true});
+    resetTimer();
+  })();
 
   // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
