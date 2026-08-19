@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -967,7 +968,7 @@
         </div>
       </div>
       <div class="preview-specs-mini" id="preview-specs-mini"></div>
-      <div class="preview-cta">
+      <div class="preview-cta" id="preview-cta">
         <button class="preview-cta-btn" onclick="goToStep(8)">Vai al Riepilogo</button>
         <div class="preview-cta-note">Preventivo gratuito, senza impegno</div>
       </div>
@@ -1100,6 +1101,8 @@ const st = {
   accessories: new Set(),
   contact: { nome:'', email:'', tel:'', note:'' },
 };
+
+let submitted = false;
 
 // ═══════════════════════════════════════════════════
 //  SVG PREVIEW GENERATOR
@@ -1690,11 +1693,16 @@ function activateStep(n) {
   if(n===7) renderAccList();
   if(n===8) renderSummary();
   if(n===9) {
-    // reset to form view in case user navigated back after submitting
-    document.getElementById('contact-form-wrap').style.display = 'block';
-    document.getElementById('success-screen-wrap').style.display = 'none';
-    document.getElementById('btn-back').style.display = 'flex';
-    document.getElementById('btn-next').style.display = 'none';
+    if(submitted) {
+      document.getElementById('contact-form-wrap').style.display = 'none';
+      document.getElementById('success-screen-wrap').style.display = 'block';
+      document.getElementById('btn-back').style.display = 'none';
+      document.getElementById('btn-next').style.display = 'none';
+    } else {
+      document.getElementById('contact-form-wrap').style.display = 'block';
+      document.getElementById('success-screen-wrap').style.display = 'none';
+      document.getElementById('btn-back').style.display = 'flex';
+    }
   }
   renderProgressBar();
   renderStepHeader();
@@ -1719,7 +1727,8 @@ function goToStep(n) {
 }
 
 function jumpStep(n) {
-  if(n <= st.step) goToStep(n); // can always go back
+  if(submitted) return;
+  if(n <= st.step) goToStep(n);
 }
 
 function hideAllErrors() {
@@ -1904,6 +1913,130 @@ function renderSuccessRecap() {
     ).join('');
 }
 
+function buildPDFBase64() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+
+  const tInfo    = WINDOW_TYPES.find(x=>x.id===st.type);
+  const gInfo    = GLASS_OPTS.find(x=>x.id===st.glass);
+  const cInfo    = COLOR_OPTS.find(x=>x.id===st.color);
+  const opInfo   = (OPENING_OPTS[st.type]||[]).find(x=>x.id===st.opening);
+  const matLabel = { pvc:'PVC', legno:'Legno', alluminio:'Alluminio' }[st.material] || 'PVC';
+  const accNames = [...st.accessories].map(id=>ACCESSORY_OPTS.find(x=>x.id===id)?.name).filter(Boolean);
+  const divText  = st.divEnabled ? `Si, traversa a ${st.divSymmetric?'centro':st.divPos1+' mm'}${st.divPos2?' + '+st.divPos2+' mm':''}` : 'No';
+  const date     = new Date().toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'});
+  const refNum   = 'VC-' + Date.now().toString().slice(-6);
+  const nome     = st.contact.nome;
+
+  const W = 210, M = 18, CW = W - M*2;
+
+  // ── Header bar ──
+  doc.setFillColor(30, 64, 175);
+  doc.rect(0, 0, W, 38, 'F');
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(18);
+  doc.setTextColor(255,255,255);
+  doc.text('VetroConnections', M, 15);
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(8);
+  doc.text('Via Levada 34, 31050 Povegliano (TV)', M, 22);
+  doc.text('vetroconnections@gmail.com  |  +39 345 5086065  |  P.IVA 05516400263', M, 27);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(9);
+  doc.text(`Preventivo ${refNum}`, W - M, 14, {align:'right'});
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(8);
+  doc.text(`Data: ${date}`, W - M, 20, {align:'right'});
+  doc.text('Valido 30 giorni · Senza impegno', W - M, 26, {align:'right'});
+
+  let y = 48;
+
+  // ── Cliente ──
+  doc.setFillColor(239,246,255);
+  doc.roundedRect(M, y, CW, 26, 2, 2, 'F');
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(7);
+  doc.setTextColor(100,116,139);
+  doc.text('DATI CLIENTE', M+4, y+7);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(11);
+  doc.setTextColor(30,41,59);
+  doc.text(nome, M+4, y+15);
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(9);
+  doc.setTextColor(71,85,105);
+  const contactLine = [st.contact.email, st.contact.tel].filter(Boolean).join('  ·  ');
+  if(contactLine) doc.text(contactLine, M+4, y+22);
+  if(st.contact.note) {
+    doc.setFontSize(8);
+    doc.text('Note: '+st.contact.note, M+4, y+28, {maxWidth: CW-8});
+    y += 8;
+  }
+
+  y += 34;
+
+  // ── Configurazione title ──
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(7);
+  doc.setTextColor(100,116,139);
+  doc.text('CONFIGURAZIONE SERRAMENTO', M, y);
+  y += 3;
+  doc.setDrawColor(191,219,254);
+  doc.setLineWidth(0.4);
+  doc.line(M, y, W-M, y);
+  y += 5;
+
+  const specs = [
+    ['Materiale profilo',    matLabel],
+    ['Tipo serramento',      tInfo?.name||'N/D'],
+    ['Dimensioni',           `${st.width} x ${st.height} mm`],
+    ['Apertura',             opInfo?.name||'N/D'],
+    ['Divisioni',            divText],
+    ['Canalina calda',       st.warmEdge?'Si (warm edge spacer)':'No'],
+    ['Colore profilo',       `${cInfo?.name||'N/D'} (${cInfo?.code||''})`],
+    ['Tipo vetro',           gInfo?.name||'N/D'],
+    ['Composizione vetro',   gInfo?.spec||'N/D'],
+    ['Trasmittanza Uw',      `${gInfo?.uw||'N/D'} W/(m²K)`],
+    ['Accessori',            accNames.length?accNames.join(', '):'Nessuno'],
+  ];
+
+  specs.forEach(([k,v], i) => {
+    if(i%2===0) { doc.setFillColor(249,250,251); doc.rect(M, y-2, CW, 8, 'F'); }
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(8);
+    doc.setTextColor(100,116,139);
+    doc.text(k, M+3, y+3);
+    doc.setFont('helvetica','normal');
+    doc.setTextColor(30,41,59);
+    doc.text(v, M+68, y+3, {maxWidth: CW-70});
+    y += 8;
+  });
+
+  y += 6;
+
+  // ── Note box ──
+  doc.setFillColor(240,253,244);
+  doc.setDrawColor(134,239,172);
+  doc.setLineWidth(0.3);
+  doc.roundedRect(M, y, CW, 16, 2, 2, 'FD');
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(8);
+  doc.setTextColor(21,128,61);
+  doc.text('Prossimi passi', M+4, y+7);
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(8);
+  doc.setTextColor(22,101,52);
+  doc.text('Ti risponderemo entro 2 ore lavorative. Il prezzo definitivo verra confermato dopo sopralluogo gratuito.', M+4, y+13, {maxWidth: CW-8});
+
+  // ── Footer ──
+  doc.setFontSize(7);
+  doc.setTextColor(148,163,184);
+  doc.text('Vetro Connections · P.IVA 05516400263 · Via Levada 34, 31050 Povegliano (TV)', W/2, 285, {align:'center'});
+  doc.text(`${refNum} · ${date}`, W/2, 289, {align:'center'});
+
+  return doc.output('datauristring').split(',')[1];
+}
+
 function submitContact() {
   const nome  = document.getElementById('cf-nome').value.trim();
   const email = document.getElementById('cf-email').value.trim();
@@ -1927,6 +2060,9 @@ function submitContact() {
   const accNames = [...st.accessories].map(id=>ACCESSORY_OPTS.find(x=>x.id===id)?.name).filter(Boolean);
   const divText  = st.divEnabled ? `Si, traversa a ${st.divSymmetric?'centro':st.divPos1+' mm'}${st.divPos2?' + '+st.divPos2+' mm':''}` : 'No';
 
+  let pdfBase64 = '';
+  try { pdfBase64 = buildPDFBase64(); } catch(e) { console.warn('PDF generation failed', e); }
+
   const params = {
     client_nome:      nome,
     client_email:     email || 'Non inserita',
@@ -1941,15 +2077,18 @@ function submitContact() {
     config_colore:    `${cInfo?.name||'N/D'} (${cInfo?.code||''})`,
     config_vetro:     `${gInfo?.name||'N/D'} - Uw ${gInfo?.uw||'N/D'} W/m2K`,
     config_accessori: accNames.length ? accNames.join(', ') : 'Nessuno',
+    pdf_attachment:   pdfBase64,
   };
 
   emailjs.send('service_4apw62j', 'template_r71atcv', params)
     .then(() => {
+      submitted = true;
       renderSuccessRecap();
       document.getElementById('contact-form-wrap').style.display = 'none';
       document.getElementById('success-screen-wrap').style.display = 'block';
       document.getElementById('btn-back').style.display = 'none';
       document.getElementById('btn-next').style.display = 'none';
+      document.getElementById('preview-cta').style.display = 'none';
     })
     .catch(() => {
       btn.disabled = false;
