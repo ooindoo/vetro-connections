@@ -419,6 +419,34 @@
     .price-row.total { font-family: 'Poppins',sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--primary-dark); border-top: 2px solid var(--border); padding-top: 10px; margin-top: 6px; }
     .price-iva-note { font-size: 0.72rem; color: var(--text-light); margin-top: 6px; }
     .summary-actions { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+
+    /* ── STEP 9: CONTATTI ──────────────────── */
+    .contact-form { display:flex; flex-direction:column; gap:16px; }
+    .contact-note { background:var(--bg); border-radius:var(--radius-md); padding:16px 18px; font-size:.85rem; color:var(--text-mid); line-height:1.6; margin-bottom:4px; }
+    .contact-note strong { color:var(--text-dark); }
+    .cf-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .form-group textarea { width:100%; border:1.5px solid var(--border); border-radius:var(--radius-sm); padding:10px 12px; font-size:.9rem; font-family:'Open Sans',sans-serif; color:var(--text-dark); resize:vertical; outline:none; min-height:80px; transition:border-color var(--t); }
+    .form-group textarea:focus { border-color:var(--secondary); box-shadow:0 0 0 3px rgba(59,130,246,.12); }
+    .btn-submit { display:flex; align-items:center; justify-content:center; gap:10px; background:var(--accent); color:#fff; font-family:'Poppins',sans-serif; font-size:1rem; font-weight:700; padding:16px 28px; border:none; border-radius:var(--radius-sm); cursor:pointer; width:100%; margin-top:8px; transition:background var(--t),transform var(--t),box-shadow var(--t); box-shadow:0 4px 14px rgba(22,163,74,.35); }
+    .btn-submit:hover { background:var(--accent-dark); transform:translateY(-2px); box-shadow:0 8px 24px rgba(22,163,74,.42); }
+    .btn-submit svg { width:20px; height:20px; fill:#fff; flex-shrink:0; }
+    .privacy-note { font-size:.72rem; color:var(--text-light); text-align:center; margin-top:6px; }
+    /* Success screen */
+    .success-screen { text-align:center; padding:24px 0 8px; }
+    .success-icon { width:64px; height:64px; background:#DCFCE7; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; }
+    .success-icon svg { width:32px; height:32px; stroke:var(--accent); fill:none; }
+    .success-title { font-family:'Poppins',sans-serif; font-size:1.3rem; font-weight:700; color:var(--text-dark); margin-bottom:8px; }
+    .success-sub { font-size:.9rem; color:var(--text-mid); line-height:1.6; max-width:360px; margin:0 auto 24px; }
+    .success-recap { background:var(--bg); border-radius:var(--radius-md); padding:16px 18px; text-align:left; margin-bottom:20px; }
+    .success-recap-title { font-size:.75rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--text-mid); margin-bottom:10px; }
+    .success-recap-row { display:flex; justify-content:space-between; align-items:baseline; padding:6px 0; border-bottom:1px solid var(--border); font-size:.82rem; }
+    .success-recap-row:last-child { border-bottom:none; }
+    .success-recap-k { color:var(--text-light); font-weight:600; }
+    .success-recap-v { color:var(--text-dark); font-weight:600; text-align:right; max-width:60%; }
+    .btn-pdf { display:inline-flex; align-items:center; gap:8px; background:var(--primary); color:#fff; font-family:'Poppins',sans-serif; font-size:.9rem; font-weight:600; padding:12px 22px; border:none; border-radius:var(--radius-sm); cursor:pointer; transition:background var(--t); }
+    .btn-pdf:hover { background:var(--primary-dark); }
+    .btn-pdf svg { width:17px; height:17px; fill:#fff; }
+    @media (max-width:480px) { .cf-row { grid-template-columns:1fr; } }
     .btn-quote {
       flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
       background: var(--accent); color: #fff;
@@ -840,14 +868,70 @@
         </div>
         <div style="background:var(--bg);border-radius:var(--radius-md);padding:20px;margin-top:24px;">
           <div style="font-size:.85rem;font-weight:700;color:var(--text-dark);margin-bottom:12px;">Come procedere</div>
-          <p style="font-size:.875rem;color:var(--text-mid);line-height:1.7;">Clicca su <strong>Richiedi Preventivo</strong> per inviarci la tua configurazione. Ti risponderemo entro 2 ore lavorative con un preventivo dettagliato personalizzato.</p>
+          <p style="font-size:.875rem;color:var(--text-mid);line-height:1.7;">Clicca su <strong>Inserisci Contatti</strong> per procedere. Ti risponderemo entro 2 ore lavorative con un preventivo dettagliato e personalizzato.</p>
         </div>
         <div class="summary-actions">
           <button class="btn-quote" id="btn-quote">
-            <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-            Richiedi Preventivo Gratuito
+            <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" fill="none"/></svg>
+            Inserisci Contatti
           </button>
         </div>
+      </div>
+
+      <!-- ── STEP 9: CONTATTI ─────────────────────────── -->
+      <div class="step-content" id="sc-9">
+
+        <!-- Form -->
+        <div id="contact-form-wrap">
+          <div class="contact-note">
+            <strong>Ci siamo quasi!</strong> Inserisci i tuoi dati di contatto e ti invieremo un preventivo personalizzato entro 2 ore lavorative.
+          </div>
+          <div class="contact-form">
+            <div class="cf-row">
+              <div class="form-group">
+                <label for="cf-nome">Nome e Cognome <span style="color:#DC2626">*</span></label>
+                <input type="text" id="cf-nome" placeholder="Mario Rossi" autocomplete="name" />
+              </div>
+              <div class="form-group">
+                <label for="cf-tel">Telefono</label>
+                <input type="tel" id="cf-tel" placeholder="+39 347 1234567" autocomplete="tel" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="cf-email">Email <span style="color:#DC2626">*</span></label>
+              <input type="email" id="cf-email" placeholder="mario.rossi@email.com" autocomplete="email" />
+            </div>
+            <div class="form-group">
+              <label for="cf-note">Note aggiuntive</label>
+              <textarea id="cf-note" placeholder="Es: Necessito di sopralluogo, ho un'apertura particolare..."></textarea>
+            </div>
+            <div class="val-error" id="err-9">Inserisci nome e almeno un contatto (email o telefono) per procedere.</div>
+            <button class="btn-submit" onclick="submitContact()">
+              <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+              Invia Richiesta Preventivo
+            </button>
+            <p class="privacy-note">I tuoi dati sono trattati in conformita al GDPR e non vengono condivisi con terzi.</p>
+          </div>
+        </div>
+
+        <!-- Success screen -->
+        <div id="success-screen-wrap" style="display:none;">
+          <div class="success-screen">
+            <div class="success-icon">
+              <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <div class="success-title">Richiesta inviata!</div>
+            <div class="success-sub">Ti risponderemo entro 2 ore lavorative con il preventivo completo. Controlla la tua casella email.</div>
+            <div class="success-recap" id="success-recap">
+              <!-- filled by JS -->
+            </div>
+            <button class="btn-pdf" onclick="generateQuotePDF()">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zM13 3.5L18.5 9H13V3.5zM9 17H8v-1h1v1zm0-3H8v-1h1v1zm5 3h-4v-1h4v1zm0-3h-4v-1h4v1zm0-3H8v-1h6v1z"/></svg>
+              Scarica PDF Preventivo
+            </button>
+          </div>
+        </div>
+
       </div>
 
     </div><!-- /step-body -->
@@ -908,7 +992,8 @@ const STEPS = [
   { id:5, lbl:'Colore',     title:'Colore del Profilo',        desc:'Scegli il colore del tuo profilo' },
   { id:6, lbl:'Vetro',      title:'Tipo di Vetro',             desc:'Seleziona la vetrocamera per le tue esigenze di isolamento' },
   { id:7, lbl:'Accessori',  title:'Accessori Opzionali',       desc:'Personalizza ulteriormente il tuo prodotto' },
-  { id:8, lbl:'Riepilogo',  title:'Riepilogo Configurazione',  desc:'Verifica e richiedi il tuo preventivo gratuito' },
+  { id:8, lbl:'Riepilogo',  title:'Riepilogo Configurazione',  desc:'Verifica la tua configurazione e procedi con la richiesta' },
+  { id:9, lbl:'Contatti',   title:'Inserisci i Tuoi Dati',     desc:'Lascia i tuoi dati e riceverai il preventivo personalizzato entro 2 ore' },
 ];
 
 const WINDOW_TYPES = [
@@ -1016,6 +1101,7 @@ const st = {
   glass: 'doppio-lowe',
   glassColor: 'chiaro',
   accessories: new Set(),
+  contact: { nome:'', email:'', tel:'', note:'' },
 };
 
 // ═══════════════════════════════════════════════════
@@ -1585,6 +1671,8 @@ function validate(step) {
   if(step===5) return !!st.color;
   if(step===6) return !!st.glass;
   if(step===7) return true; // accessories optional
+  if(step===8) return true; // riepilogo, no required field
+  if(step===9) return !!(st.contact.nome.trim() && (st.contact.email.trim() || st.contact.tel.trim()));
   return true;
 }
 
@@ -1604,6 +1692,13 @@ function activateStep(n) {
   if(n===6) renderGlassGrid();
   if(n===7) renderAccList();
   if(n===8) renderSummary();
+  if(n===9) {
+    // reset to form view in case user navigated back after submitting
+    document.getElementById('contact-form-wrap').style.display = 'block';
+    document.getElementById('success-screen-wrap').style.display = 'none';
+    document.getElementById('btn-back').style.display = 'flex';
+    document.getElementById('btn-next').style.display = 'none';
+  }
   renderProgressBar();
   renderStepHeader();
   updateNavButtons();
@@ -1642,7 +1737,8 @@ function updateNavButtons() {
     next.style.display = 'none';
   } else {
     next.style.display = 'flex';
-    next.innerHTML = (st.step===7 ? 'Vai al Riepilogo' : 'Avanti')
+    const lbl = st.step===7 ? 'Vai al Riepilogo' : st.step===8 ? 'Inserisci Contatti' : 'Avanti';
+    next.innerHTML = lbl
       + `<svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:#fff;fill:none;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>`;
   }
 }
@@ -1663,8 +1759,8 @@ document.getElementById('btn-next').addEventListener('click', () => {
   goToStep(st.step + 1);
 });
 
-// Summary action: generate PDF in new tab
-document.getElementById('btn-quote').addEventListener('click', generateQuotePDF);
+// Summary action: go to contact form (step 9)
+document.getElementById('btn-quote').addEventListener('click', () => goToStep(9));
 
 function generateQuotePDF() {
   const tInfo  = WINDOW_TYPES.find(x=>x.id===st.type);
@@ -1780,6 +1876,89 @@ td.v{font-weight:600;color:#1E293B;}
   w.document.close();
 }
 
+// ═══════════════════════════════════════════════════
+//  STEP 9: CONTATTI
+// ═══════════════════════════════════════════════════
+
+function renderSuccessRecap() {
+  const tInfo   = WINDOW_TYPES.find(x=>x.id===st.type);
+  const gInfo   = GLASS_OPTS.find(x=>x.id===st.glass);
+  const cInfo   = COLOR_OPTS.find(x=>x.id===st.color);
+  const matLabel = { pvc:'PVC', legno:'Legno', alluminio:'Alluminio' }[st.material] || 'PVC';
+  const accNames = [...st.accessories].map(id=>ACCESSORY_OPTS.find(x=>x.id===id)?.name).filter(Boolean);
+  const divText  = st.divEnabled ? `Si, traversa a ${st.divSymmetric?'centro':st.divPos1+' mm'}${st.divPos2?' + '+st.divPos2+' mm':''}` : 'No';
+
+  const rows = [
+    ['Materiale',      matLabel],
+    ['Tipo',           tInfo?.name||'N/D'],
+    ['Dimensioni',     `${st.width} x ${st.height} mm`],
+    ['Apertura',       (OPENING_OPTS[st.type]||[]).find(x=>x.id===st.opening)?.name||'N/D'],
+    ['Divisioni',      divText],
+    ['Canalina calda', st.warmEdge?'Si (warm edge)':'No'],
+    ['Colore profilo', cInfo?.name||'N/D'],
+    ['Tipo vetro',     gInfo?.name||'N/D'],
+    ['Accessori',      accNames.length?accNames.join(', '):'Nessuno'],
+  ];
+
+  document.getElementById('success-recap').innerHTML =
+    '<div class="success-recap-title">Riepilogo configurazione</div>' +
+    rows.map(([k,v]) =>
+      `<div class="success-recap-row"><span class="success-recap-k">${k}</span><span class="success-recap-v">${v}</span></div>`
+    ).join('');
+}
+
+function submitContact() {
+  const nome  = document.getElementById('cf-nome').value.trim();
+  const email = document.getElementById('cf-email').value.trim();
+  const tel   = document.getElementById('cf-tel').value.trim();
+  const note  = document.getElementById('cf-note').value.trim();
+
+  st.contact = { nome, email, tel, note };
+
+  if(!validate(9)) { showError(9, true); return; }
+  hideAllErrors();
+
+  // Build mailto body
+  const tInfo   = WINDOW_TYPES.find(x=>x.id===st.type);
+  const gInfo   = GLASS_OPTS.find(x=>x.id===st.glass);
+  const cInfo   = COLOR_OPTS.find(x=>x.id===st.color);
+  const opInfo  = (OPENING_OPTS[st.type]||[]).find(x=>x.id===st.opening);
+  const matLabel = { pvc:'PVC', legno:'Legno', alluminio:'Alluminio' }[st.material] || 'PVC';
+  const accNames = [...st.accessories].map(id=>ACCESSORY_OPTS.find(x=>x.id===id)?.name).filter(Boolean);
+  const divText  = st.divEnabled ? `Si, traversa a ${st.divSymmetric?'centro':st.divPos1+' mm'}${st.divPos2?' + '+st.divPos2+' mm':''}` : 'No';
+
+  const body = [
+    'NUOVA RICHIESTA DI PREVENTIVO - Vetro Connections',
+    '',
+    'DATI CLIENTE',
+    `Nome:      ${nome}`,
+    `Email:     ${email || 'Non inserita'}`,
+    `Telefono:  ${tel   || 'Non inserito'}`,
+    `Note:      ${note  || 'Nessuna'}`,
+    '',
+    'CONFIGURAZIONE',
+    `Materiale:     ${matLabel}`,
+    `Tipo:          ${tInfo?.name||'N/D'}`,
+    `Dimensioni:    ${st.width} x ${st.height} mm`,
+    `Apertura:      ${opInfo?.name||'N/D'}`,
+    `Divisioni:     ${divText}`,
+    `Canalina calda:${st.warmEdge?'Si':'No'}`,
+    `Colore profilo:${cInfo?.name||'N/D'}`,
+    `Tipo vetro:    ${gInfo?.name||'N/D'} (Uw ${gInfo?.uw||'N/D'} W/m2K)`,
+    `Accessori:     ${accNames.length?accNames.join(', '):'Nessuno'}`,
+  ].join('\n');
+
+  const subject = encodeURIComponent(`Preventivo ${matLabel} ${tInfo?.name||''} - ${nome}`);
+  window.open(`mailto:vetroconnections@gmail.com?subject=${subject}&body=${encodeURIComponent(body)}`);
+
+  // Show success screen
+  renderSuccessRecap();
+  document.getElementById('contact-form-wrap').style.display = 'none';
+  document.getElementById('success-screen-wrap').style.display = 'block';
+  document.getElementById('btn-back').style.display = 'none';
+  document.getElementById('btn-next').style.display = 'none';
+}
+
 // Divisioni handlers
 function onDivToggle(checked) {
   st.divEnabled = checked;
@@ -1828,6 +2007,12 @@ document.addEventListener('keydown', e => {
       e.preventDefault(); t.click();
     }
   }
+});
+
+// Contact field listeners
+['nome','email','tel','note'].forEach(key => {
+  const el = document.getElementById(`cf-${key}`);
+  if(el) el.addEventListener('input', e => { st.contact[key] = e.target.value; });
 });
 
 // ═══════════════════════════════════════════════════
