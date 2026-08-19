@@ -1943,7 +1943,7 @@ function submitContact() {
     config_accessori: accNames.length ? accNames.join(', ') : 'Nessuno',
   };
 
-  emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', params)
+  emailjs.send('service_4apw62j', 'template_r71atcv', params)
     .then(() => {
       renderSuccessRecap();
       document.getElementById('contact-form-wrap').style.display = 'none';
@@ -2021,7 +2021,7 @@ document.addEventListener('keydown', e => {
 // ═══════════════════════════════════════════════════
 
 (function init() {
-  emailjs.init('YOUR_PUBLIC_KEY'); // ← sostituisci con la tua Public Key di EmailJS
+  emailjs.init('hl1lCU9C3xb0P9A29');
 
   // Check URL params for pre-selection
   const params = new URLSearchParams(window.location.search);
