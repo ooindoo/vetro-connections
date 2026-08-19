@@ -293,7 +293,7 @@
     }
     .glass-info { flex: 1; }
     .glass-name { font-size: 0.9rem; font-weight: 600; color: var(--primary-dark); margin-bottom: 3px; }
-    .glass-spec { font-size: 0.78rem; color: var(--text-mid); }
+    .glass-spec { display: none; }
     .glass-uw {
       font-family: 'Poppins',sans-serif; font-size: 0.82rem; font-weight: 700;
       padding: 4px 10px; border-radius: 100px;
@@ -549,15 +549,6 @@
     .spec-mini-row { display: flex; justify-content: space-between; font-size: 0.78rem; }
     .spec-mini-key { color: var(--text-light); font-weight: 500; }
     .spec-mini-val { font-weight: 600; color: var(--text-dark); }
-    .preview-cta { padding: 14px 18px; }
-    .preview-cta-btn {
-      width: 100%; padding: 12px; background: var(--accent); color: #fff;
-      font-family: 'Poppins',sans-serif; font-size: 0.9rem; font-weight: 700;
-      border: none; border-radius: var(--radius-sm); cursor: pointer;
-      transition: background var(--t);
-    }
-    .preview-cta-btn:hover { background: var(--accent-dark); }
-    .preview-cta-note { font-size: 0.7rem; color: var(--text-light); text-align: center; margin-top: 8px; }
 
     /* Validation error */
     .val-error {
@@ -608,7 +599,7 @@
       .opening-card-name { font-size:.82rem; }
       .glass-card { flex-wrap:wrap; gap:8px; padding:12px; }
       .glass-name { font-size:.82rem; }
-      .glass-spec { font-size:.72rem; }
+      .glass-spec { display:none; }
       .mat-chip { padding:8px 12px; font-size:.8rem; gap:6px; }
       .mat-chip svg { width:14px; height:14px; }
       .acc-item { padding:12px; gap:10px; }
@@ -968,10 +959,6 @@
         </div>
       </div>
       <div class="preview-specs-mini" id="preview-specs-mini"></div>
-      <div class="preview-cta" id="preview-cta">
-        <button class="preview-cta-btn" onclick="goToStep(8)">Vai al Riepilogo</button>
-        <div class="preview-cta-note">Preventivo gratuito, senza impegno</div>
-      </div>
     </div>
   </aside>
 
@@ -1108,6 +1095,18 @@ let submitted = false;
 //  SVG PREVIEW GENERATOR
 // ═══════════════════════════════════════════════════
 
+function openTri(dir, x, y, w, h) {
+  const m = Math.min(w,h)*0.06;
+  const x0=x+m, x1=x+w-m, y0=y+m, y1=y+h-m, mid=(y0+y1)/2;
+  const pts = dir==='>' ? `${x0},${mid} ${x1},${y0} ${x1},${y1}` : `${x1},${mid} ${x0},${y0} ${x0},${y1}`;
+  return `<polygon points="${pts}" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1.3" stroke-linejoin="round" opacity=".85"/>`;
+}
+function ribTri(x, y, w, h) {
+  const m = Math.min(w,h)*0.06;
+  const x0=x+m, x1=x+w-m, y0=y+m, y1=y+h-m, midX=(x0+x1)/2;
+  return `<polygon points="${x0},${y1} ${x1},${y1} ${midX},${y0}" fill="rgba(245,158,11,0.18)" stroke="#F59E0B" stroke-width="1.5" stroke-linejoin="round" opacity=".85"/>`;
+}
+
 function buildPreviewSVG(compact) {
   const VW = compact ? 220 : 260;
   const VH = compact ? 200 : 300;
@@ -1177,8 +1176,6 @@ function buildPreviewSVG(compact) {
     parts.push(`<rect x="${fx}" y="${fy+fh-8}" width="${fw}" height="8" rx="1" fill="${profFill}" stroke="${pc.stroke}" stroke-width="2"/>`);
   }
 
-  const dash = 'stroke-dasharray="6,4"';
-
   if(isDouble) {
     const sep = F + G;
     const sw = (fw - 2*sep - F) / 2;
@@ -1199,28 +1196,22 @@ function buildPreviewSVG(compact) {
     parts.push(`<rect x="${rx2+S}" y="${sy+S}" width="${gw}" height="${gh}" fill="${glassFill}" stroke="rgba(147,210,245,.5)" stroke-width=".8"/>`);
     parts.push(`<polygon points="${rx2+S},${sy+S} ${rx2+S+gw*.5},${sy+S} ${rx2+S},${sy+S+gh*.3}" fill="rgba(255,255,255,.28)"/>`);
 
-    // Opening diagonals
-    const dc = '#1E40AF';
-    if(op==='int-entrambe' || !op) {
-      parts.push(`<line x1="${lx2}" y1="${sy}" x2="${lx2+sw}" y2="${sy+sh}" stroke="${dc}" stroke-width="1.2" ${dash} opacity=".55"/>`);
-      parts.push(`<line x1="${rx2+sw}" y1="${sy}" x2="${rx2}" y2="${sy+sh}" stroke="${dc}" stroke-width="1.2" ${dash} opacity=".55"/>`);
-    } else if(op==='int-dx') {
-      parts.push(`<line x1="${rx2+sw}" y1="${sy}" x2="${rx2}" y2="${sy+sh}" stroke="${dc}" stroke-width="1.2" ${dash} opacity=".55"/>`);
-    } else if(op==='int-sx') {
-      parts.push(`<line x1="${lx2}" y1="${sy}" x2="${lx2+sw}" y2="${sy+sh}" stroke="${dc}" stroke-width="1.2" ${dash} opacity=".55"/>`);
-    }
-    if(op==='ext-entrambe') {
-      parts.push(`<line x1="${lx2+sw}" y1="${sy}" x2="${lx2}" y2="${sy+sh}" stroke="${dc}" stroke-width="1.2" ${dash} opacity=".55"/>`);
-      parts.push(`<line x1="${rx2}" y1="${sy}" x2="${rx2+sw}" y2="${sy+sh}" stroke="${dc}" stroke-width="1.2" ${dash} opacity=".55"/>`);
-    }
-
-    // Ribalta V-arrows
+    // Opening indicators — triangles
+    const lgx=lx2+S, lgy=sy+S, rgx=rx2+S, rgy=sy+S;
     if(isRibalta) {
-      const btm = sy+sh-S; const top = sy+S;
-      parts.push(`<line x1="${lx2+S}" y1="${btm}" x2="${lx2+sw/2}" y2="${top}" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="5,3" opacity=".75"/>`);
-      parts.push(`<line x1="${lx2+sw-S}" y1="${btm}" x2="${lx2+sw/2}" y2="${top}" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="5,3" opacity=".75"/>`);
-      parts.push(`<line x1="${rx2+S}" y1="${btm}" x2="${rx2+sw/2}" y2="${top}" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="5,3" opacity=".75"/>`);
-      parts.push(`<line x1="${rx2+sw-S}" y1="${btm}" x2="${rx2+sw/2}" y2="${top}" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="5,3" opacity=".75"/>`);
+      parts.push(ribTri(lgx,lgy,gw,gh));
+      parts.push(ribTri(rgx,rgy,gw,gh));
+    }
+    if(op==='int-entrambe'||!op) {
+      parts.push(openTri('>',lgx,lgy,gw,gh));
+      parts.push(openTri('<',rgx,rgy,gw,gh));
+    } else if(op==='int-dx') {
+      parts.push(openTri('<',rgx,rgy,gw,gh));
+    } else if(op==='int-sx') {
+      parts.push(openTri('>',lgx,lgy,gw,gh));
+    } else if(op==='ext-entrambe') {
+      parts.push(openTri('<',lgx,lgy,gw,gh));
+      parts.push(openTri('>',rgx,rgy,gw,gh));
     }
 
     // Handles
@@ -1245,33 +1236,23 @@ function buildPreviewSVG(compact) {
     // Glare
     parts.push(`<polygon points="${sx2+S},${sy2+S} ${sx2+S+gw*.5},${sy2+S} ${sx2+S},${sy2+S+gh*.35}" fill="rgba(255,255,255,.28)"/>`);
 
-    // Ribalta V
-    if(isRibalta) {
-      const btm = sy2+sh-S; const top = sy2+S; const midX = sx2+sw/2;
-      parts.push(`<line x1="${sx2+S}" y1="${btm}" x2="${midX}" y2="${top}" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="5,3" opacity=".75"/>`);
-      parts.push(`<line x1="${sx2+sw-S}" y1="${btm}" x2="${midX}" y2="${top}" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="5,3" opacity=".75"/>`);
-    }
-
-    // Opening diagonals
-    const dc = '#1E40AF';
+    // Opening indicators — triangles
+    const gx=sx2+S, gy=sy2+S;
+    if(isRibalta) parts.push(ribTri(gx,gy,gw,gh));
     if(op==='int-dx'||(!op&&!isRibalta)) {
-      parts.push(`<line x1="${sx2}" y1="${sy2}" x2="${sx2+sw}" y2="${sy2+sh}" stroke="${dc}" stroke-width="1.5" ${dash} opacity=".55"/>`);
+      parts.push(openTri('>',gx,gy,gw,gh));
     } else if(op==='int-sx') {
-      parts.push(`<line x1="${sx2+sw}" y1="${sy2}" x2="${sx2}" y2="${sy2+sh}" stroke="${dc}" stroke-width="1.5" ${dash} opacity=".55"/>`);
+      parts.push(openTri('<',gx,gy,gw,gh));
     } else if(op==='ext-dx') {
-      parts.push(`<line x1="${sx2+sw}" y1="${sy2}" x2="${sx2}" y2="${sy2+sh}" stroke="${dc}" stroke-width="1.5" ${dash} opacity=".55"/>`);
+      parts.push(openTri('<',gx,gy,gw,gh));
     } else if(op==='ext-sx') {
-      parts.push(`<line x1="${sx2}" y1="${sy2}" x2="${sx2+sw}" y2="${sy2+sh}" stroke="${dc}" stroke-width="1.5" ${dash} opacity=".55"/>`);
+      parts.push(openTri('>',gx,gy,gw,gh));
     } else if(op==='ribalta-dx') {
-      const btm=sy2+sh-S,top=sy2+S,midX=sx2+sw/2;
-      parts.push(`<line x1="${sx2+S}" y1="${btm}" x2="${midX}" y2="${top}" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="5,3" opacity=".75"/>`);
-      parts.push(`<line x1="${sx2+sw-S}" y1="${btm}" x2="${midX}" y2="${top}" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="5,3" opacity=".75"/>`);
-      parts.push(`<line x1="${sx2}" y1="${sy2}" x2="${sx2+sw}" y2="${sy2+sh}" stroke="${dc}" stroke-width="1.2" ${dash} opacity=".5"/>`);
+      if(!isRibalta) parts.push(ribTri(gx,gy,gw,gh));
+      parts.push(openTri('>',gx,gy,gw,gh));
     } else if(op==='ribalta-sx') {
-      const btm=sy2+sh-S,top=sy2+S,midX=sx2+sw/2;
-      parts.push(`<line x1="${sx2+S}" y1="${btm}" x2="${midX}" y2="${top}" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="5,3" opacity=".75"/>`);
-      parts.push(`<line x1="${sx2+sw-S}" y1="${btm}" x2="${midX}" y2="${top}" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="5,3" opacity=".75"/>`);
-      parts.push(`<line x1="${sx2+sw}" y1="${sy2}" x2="${sx2}" y2="${sy2+sh}" stroke="${dc}" stroke-width="1.2" ${dash} opacity=".5"/>`);
+      if(!isRibalta) parts.push(ribTri(gx,gy,gw,gh));
+      parts.push(openTri('<',gx,gy,gw,gh));
     }
 
     // Handle
@@ -1307,12 +1288,14 @@ function typeCardSVG(typeId) {
     parts.push(`<rect x="${lx}" y="${sy}" width="${sw}" height="${sh}" rx="1" fill="${gf}" stroke="${sc}" stroke-width="${Sp}"/>`);
     parts.push(`<rect x="${rx}" y="${sy}" width="${sw}" height="${sh}" rx="1" fill="${gf}" stroke="${sc}" stroke-width="${Sp}"/>`);
     if(!isRib){
-      parts.push(`<line x1="${lx}" y1="${sy}" x2="${lx+sw}" y2="${sy+sh}" stroke="#1E40AF" stroke-width="1" stroke-dasharray="4,3" opacity=".6"/>`);
-      parts.push(`<line x1="${rx+sw}" y1="${sy}" x2="${rx}" y2="${sy+sh}" stroke="#1E40AF" stroke-width="1" stroke-dasharray="4,3" opacity=".6"/>`);
+      const lgw=sw-2*Sp, lgh=sh-2*Sp, lgx=lx+Sp, lgy=sy+Sp, lgmid=(lgy+lgy+lgh)/2;
+      const rgx=rx+Sp;
+      parts.push(`<polygon points="${lgx},${lgmid} ${lgx+lgw},${lgy} ${lgx+lgw},${lgy+lgh}" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1" stroke-linejoin="round" opacity=".8"/>`);
+      parts.push(`<polygon points="${rgx+lgw},${lgmid} ${rgx},${lgy} ${rgx},${lgy+lgh}" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1" stroke-linejoin="round" opacity=".8"/>`);
     } else {
       const btm=sy+sh-Sp, top=sy+Sp;
-      parts.push(`<line x1="${lx+Sp}" y1="${btm}" x2="${lx+sw/2}" y2="${top}" stroke="#F59E0B" stroke-width="1.2" stroke-dasharray="4,3" opacity=".8"/>`);
-      parts.push(`<line x1="${lx+sw-Sp}" y1="${btm}" x2="${lx+sw/2}" y2="${top}" stroke="#F59E0B" stroke-width="1.2" stroke-dasharray="4,3" opacity=".8"/>`);
+      parts.push(`<polygon points="${lx+Sp},${btm} ${lx+sw-Sp},${btm} ${lx+sw/2},${top}" fill="rgba(245,158,11,0.2)" stroke="#F59E0B" stroke-width="1.2" stroke-linejoin="round" opacity=".85"/>`);
+      parts.push(`<polygon points="${rx+Sp},${btm} ${rx+sw-Sp},${btm} ${rx+sw/2},${top}" fill="rgba(245,158,11,0.2)" stroke="#F59E0B" stroke-width="1.2" stroke-linejoin="round" opacity=".85"/>`);
     }
   } else {
     const sw = VW-2*F-2*G, sh = VH-2*F-2*G;
@@ -1321,11 +1304,11 @@ function typeCardSVG(typeId) {
     parts.push(`<rect x="2" y="2" width="${VW-4}" height="${VH-4}" rx="2" fill="${bc}" stroke="${sc}" stroke-width="${F}"/>`);
     parts.push(`<rect x="${sx2}" y="${sy2}" width="${sw}" height="${sh}" rx="1" fill="${gf}" stroke="${sc}" stroke-width="${Sp}"/>`);
     if(!isRib){
-      parts.push(`<line x1="${sx2}" y1="${sy2}" x2="${sx2+sw}" y2="${sy2+sh}" stroke="#1E40AF" stroke-width="1" stroke-dasharray="4,3" opacity=".6"/>`);
+      const sgw=sw-2*Sp, sgh=sh-2*Sp, sgx=sx2+Sp, sgy=sy2+Sp, sgmid=(sgy+sgy+sgh)/2;
+      parts.push(`<polygon points="${sgx},${sgmid} ${sgx+sgw},${sgy} ${sgx+sgw},${sgy+sgh}" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1" stroke-linejoin="round" opacity=".8"/>`);
     } else {
       const btm=sy2+sh-Sp, top=sy2+Sp, mid=sx2+sw/2;
-      parts.push(`<line x1="${sx2+Sp}" y1="${btm}" x2="${mid}" y2="${top}" stroke="#F59E0B" stroke-width="1.2" stroke-dasharray="4,3" opacity=".8"/>`);
-      parts.push(`<line x1="${sx2+sw-Sp}" y1="${btm}" x2="${mid}" y2="${top}" stroke="#F59E0B" stroke-width="1.2" stroke-dasharray="4,3" opacity=".8"/>`);
+      parts.push(`<polygon points="${sx2+Sp},${btm} ${sx2+sw-Sp},${btm} ${mid},${top}" fill="rgba(245,158,11,0.2)" stroke="#F59E0B" stroke-width="1.2" stroke-linejoin="round" opacity=".85"/>`);
     }
     if(isDoor) {
       parts.push(`<rect x="2" y="${VH-6}" width="${VW-4}" height="4" rx="1" fill="${sc}" opacity=".5"/>`);
@@ -1448,10 +1431,11 @@ function renderOpeningGrid() {
 }
 
 function openingIcon(id) {
-  if(id==='ribalta') return `<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="22" height="22" rx="2" stroke="#3B82F6" stroke-width="2" fill="#DBEAFE"/><line x1="5" y1="22" x2="14" y2="5" stroke="#1E40AF" stroke-width="1.5" stroke-dasharray="4,3"/><line x1="23" y1="22" x2="14" y2="5" stroke="#1E40AF" stroke-width="1.5" stroke-dasharray="4,3"/></svg>`;
-  if(id.includes('dx')) return `<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="22" height="22" rx="2" stroke="#3B82F6" stroke-width="2" fill="#DBEAFE"/><line x1="3" y1="3" x2="25" y2="25" stroke="#1E40AF" stroke-width="1.5" stroke-dasharray="4,3"/><line x1="3" y1="3" x2="3" y2="25" stroke="#1E40AF" stroke-width="2"/></svg>`;
-  if(id.includes('sx')) return `<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="22" height="22" rx="2" stroke="#3B82F6" stroke-width="2" fill="#DBEAFE"/><line x1="25" y1="3" x2="3" y2="25" stroke="#1E40AF" stroke-width="1.5" stroke-dasharray="4,3"/><line x1="25" y1="3" x2="25" y2="25" stroke="#1E40AF" stroke-width="2"/></svg>`;
-  return `<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="22" height="22" rx="2" stroke="#3B82F6" stroke-width="2" fill="#DBEAFE"/><line x1="3" y1="3" x2="25" y2="25" stroke="#1E40AF" stroke-width="1.5" stroke-dasharray="4,3"/></svg>`;
+  const box = `<rect x="3" y="3" width="22" height="22" rx="2" stroke="#3B82F6" stroke-width="2" fill="#DBEAFE"/>`;
+  if(id==='ribalta') return `<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">${box}<polygon points="5,23 23,23 14,5" fill="rgba(245,158,11,0.2)" stroke="#F59E0B" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
+  if(id.includes('dx')) return `<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">${box}<line x1="3" y1="3" x2="3" y2="25" stroke="#1E40AF" stroke-width="2"/><polygon points="5,14 23,5 23,23" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1.2" stroke-linejoin="round"/></svg>`;
+  if(id.includes('sx')) return `<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">${box}<line x1="25" y1="3" x2="25" y2="25" stroke="#1E40AF" stroke-width="2"/><polygon points="23,14 5,5 5,23" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1.2" stroke-linejoin="round"/></svg>`;
+  return `<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">${box}<polygon points="5,14 23,5 23,23" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1.2" stroke-linejoin="round"/></svg>`;
 }
 
 function renderColorGrid() {
@@ -1476,7 +1460,6 @@ function renderGlassGrid() {
       <div class="glass-icon" aria-hidden="true">${glassLayerIcon(g.id)}</div>
       <div class="glass-info">
         <div class="glass-name">${g.name}${g.badge?`<span class="glass-badge">${g.badge}</span>`:''}</div>
-        <div class="glass-spec">${g.spec}</div>
       </div>
       <div class="glass-uw" style="background:${uw.bg};color:${uw.color};">${g.uw}</div>
     </div>`;
@@ -2088,7 +2071,6 @@ function submitContact() {
       document.getElementById('success-screen-wrap').style.display = 'block';
       document.getElementById('btn-back').style.display = 'none';
       document.getElementById('btn-next').style.display = 'none';
-      document.getElementById('preview-cta').style.display = 'none';
     })
     .catch(() => {
       btn.disabled = false;
