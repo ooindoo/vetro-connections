@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -921,14 +922,10 @@
               <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
             </div>
             <div class="success-title">Richiesta inviata!</div>
-            <div class="success-sub">Ti risponderemo entro 2 ore lavorative con il preventivo completo. Controlla la tua casella email.</div>
+            <div class="success-sub">Ti risponderemo entro 2 ore lavorative con il preventivo completo.</div>
             <div class="success-recap" id="success-recap">
               <!-- filled by JS -->
             </div>
-            <button class="btn-pdf" onclick="generateQuotePDF()">
-              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zM13 3.5L18.5 9H13V3.5zM9 17H8v-1h1v1zm0-3H8v-1h1v1zm5 3h-4v-1h4v1zm0-3h-4v-1h4v1zm0-3H8v-1h6v1z"/></svg>
-              Scarica PDF Preventivo
-            </button>
           </div>
         </div>
 
@@ -1918,45 +1915,49 @@ function submitContact() {
   if(!validate(9)) { showError(9, true); return; }
   hideAllErrors();
 
-  // Build mailto body
-  const tInfo   = WINDOW_TYPES.find(x=>x.id===st.type);
-  const gInfo   = GLASS_OPTS.find(x=>x.id===st.glass);
-  const cInfo   = COLOR_OPTS.find(x=>x.id===st.color);
-  const opInfo  = (OPENING_OPTS[st.type]||[]).find(x=>x.id===st.opening);
+  const btn = document.querySelector('#sc-9 .btn-submit');
+  btn.disabled = true;
+  btn.innerHTML = 'Invio in corso...';
+
+  const tInfo    = WINDOW_TYPES.find(x=>x.id===st.type);
+  const gInfo    = GLASS_OPTS.find(x=>x.id===st.glass);
+  const cInfo    = COLOR_OPTS.find(x=>x.id===st.color);
+  const opInfo   = (OPENING_OPTS[st.type]||[]).find(x=>x.id===st.opening);
   const matLabel = { pvc:'PVC', legno:'Legno', alluminio:'Alluminio' }[st.material] || 'PVC';
   const accNames = [...st.accessories].map(id=>ACCESSORY_OPTS.find(x=>x.id===id)?.name).filter(Boolean);
   const divText  = st.divEnabled ? `Si, traversa a ${st.divSymmetric?'centro':st.divPos1+' mm'}${st.divPos2?' + '+st.divPos2+' mm':''}` : 'No';
 
-  const body = [
-    'NUOVA RICHIESTA DI PREVENTIVO - Vetro Connections',
-    '',
-    'DATI CLIENTE',
-    `Nome:      ${nome}`,
-    `Email:     ${email || 'Non inserita'}`,
-    `Telefono:  ${tel   || 'Non inserito'}`,
-    `Note:      ${note  || 'Nessuna'}`,
-    '',
-    'CONFIGURAZIONE',
-    `Materiale:     ${matLabel}`,
-    `Tipo:          ${tInfo?.name||'N/D'}`,
-    `Dimensioni:    ${st.width} x ${st.height} mm`,
-    `Apertura:      ${opInfo?.name||'N/D'}`,
-    `Divisioni:     ${divText}`,
-    `Canalina calda:${st.warmEdge?'Si':'No'}`,
-    `Colore profilo:${cInfo?.name||'N/D'}`,
-    `Tipo vetro:    ${gInfo?.name||'N/D'} (Uw ${gInfo?.uw||'N/D'} W/m2K)`,
-    `Accessori:     ${accNames.length?accNames.join(', '):'Nessuno'}`,
-  ].join('\n');
+  const params = {
+    client_nome:      nome,
+    client_email:     email || 'Non inserita',
+    client_tel:       tel   || 'Non inserito',
+    client_note:      note  || 'Nessuna',
+    config_materiale: matLabel,
+    config_tipo:      tInfo?.name||'N/D',
+    config_dimensioni:`${st.width} x ${st.height} mm`,
+    config_apertura:  opInfo?.name||'N/D',
+    config_divisioni: divText,
+    config_canalina:  st.warmEdge ? 'Si (warm edge)' : 'No',
+    config_colore:    `${cInfo?.name||'N/D'} (${cInfo?.code||''})`,
+    config_vetro:     `${gInfo?.name||'N/D'} - Uw ${gInfo?.uw||'N/D'} W/m2K`,
+    config_accessori: accNames.length ? accNames.join(', ') : 'Nessuno',
+  };
 
-  const subject = encodeURIComponent(`Preventivo ${matLabel} ${tInfo?.name||''} - ${nome}`);
-  window.open(`mailto:vetroconnections@gmail.com?subject=${subject}&body=${encodeURIComponent(body)}`);
-
-  // Show success screen
-  renderSuccessRecap();
-  document.getElementById('contact-form-wrap').style.display = 'none';
-  document.getElementById('success-screen-wrap').style.display = 'block';
-  document.getElementById('btn-back').style.display = 'none';
-  document.getElementById('btn-next').style.display = 'none';
+  emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', params)
+    .then(() => {
+      renderSuccessRecap();
+      document.getElementById('contact-form-wrap').style.display = 'none';
+      document.getElementById('success-screen-wrap').style.display = 'block';
+      document.getElementById('btn-back').style.display = 'none';
+      document.getElementById('btn-next').style.display = 'none';
+    })
+    .catch(() => {
+      btn.disabled = false;
+      btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>Invia Richiesta Preventivo`;
+      const errEl = document.getElementById('err-9');
+      errEl.textContent = 'Errore nell\'invio. Riprova o contattaci su WhatsApp.';
+      errEl.classList.add('show');
+    });
 }
 
 // Divisioni handlers
@@ -2020,6 +2021,8 @@ document.addEventListener('keydown', e => {
 // ═══════════════════════════════════════════════════
 
 (function init() {
+  emailjs.init('YOUR_PUBLIC_KEY'); // ← sostituisci con la tua Public Key di EmailJS
+
   // Check URL params for pre-selection
   const params = new URLSearchParams(window.location.search);
   const preset = params.get('tipo');
