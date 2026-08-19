@@ -102,15 +102,15 @@
     .brands-bar { background:#fff; border-bottom:1px solid var(--border); padding:28px 0 24px; overflow:hidden; }
     .brands-bar-hd { text-align:center; margin-bottom:20px; }
     .brands-bar-hd span { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.12em; color:var(--text-light); }
-    .brands-marquee-wrap { overflow:hidden; -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%); mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%); }
-    .brands-track { display:flex; align-items:center; gap:56px; width:max-content; padding:4px 28px; animation:brands-scroll 26s linear infinite; }
+    .brands-marquee-wrap { overflow:hidden; -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 10%,#000 90%,transparent 100%); mask-image:linear-gradient(90deg,transparent 0%,#000 10%,#000 90%,transparent 100%); -webkit-transform:translateZ(0); transform:translateZ(0); }
+    .brands-track { display:flex; align-items:center; gap:60px; width:max-content; padding:4px 32px; animation:brands-scroll 26s linear infinite; }
     .brands-track:hover { animation-play-state:paused; }
     @keyframes brands-scroll { from { transform:translateX(0); } to { transform:translateX(-50%); } }
-    .brand-item { display:flex; flex-direction:column; align-items:center; gap:6px; flex-shrink:0; filter:grayscale(100%); opacity:.45; transition:filter 300ms ease,opacity 300ms ease; }
+    .brand-item { display:flex; flex-direction:column; align-items:center; gap:6px; flex-shrink:0; filter:grayscale(100%); opacity:.4; transition:filter 300ms ease,opacity 300ms ease; }
     .brand-item:hover { filter:grayscale(0%); opacity:1; }
-    .brand-item img { height:34px; width:auto; max-width:120px; object-fit:contain; display:block; }
+    .brand-item svg { display:block; height:32px; width:auto; }
     .brand-country { font-size:.62rem; font-weight:700; color:var(--text-light); text-transform:uppercase; letter-spacing:.06em; }
-    @media (max-width:480px) { .brands-track { gap:40px; } .brand-item img { height:26px; max-width:90px; } }
+    @media (max-width:640px) { .brands-marquee-wrap { -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 5%,#000 95%,transparent 100%); mask-image:linear-gradient(90deg,transparent 0%,#000 5%,#000 95%,transparent 100%); } .brands-track { gap:44px; } .brand-item svg { height:24px; } }
 
     /* SECTION BASE */
     .section { padding:88px 0; }
@@ -513,44 +513,44 @@
     <div class="brands-track">
       <!-- Set 1 -->
       <div class="brand-item">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/REHAU_Logo_sRGB_01.svg/440px-REHAU_Logo_sRGB_01.svg.png" alt="Rehau" loading="lazy">
+        <svg viewBox="0 0 110 32" xmlns="http://www.w3.org/2000/svg" aria-label="REHAU"><text x="0" y="24" font-family="'Arial Black',Arial,sans-serif" font-weight="900" font-size="22" letter-spacing="1.5" fill="#1C1C1C">REHAU</text><rect x="0" y="27" width="92" height="3" rx="1.5" fill="#7CC142"/></svg>
         <span class="brand-country">Germania</span>
       </div>
       <div class="brand-item">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Salamander_Industrie-Produkte_Logo.svg/440px-Salamander_Industrie-Produkte_Logo.svg.png" alt="Salamander" loading="lazy">
+        <svg viewBox="0 0 152 32" xmlns="http://www.w3.org/2000/svg" aria-label="Salamander"><text x="0" y="24" font-family="Arial,sans-serif" font-weight="700" font-size="20" fill="#1B5E8A">Salamander</text></svg>
         <span class="brand-country">Germania</span>
       </div>
       <div class="brand-item">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Sch%C3%BCco_2011_logo.svg/440px-Sch%C3%BCco_2011_logo.svg.png" alt="Schüco" loading="lazy">
+        <svg viewBox="0 0 92 32" xmlns="http://www.w3.org/2000/svg" aria-label="Schüco"><text x="0" y="24" font-family="Arial,sans-serif" font-weight="700" font-size="21" fill="#1A1A1A">Sch&#252;co</text></svg>
         <span class="brand-country">Germania</span>
       </div>
       <div class="brand-item">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Logo-veka.svg/220px-Logo-veka.svg.png" alt="Veka" loading="lazy">
+        <svg viewBox="0 0 80 32" xmlns="http://www.w3.org/2000/svg" aria-label="VEKA"><text x="0" y="25" font-family="'Arial Black',Arial,sans-serif" font-weight="900" font-size="24" letter-spacing="2" fill="#003DA5">VEKA</text></svg>
         <span class="brand-country">Germania</span>
       </div>
       <div class="brand-item">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Aluplast_Logo.svg/440px-Aluplast_Logo.svg.png" alt="Aluplast" loading="lazy">
+        <svg viewBox="0 0 114 32" xmlns="http://www.w3.org/2000/svg" aria-label="aluplast"><text x="0" y="24" font-family="Arial,sans-serif" font-weight="700" font-size="20" fill="#C4000B">aluplast</text></svg>
         <span class="brand-country">Germania</span>
       </div>
       <!-- Set 2 — duplicato per loop infinito -->
       <div class="brand-item" aria-hidden="true">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/REHAU_Logo_sRGB_01.svg/440px-REHAU_Logo_sRGB_01.svg.png" alt="" loading="lazy">
+        <svg viewBox="0 0 110 32" xmlns="http://www.w3.org/2000/svg"><text x="0" y="24" font-family="'Arial Black',Arial,sans-serif" font-weight="900" font-size="22" letter-spacing="1.5" fill="#1C1C1C">REHAU</text><rect x="0" y="27" width="92" height="3" rx="1.5" fill="#7CC142"/></svg>
         <span class="brand-country">Germania</span>
       </div>
       <div class="brand-item" aria-hidden="true">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Salamander_Industrie-Produkte_Logo.svg/440px-Salamander_Industrie-Produkte_Logo.svg.png" alt="" loading="lazy">
+        <svg viewBox="0 0 152 32" xmlns="http://www.w3.org/2000/svg"><text x="0" y="24" font-family="Arial,sans-serif" font-weight="700" font-size="20" fill="#1B5E8A">Salamander</text></svg>
         <span class="brand-country">Germania</span>
       </div>
       <div class="brand-item" aria-hidden="true">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Sch%C3%BCco_2011_logo.svg/440px-Sch%C3%BCco_2011_logo.svg.png" alt="" loading="lazy">
+        <svg viewBox="0 0 92 32" xmlns="http://www.w3.org/2000/svg"><text x="0" y="24" font-family="Arial,sans-serif" font-weight="700" font-size="21" fill="#1A1A1A">Sch&#252;co</text></svg>
         <span class="brand-country">Germania</span>
       </div>
       <div class="brand-item" aria-hidden="true">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Logo-veka.svg/220px-Logo-veka.svg.png" alt="" loading="lazy">
+        <svg viewBox="0 0 80 32" xmlns="http://www.w3.org/2000/svg"><text x="0" y="25" font-family="'Arial Black',Arial,sans-serif" font-weight="900" font-size="24" letter-spacing="2" fill="#003DA5">VEKA</text></svg>
         <span class="brand-country">Germania</span>
       </div>
       <div class="brand-item" aria-hidden="true">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Aluplast_Logo.svg/440px-Aluplast_Logo.svg.png" alt="" loading="lazy">
+        <svg viewBox="0 0 114 32" xmlns="http://www.w3.org/2000/svg"><text x="0" y="24" font-family="Arial,sans-serif" font-weight="700" font-size="20" fill="#C4000B">aluplast</text></svg>
         <span class="brand-country">Germania</span>
       </div>
     </div>
