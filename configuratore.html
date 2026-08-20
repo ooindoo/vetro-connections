@@ -657,7 +657,7 @@
 <div class="config-header">
   <div class="inner">
     <div>
-      <h1 id="config-h1">Configuratore Finestre e Porte in PVC, Legno e Alluminio</h1>
+      <h1 id="config-h1">Configuratore Finestre, Porte e Parapetti</h1>
       <p id="config-sub">Personalizza il tuo prodotto passo per passo e ricevi un preventivo gratuito</p>
     </div>
     <div class="config-header-badge">Preventivo gratuito in 5 minuti</div>
@@ -701,11 +701,11 @@
             </div>
           </div>
         </div>
-        <div style="font-size:.8rem;font-weight:700;color:var(--text-mid);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;" id="type-grid-label">Tipo di apertura</div>
+        <div style="font-size:.8rem;font-weight:700;color:var(--text-mid);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;" id="type-grid-label">Tipo di prodotto</div>
         <div class="type-grid" id="type-grid">
           <!-- rendered by JS -->
         </div>
-        <div class="val-error" id="err-1">Seleziona il tipo di finestra per continuare.</div>
+        <div class="val-error" id="err-1">Seleziona il prodotto da configurare per continuare.</div>
       </div>
 
       <!-- ── STEP 2: DIMENSIONI ────────────────────────── -->
@@ -728,17 +728,17 @@
             <!-- rendered by JS -->
           </div>
         </div>
+        <div id="parapetto-thickness-block" style="display:none;margin-top:24px;">
+          <div style="font-size:.8rem;font-weight:700;color:var(--text-mid);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">Spessore del vetro</div>
+          <div class="glass-grid" id="thickness-chips" style="margin-bottom:0;">
+            <!-- rendered by JS -->
+          </div>
+        </div>
         <div class="val-error" id="err-2">Inserisci dimensioni valide.</div>
       </div>
 
-      <!-- ── STEP 3: DIVISIONI / FISSAGGIO ────────────────── -->
+      <!-- ── STEP 3: DIVISIONI ─────────────────────────── -->
       <div class="step-content" id="sc-3">
-        <div id="fixing-content" style="display:none;">
-          <p style="font-size:.875rem;color:var(--text-mid);margin-bottom:20px;">Scegli il sistema di ancoraggio più adatto al tuo progetto.</p>
-          <div class="opening-grid" id="fixing-grid"><!-- rendered by JS --></div>
-          <div class="val-error" id="err-3">Seleziona un tipo di fissaggio per continuare.</div>
-        </div>
-        <div id="divisioni-content">
         <p style="font-size:.875rem;color:var(--text-mid);margin-bottom:20px;">Aggiungi traverse orizzontali per dividere il vetro in più sezioni. Opzionale, puoi procedere senza.</p>
         <div style="display:flex;flex-direction:column;gap:14px;">
           <div class="opening-card" id="div-row" style="justify-content:space-between;">
@@ -795,7 +795,6 @@
               <span class="toggle-track"><span class="toggle-thumb"></span></span>
             </label>
           </div>
-        </div>
         </div>
       </div>
 
@@ -973,75 +972,59 @@
 
 <script>
 // ═══════════════════════════════════════════════════
-//  CATEGORY (from homepage "Configuratore rapido")
-// ═══════════════════════════════════════════════════
-
-const CATEGORY = new URLSearchParams(window.location.search).get('categoria');
-const IS_PARAPETTO = CATEGORY === 'parapetto';
-const CATEGORY_TYPE_IDS = {
-  finestra: ['1-ante','2-ante','ribalta-1','ribalta-2'],
-  porta:    ['porta-1','porta-2'],
-  fisso:    ['fisso'],
-};
-
-// ═══════════════════════════════════════════════════
 //  DATA
 // ═══════════════════════════════════════════════════
 
-const STEPS = [
-  { id:1, lbl:'Tipo',       title:'Tipo di Finestra',          desc:'Seleziona il tipo di apertura che desideri' },
-  { id:2, lbl:'Dimensioni', title:'Dimensioni',                 desc:'Inserisci larghezza e altezza in millimetri' },
-  { id:3, lbl:'Divisioni',  title:'Divisioni e Canalina Calda', desc:'Aggiungi traverse orizzontali e canalina calda (opzionale)' },
-  { id:4, lbl:'Apertura',   title:'Tipo di Apertura',          desc:'Come si apre la tua finestra?' },
-  { id:5, lbl:'Colore',     title:'Colore del Profilo',        desc:'Scegli il colore del tuo profilo' },
-  { id:6, lbl:'Vetro',      title:'Tipo di Vetro',             desc:'Seleziona la vetrocamera per le tue esigenze di isolamento' },
-  { id:7, lbl:'Accessori',  title:'Accessori Opzionali',       desc:'Personalizza ulteriormente il tuo prodotto' },
-  { id:8, lbl:'Riepilogo',  title:'Riepilogo Configurazione',  desc:'Verifica la tua configurazione e procedi con la richiesta' },
-  { id:9, lbl:'Contatti',   title:'Inserisci i Tuoi Dati',     desc:'Lascia i tuoi dati e riceverai il preventivo personalizzato entro 2 ore' },
+// Two possible step sequences: the full wizard, and the short
+// "solo misure e spessore" path used for il Parapetto.
+// contentId points to which sc-<N> panel actually holds the content,
+// so the Parapetto flow can reuse the existing Riepilogo/Contatti panels.
+const STEPS_FULL = [
+  { id:1, contentId:1, lbl:'Tipo',       title:'Tipo di Prodotto',           desc:'Seleziona il prodotto che desideri configurare' },
+  { id:2, contentId:2, lbl:'Dimensioni', title:'Dimensioni',                 desc:'Inserisci larghezza e altezza in millimetri' },
+  { id:3, contentId:3, lbl:'Divisioni',  title:'Divisioni e Canalina Calda', desc:'Aggiungi traverse orizzontali e canalina calda (opzionale)' },
+  { id:4, contentId:4, lbl:'Apertura',   title:'Tipo di Apertura',           desc:'Come si apre il tuo prodotto?' },
+  { id:5, contentId:5, lbl:'Colore',     title:'Colore del Profilo',         desc:'Scegli il colore del tuo profilo' },
+  { id:6, contentId:6, lbl:'Vetro',      title:'Tipo di Vetro',              desc:'Seleziona la vetrocamera per le tue esigenze di isolamento' },
+  { id:7, contentId:7, lbl:'Accessori',  title:'Accessori Opzionali',        desc:'Personalizza ulteriormente il tuo prodotto' },
+  { id:8, contentId:8, lbl:'Riepilogo',  title:'Riepilogo Configurazione',   desc:'Verifica la tua configurazione e procedi con la richiesta' },
+  { id:9, contentId:9, lbl:'Contatti',   title:'Inserisci i Tuoi Dati',      desc:'Lascia i tuoi dati e riceverai il preventivo personalizzato entro 2 ore' },
 ];
+const STEPS_PARAPETTO = [
+  { id:1, contentId:1, lbl:'Tipo',      title:'Tipo di Prodotto',         desc:'Seleziona il prodotto che desideri configurare' },
+  { id:2, contentId:2, lbl:'Misure',    title:'Misure e Spessore Vetro',  desc:'Inserisci lunghezza, altezza e spessore del vetro' },
+  { id:3, contentId:8, lbl:'Riepilogo', title:'Riepilogo Configurazione', desc:'Verifica la tua configurazione e procedi con la richiesta' },
+  { id:4, contentId:9, lbl:'Contatti',  title:'Inserisci i Tuoi Dati',    desc:'Lascia i tuoi dati e riceverai il preventivo personalizzato entro 2 ore' },
+];
+let STEPS = STEPS_FULL.map(s => ({...s}));
 
 const WINDOW_TYPES = [
-  { id:'1-ante',    name:'Finestra 1 anta',         desc:'Apertura laterale',        rate:125, minW:400, maxW:1600, minH:400, maxH:2000 },
-  { id:'2-ante',    name:'Finestra 2 ante',          desc:'Due ante apribili',        rate:112, minW:700, maxW:2500, minH:400, maxH:2000 },
-  { id:'ribalta-1', name:'Ribalta 1 anta',           desc:'Tilt & Turn, alta sicurezza', rate:148, minW:400, maxW:1600, minH:400, maxH:2000 },
-  { id:'ribalta-2', name:'Ribalta 2 ante',           desc:'Tilt & Turn doppia',       rate:138, minW:700, maxW:2500, minH:400, maxH:2000 },
-  { id:'porta-1',   name:'Porta finestra 1 anta',   desc:'Per terrazzo o balcone',   rate:155, minW:600, maxW:1200, minH:1800, maxH:2400 },
-  { id:'porta-2',   name:'Porta finestra 2 ante',   desc:'Ampia porta finestra',     rate:142, minW:1000,maxW:2500, minH:1800, maxH:2400 },
-  { id:'fisso',     name:'Vetro fisso',             desc:'Pannello non apribile, massima luce', rate:95, minW:300, maxW:3000, minH:300, maxH:2500 },
+  { id:'1-anta-rib',   name:'1 anta con ribalta',  desc:'Tilt & Turn, apertura e ribalta',        rate:135, minW:400, maxW:1600, minH:400,  maxH:2200 },
+  { id:'2-ante-rib',   name:'2 ante con ribalta',  desc:'Tilt & Turn doppia anta',                rate:125, minW:700, maxW:2500, minH:400,  maxH:2200 },
+  { id:'porta-finestra', name:'1 porta finestra',  desc:'Vetrata, per balconi e terrazzi',        rate:150, minW:600, maxW:2500, minH:1800, maxH:2400 },
+  { id:'porta-ingresso', name:'1 porta ingresso',  desc:'Porta blindata/di sicurezza d\'ingresso', rate:210, minW:700, maxW:1200, minH:2000, maxH:2400 },
+  { id:'vetro-fisso',  name:'1 vetro fisso',       desc:'Pannello non apribile, massima luce',    rate:95,  minW:300, maxW:3000, minH:300,  maxH:2500 },
+  { id:'parapetto',    name:'1 parapetto',         desc:'Solo misure e spessore del vetro',       rate:0,   minW:500, maxW:20000,minH:850,  maxH:1300 },
 ];
 
 const OPENING_OPTS = {
-  '1-ante':    [
-    { id:'int-dx', name:'Apertura interno destra',  desc:'Cerniere a sinistra, apre verso interno' },
-    { id:'int-sx', name:'Apertura interno sinistra', desc:'Cerniere a destra, apre verso interno' },
-    { id:'ext-dx', name:'Apertura esterno destra',  desc:'Cerniere a sinistra, apre verso esterno' },
-    { id:'ext-sx', name:'Apertura esterno sinistra', desc:'Cerniere a destra, apre verso esterno' },
+  '1-anta-rib': [
+    { id:'rib-dx', name:'Ribalta + apertura destra',    desc:'Tilt & Turn: ribalta e rotazione, maniglia a destra' },
+    { id:'rib-sx', name:'Ribalta + apertura sinistra',  desc:'Tilt & Turn: ribalta e rotazione, maniglia a sinistra' },
   ],
-  'ribalta-1': [
-    { id:'ribalta',    name:'Solo ribalta',            desc:'Oscilla in alto, apertura orizzontale' },
-    { id:'ribalta-dx', name:'Ribalta + apertura destra', desc:'Tilt & Turn: ribalta e rotazione destra' },
-    { id:'ribalta-sx', name:'Ribalta + apertura sinistra', desc:'Tilt & Turn: ribalta e rotazione sinistra' },
+  '2-ante-rib': [
+    { id:'rib-entrambe', name:'Ribalta su entrambe le ante', desc:'Tilt & Turn su entrambe le ante, apertura verso interno' },
   ],
-  '2-ante':    [
-    { id:'int-entrambe', name:'Entrambe verso interno', desc:'Le due ante si aprono verso interno' },
-    { id:'int-dx',       name:'Anta destra apribile',   desc:'Anta sinistra fissa, destra verso interno' },
-    { id:'int-sx',       name:'Anta sinistra apribile', desc:'Anta destra fissa, sinistra verso interno' },
-    { id:'ext-entrambe', name:'Entrambe verso esterno', desc:'Le due ante si aprono verso esterno' },
+  'porta-finestra': [
+    { id:'1a-dx', name:'1 anta, apertura interno destra',  desc:'Cerniere a sinistra, apre verso interno' },
+    { id:'1a-sx', name:'1 anta, apertura interno sinistra', desc:'Cerniere a destra, apre verso interno' },
+    { id:'2a',    name:'2 ante, entrambe verso interno',   desc:'Ampia apertura a doppia anta' },
   ],
-  'ribalta-2': [
-    { id:'ribalta',      name:'Solo ribalta (entrambe)', desc:'Entrambe oscil. verso interno in alto' },
-    { id:'int-entrambe', name:'Tilt & Turn entrambe',   desc:'Ribalta + rotazione su entrambe le ante' },
+  'porta-ingresso': [
+    { id:'int-dx', name:'Apertura interno destra',  desc:'Cerniere a sinistra, apre verso l\'interno' },
+    { id:'int-sx', name:'Apertura interno sinistra', desc:'Cerniere a destra, apre verso l\'interno' },
   ],
-  'porta-1':   [
-    { id:'int-dx', name:'Apertura interno destra',  desc:'Cerniere a sinistra, apre verso interno' },
-    { id:'int-sx', name:'Apertura interno sinistra', desc:'Cerniere a destra, apre verso interno' },
-  ],
-  'porta-2':   [
-    { id:'int-entrambe', name:'Entrambe verso interno', desc:'Le due ante si aprono verso interno' },
-    { id:'int-dx',       name:'Solo anta destra',       desc:'Anta sinistra fissa, destra apribile' },
-    { id:'int-sx',       name:'Solo anta sinistra',     desc:'Anta destra fissa, sinistra apribile' },
-  ],
-  'fisso':     [
+  'vetro-fisso': [
     { id:'fisso-fix', name:'Vetro fisso non apribile', desc:'Pannello vetrato in luce fissa, senza cerniere né maniglie' },
   ],
 };
@@ -1080,63 +1063,36 @@ const ACCESSORY_OPTS = [
   { id:'davanzale',   name:'Davanzale in alluminio',       desc:'Profilo esterno in alluminio con gocciolatoio, protegge il muro',    price:55 },
 ];
 
-const SIZE_PRESETS = {
-  '1-ante':    [{w:600,h:900},{w:800,h:1200},{w:1000,h:1200},{w:1200,h:1400}],
-  '2-ante':    [{w:1200,h:1200},{w:1400,h:1400},{w:1600,h:1400},{w:2000,h:1600}],
-  'ribalta-1': [{w:600,h:900},{w:800,h:1200},{w:1000,h:1200}],
-  'ribalta-2': [{w:1200,h:1200},{w:1400,h:1400},{w:1600,h:1400}],
-  'porta-1':   [{w:800,h:2100},{w:900,h:2100},{w:1000,h:2200}],
-  'porta-2':   [{w:1200,h:2100},{w:1400,h:2100},{w:1600,h:2200}],
-  'fisso':     [{w:600,h:900},{w:1000,h:1200},{w:1200,h:1500},{w:1500,h:2000}],
-};
-
-// ═══════════════════════════════════════════════════
-//  PARAPETTO DATA
-// ═══════════════════════════════════════════════════
-
-const PARAPETTO_TYPES = [
-  { id:'p-balcone', name:'Balcone / Terrazzo', desc:'Parapetto in vetro per balconi e terrazzi', minW:500,  maxW:20000, minH:850,  maxH:1300 },
-  { id:'p-scala',   name:'Scala interna',      desc:'Ringhiera in vetro per scale interne',       minW:500,  maxW:15000, minH:850,  maxH:1200 },
-  { id:'p-piscina', name:'Bordo piscina',      desc:'Parapetto anti-caduta per bordo piscina',    minW:500,  maxW:20000, minH:1000, maxH:1300 },
+// Pannello esterno per "1 porta ingresso" (sostituisce il vetro)
+const PANEL_OPTS = [
+  { id:'pannello-liscio',   name:'Pannello liscio',              spec:'', uw:1.2, badge:null,               uwColor:'#F97316' },
+  { id:'pannello-bugnato',  name:'Pannello bugnato (doghe)',      spec:'', uw:1.1, badge:'Più richiesto',     uwColor:'#EAB308' },
+  { id:'pannello-vetrato',  name:'Pannello con inserto vetrato',  spec:'', uw:1.3, badge:'Design',            uwColor:'#F97316' },
 ];
 
-const PARAPETTO_PRESETS = {
-  'p-balcone': [{w:3000,h:1000},{w:5000,h:1000},{w:8000,h:1100}],
-  'p-scala':   [{w:2000,h:1000},{w:3000,h:1000},{w:5000,h:1000}],
-  'p-piscina': [{w:5000,h:1200},{w:10000,h:1200},{w:15000,h:1300}],
-};
-
-const FIXING_OPTS = [
-  { id:'puntoni',   name:'A pavimento — supporti a puntone inox', desc:'Fissaggio puntuale con staffe in acciaio inox, senza montanti verticali' },
-  { id:'scomparsa', name:'A pavimento — profilo a scomparsa',     desc:'Canalina incassata a filo pavimento, massima pulizia estetica' },
-  { id:'muro',      name:'Laterale a muro',                       desc:'Fissaggio con staffe laterali su muratura o cordolo perimetrale' },
+// Accessori specifici per "1 porta ingresso"
+const ENTRY_ACCESSORY_OPTS = [
+  { id:'serratura-mp',    name:'Serratura multipunto',            desc:'3 punti di chiusura, certificazione anti-scasso classe 2', price:68 },
+  { id:'spioncino-dig',   name:'Spioncino digitale',              desc:'Videocitofono integrato con visione notturna',             price:85 },
+  { id:'maniglione-ap',   name:'Maniglione antipanico',           desc:'Apertura rapida dall\'interno, normativa antincendio',      price:60 },
+  { id:'coibentazione-rinf', name:'Coibentazione rinforzata',     desc:'Pannello isolante maggiorato, migliora la tenuta termica',  price:75 },
 ];
 
-const CORRIMANO_OPTS = [
-  { id:'nessuno', name:'Nessun corrimano',     desc:'Solo lastra di vetro, senza corrimano superiore' },
-  { id:'tondo',   name:'Corrimano tondo inox', desc:'Tubolare Ø42mm in acciaio inox satinato' },
-  { id:'quadro',  name:'Corrimano quadro inox',desc:'Profilo quadro 40×40mm in acciaio inox' },
-  { id:'legno',   name:'Corrimano in legno',   desc:'Corrimano in essenza di legno su supporti inox' },
-];
-
-const FINISH_OPTS = [
-  { id:'inox',   name:'Inox satinato', code:'AISI 316',      color:'#C9CCCF', stroke:'#9CA0A5', wood:false },
-  { id:'nero',   name:'Nero opaco',    code:'RAL 9005 opaco', color:'#1C1C1C', stroke:'#000000', wood:false },
-  { id:'bianco', name:'Bianco',        code:'RAL 9016',      color:'#F4F4F4', stroke:'#D0D0D0', wood:false },
-];
-
+// Spessore vetro per "1 parapetto" (unico dato richiesto oltre alle misure)
 const PARAPETTO_GLASS_OPTS = [
   { id:'temp-8',   name:'Temperato 8 mm',           tag:'8 mm',      badge:null,               desc:'Vetro monolitico temperato, conforme UNI EN 12150' },
   { id:'temp-10',  name:'Temperato 10 mm',          tag:'10 mm',     badge:'Consigliato',       desc:'Maggior spessore, extra rigidità per lastre più lunghe' },
   { id:'strat-33', name:'Stratificato 33.1 antic.', tag:'33.1 VSG',  badge:'Massima sicurezza', desc:'Vetro stratificato: in caso di rottura i frammenti restano ancorati alla pellicola' },
 ];
 
-const PARAPETTO_ACCESSORY_OPTS = [
-  { id:'led',         name:'Illuminazione LED integrata',     desc:'Striscia LED nel profilo di base, effetto scenografico serale' },
-  { id:'anticalc',     name:'Trattamento anti-calcare',        desc:'Protegge il vetro da aloni e calcare, facilita la pulizia' },
-  { id:'coprigiunto',  name:'Coprigiunto in alluminio',        desc:'Copre le giunzioni tra le lastre per una finitura continua' },
-  { id:'sopralluogo',  name:'Sopralluogo e montaggio inclusi', desc:'Rilievo misure in loco e posa da parte del nostro team' },
-];
+const SIZE_PRESETS = {
+  '1-anta-rib':    [{w:600,h:900},{w:800,h:1200},{w:1000,h:1200},{w:1200,h:1400}],
+  '2-ante-rib':    [{w:1200,h:1200},{w:1400,h:1400},{w:1600,h:1400},{w:2000,h:1600}],
+  'porta-finestra':[{w:900,h:2100},{w:1200,h:2100},{w:1600,h:2200}],
+  'porta-ingresso':[{w:800,h:2100},{w:900,h:2100},{w:1000,h:2200}],
+  'vetro-fisso':   [{w:600,h:900},{w:1000,h:1200},{w:1200,h:1500},{w:1500,h:2000}],
+  'parapetto':     [{w:3000,h:1000},{w:5000,h:1000},{w:8000,h:1100}],
+};
 
 // ═══════════════════════════════════════════════════
 //  STATE
@@ -1146,7 +1102,6 @@ const st = {
   step: 1,
   material: 'pvc',
   type: null,
-  fixing: null,
   width: 1000,
   height: 1200,
   divEnabled: false,
@@ -1205,10 +1160,10 @@ function buildPreviewSVG(compact) {
 
   const type = st.type;
   const op = st.opening;
-  const isDouble = type && (type.includes('2-ante') || type === 'ribalta-2' || type === 'porta-2');
-  const isDoor = type && type.includes('porta');
-  const isRibalta = type && type.includes('ribalta');
-  const isFisso = type === 'fisso';
+  const isDouble = type === '2-ante-rib' || (type === 'porta-finestra' && op === '2a');
+  const isDoor = type === 'porta-finestra' || type === 'porta-ingresso';
+  const isRibalta = type === '1-anta-rib' || type === '2-ante-rib';
+  const isFisso = type === 'vetro-fisso';
 
   const parts = [];
 
@@ -1276,17 +1231,8 @@ function buildPreviewSVG(compact) {
       parts.push(ribTri(lgx,lgy,gw,gh));
       parts.push(ribTri(rgx,rgy,gw,gh));
     }
-    if(op==='int-entrambe'||!op) {
-      parts.push(openTri('>',lgx,lgy,gw,gh));
-      parts.push(openTri('<',rgx,rgy,gw,gh));
-    } else if(op==='int-dx') {
-      parts.push(openTri('<',rgx,rgy,gw,gh));
-    } else if(op==='int-sx') {
-      parts.push(openTri('>',lgx,lgy,gw,gh));
-    } else if(op==='ext-entrambe') {
-      parts.push(openTri('<',lgx,lgy,gw,gh));
-      parts.push(openTri('>',rgx,rgy,gw,gh));
-    }
+    parts.push(openTri('>',lgx,lgy,gw,gh));
+    parts.push(openTri('<',rgx,rgy,gw,gh));
 
     // Handles
     const hY = sy + sh/2 - 10;
@@ -1314,24 +1260,14 @@ function buildPreviewSVG(compact) {
     const gx=sx2+S, gy=sy2+S;
     if(!isFisso) {
       if(isRibalta) parts.push(ribTri(gx,gy,gw,gh));
-      if(op==='int-dx'||(!op&&!isRibalta)) {
+      if(op==='rib-dx'||op==='1a-dx'||op==='int-dx'||(!op&&!isRibalta)) {
         parts.push(openTri('>',gx,gy,gw,gh));
-      } else if(op==='int-sx') {
-        parts.push(openTri('<',gx,gy,gw,gh));
-      } else if(op==='ext-dx') {
-        parts.push(openTri('<',gx,gy,gw,gh));
-      } else if(op==='ext-sx') {
-        parts.push(openTri('>',gx,gy,gw,gh));
-      } else if(op==='ribalta-dx') {
-        if(!isRibalta) parts.push(ribTri(gx,gy,gw,gh));
-        parts.push(openTri('>',gx,gy,gw,gh));
-      } else if(op==='ribalta-sx') {
-        if(!isRibalta) parts.push(ribTri(gx,gy,gw,gh));
+      } else if(op==='rib-sx'||op==='1a-sx'||op==='int-sx') {
         parts.push(openTri('<',gx,gy,gw,gh));
       }
 
       // Handle
-      const hOnLeft = op==='int-sx'||op==='ext-sx'||op==='ribalta-sx';
+      const hOnLeft = op==='rib-sx'||op==='1a-sx'||op==='int-sx';
       const hX = hOnLeft ? sx2+S+2 : sx2+sw-S-6;
       parts.push(`<rect x="${hX}" y="${sy2+sh/2-11}" width="4" height="22" rx="2" fill="#888"/>`);
     }
@@ -1342,10 +1278,11 @@ function buildPreviewSVG(compact) {
 
 // Type-card mini SVGs (static schematic)
 function typeCardSVG(typeId) {
-  const isDouble = typeId.includes('2') || typeId === 'ribalta-2' || typeId === 'porta-2';
-  const isDoor   = typeId.includes('porta');
-  const isRib    = typeId.includes('ribalta');
-  const isFisso  = typeId === 'fisso';
+  if(typeId === 'parapetto') return parapettoTypeIcon();
+  const isDouble = typeId === '2-ante-rib';
+  const isDoor   = typeId === 'porta-finestra' || typeId === 'porta-ingresso';
+  const isRib    = typeId === '1-anta-rib' || typeId === '2-ante-rib';
+  const isFisso  = typeId === 'vetro-fisso';
   const h = isDoor ? 90 : 68;
   const w = isDouble ? 90 : 68;
   const VW = isDouble ? 90 : 68;
@@ -1394,6 +1331,12 @@ function typeCardSVG(typeId) {
     }
   }
   return `<svg viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg">${parts.join('')}</svg>`;
+}
+
+function parapettoTypeIcon() {
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+    <rect x="3" y="9" width="18" height="3"/><path d="M5 12v9M19 12v9M3 21h18"/><path d="M3 9V3h18v6"/>
+  </svg>`;
 }
 
 // ═══════════════════════════════════════════════════
@@ -1464,21 +1407,7 @@ function renderStepHeader() {
 
 function renderTypeGrid() {
   const el = document.getElementById('type-grid');
-  if(IS_PARAPETTO) {
-    el.innerHTML = PARAPETTO_TYPES.map(t => `
-      <div class="type-card${st.type===t.id?' selected':''}"
-           onclick="selectType('${t.id}')"
-           role="button" tabindex="0"
-           aria-label="${t.name}" aria-pressed="${st.type===t.id}">
-        <div class="type-card-svg">${parapettoTypeIcon(t.id)}</div>
-        <div class="type-card-name">${t.name}</div>
-        <div class="type-card-desc">${t.desc}</div>
-      </div>`).join('');
-    return;
-  }
-  const ids = CATEGORY_TYPE_IDS[CATEGORY];
-  const types = ids ? WINDOW_TYPES.filter(t => ids.includes(t.id)) : WINDOW_TYPES;
-  el.innerHTML = types.map(t => `
+  el.innerHTML = WINDOW_TYPES.map(t => `
     <div class="type-card${st.type===t.id?' selected':''}"
          onclick="selectType('${t.id}')"
          role="button" tabindex="0"
@@ -1489,25 +1418,15 @@ function renderTypeGrid() {
     </div>`).join('');
 }
 
-function parapettoTypeIcon(id) {
-  const icons = {
-    'p-balcone': `<svg viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="9" width="18" height="3"/><path d="M5 12v9M19 12v9M3 21h18"/><path d="M3 9V3h18v6"/></svg>`,
-    'p-scala':   `<svg viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><path d="M3 21h4v-4h4v-4h4v-4h4v-4"/><path d="M3 17v4M7 13v4M11 9v4M15 5v4"/></svg>`,
-    'p-piscina': `<svg viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="3" width="16" height="10" rx="1"/><path d="M2 17c1.5 1 3 1 4.5 0s3-1 4.5 0 3 1 4.5 0 3-1 4.5 0"/><path d="M2 21c1.5 1 3 1 4.5 0s3-1 4.5 0 3 1 4.5 0 3-1 4.5 0"/></svg>`,
-  };
-  return icons[id] || '';
-}
-
 function renderSizeChips() {
-  const TYPES = IS_PARAPETTO ? PARAPETTO_TYPES : WINDOW_TYPES;
-  const PRESETS = IS_PARAPETTO ? PARAPETTO_PRESETS : SIZE_PRESETS;
-  const presets = PRESETS[st.type] || PRESETS[Object.keys(PRESETS)[0]];
+  const isParapetto = st.type === 'parapetto';
+  const t = WINDOW_TYPES.find(x=>x.id===st.type);
+  const presets = SIZE_PRESETS[st.type] || SIZE_PRESETS['1-anta-rib'];
   const el = document.getElementById('size-chips');
   el.innerHTML = presets.map(p =>
-    `<button class="size-chip" type="button" onclick="applyPreset(${p.w},${p.h})">${IS_PARAPETTO ? (p.w/1000)+' m × '+p.h+' mm' : p.w+'×'+p.h+' mm'}</button>`
+    `<button class="size-chip" type="button" onclick="applyPreset(${p.w},${p.h})">${isParapetto ? (p.w/1000)+' m × '+p.h+' mm' : p.w+'×'+p.h+' mm'}</button>`
   ).join('');
   // Update ranges
-  const t = TYPES.find(x=>x.id===st.type);
   if(t){
     const iw = document.getElementById('inp-width');
     const ih = document.getElementById('inp-height');
@@ -1516,10 +1435,31 @@ function renderSizeChips() {
     document.getElementById('hint-width').textContent = `Min ${t.minW} / Max ${t.maxW} mm`;
     document.getElementById('hint-height').textContent = `Min ${t.minH} / Max ${t.maxH} mm`;
   }
+  document.getElementById('label-width').textContent = isParapetto ? 'Lunghezza totale (mm)' : 'Larghezza (mm)';
+  document.getElementById('label-height').textContent = isParapetto ? 'Altezza vetro (mm)' : 'Altezza (mm)';
+  const thickBlock = document.getElementById('parapetto-thickness-block');
+  if(thickBlock) {
+    thickBlock.style.display = isParapetto ? 'block' : 'none';
+    if(isParapetto) renderThicknessChips();
+  }
+}
+
+function renderThicknessChips() {
+  const el = document.getElementById('thickness-chips');
+  if(!el) return;
+  el.innerHTML = PARAPETTO_GLASS_OPTS.map(g => `
+    <div class="glass-card${st.glass===g.id?' selected':''}"
+         onclick="selectGlass('${g.id}')"
+         role="button" tabindex="0" aria-pressed="${st.glass===g.id}">
+      <div class="glass-info">
+        <div class="glass-name">${g.name}${g.badge?`<span class="glass-badge">${g.badge}</span>`:''}</div>
+      </div>
+      <div class="glass-uw" style="background:#DBEAFE;color:#1E40AF;">${g.tag}</div>
+    </div>`).join('');
 }
 
 function renderOpeningGrid() {
-  const opts = IS_PARAPETTO ? CORRIMANO_OPTS : (OPENING_OPTS[st.type] || OPENING_OPTS['1-ante']);
+  const opts = OPENING_OPTS[st.type] || OPENING_OPTS['1-anta-rib'];
   const el = document.getElementById('opening-grid');
   el.innerHTML = opts.map(o => `
     <div class="opening-card${st.opening===o.id?' selected':''}"
@@ -1542,32 +1482,9 @@ function openingIcon(id) {
   return `<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">${box}<polygon points="5,14 23,5 23,23" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1.2" stroke-linejoin="round"/></svg>`;
 }
 
-function renderFixingGrid() {
-  const el = document.getElementById('fixing-grid');
-  if(!el) return;
-  el.innerHTML = FIXING_OPTS.map(f => `
-    <div class="opening-card${st.fixing===f.id?' selected':''}"
-         onclick="selectFixing('${f.id}')"
-         role="button" tabindex="0" aria-pressed="${st.fixing===f.id}">
-      <div class="opening-card-icon" aria-hidden="true">${openingIcon('fix')}</div>
-      <div>
-        <div class="opening-card-name">${f.name}</div>
-        <div class="opening-card-desc">${f.desc}</div>
-      </div>
-      <div class="radio-dot" aria-hidden="true"></div>
-    </div>`).join('');
-}
-
-function selectFixing(id) {
-  st.fixing = id;
-  renderFixingGrid();
-  updatePreviewPanel();
-}
-
 function renderColorGrid() {
   const el = document.getElementById('color-grid');
-  const opts = IS_PARAPETTO ? FINISH_OPTS : COLOR_OPTS;
-  el.innerHTML = opts.map(c => `
+  el.innerHTML = COLOR_OPTS.map(c => `
     <div class="color-card${st.color===c.id?' selected':''}"
          onclick="selectColor('${c.id}')"
          role="button" tabindex="0" aria-pressed="${st.color===c.id}">
@@ -1579,15 +1496,14 @@ function renderColorGrid() {
 
 function renderGlassGrid() {
   const el = document.getElementById('glass-grid');
-  if(IS_PARAPETTO) {
-    el.innerHTML = PARAPETTO_GLASS_OPTS.map(g => `<div class="glass-card${st.glass===g.id?' selected':''}"
+  const isEntryDoor = st.type === 'porta-ingresso';
+  if(isEntryDoor) {
+    el.innerHTML = PANEL_OPTS.map(g => `<div class="glass-card${st.glass===g.id?' selected':''}"
          onclick="selectGlass('${g.id}')"
          role="button" tabindex="0" aria-pressed="${st.glass===g.id}">
-      <div class="glass-icon" aria-hidden="true">${glassLayerIcon('doppio')}</div>
       <div class="glass-info">
         <div class="glass-name">${g.name}${g.badge?`<span class="glass-badge">${g.badge}</span>`:''}</div>
       </div>
-      <div class="glass-uw" style="background:#DBEAFE;color:#1E40AF;">${g.tag}</div>
     </div>`).join('');
   } else {
     el.innerHTML = GLASS_OPTS.map(g => {
@@ -1605,7 +1521,10 @@ function renderGlassGrid() {
   }
 
   const warmEdgeBlock = document.getElementById('warmEdgeBlock');
-  if(warmEdgeBlock) warmEdgeBlock.style.display = IS_PARAPETTO ? 'none' : 'flex';
+  if(warmEdgeBlock) warmEdgeBlock.style.display = isEntryDoor ? 'none' : 'flex';
+
+  const glassColorSection = document.querySelector('.glass-color-section');
+  if(glassColorSection) glassColorSection.style.display = isEntryDoor ? 'none' : 'block';
 
   const gc = document.getElementById('glass-colors');
   gc.innerHTML = GLASS_COLOR_OPTS.map(g => `
@@ -1642,8 +1561,11 @@ function renderAccList() {
     'anticalc':    `<path d="M12 2l7 4v6c0 5-3 8-7 10-4-2-7-5-7-10V6l7-4z"/>`,
     'coprigiunto': `<path d="M2 11h20v2H2v-2zm2-6h16v2H4V5zm0 12h16v2H4v-2z"/>`,
     'sopralluogo': `<path d="M12 2a5 5 0 015 5c0 4-5 9-5 9s-5-5-5-9a5 5 0 015-5zm0 3a2 2 0 100 4 2 2 0 000-4z"/>`,
+    'spioncino-dig':`<path d="M12 4C6 4 2 12 2 12s4 8 10 8 10-8 10-8-4-8-10-8zm0 13a5 5 0 110-10 5 5 0 010 10zm0-2a3 3 0 100-6 3 3 0 000 6z"/>`,
+    'maniglione-ap':`<path d="M4 4h4v16H4V4zm12 4h4v3h-4V8zm0 5h4v3h-4v-3z"/>`,
+    'coibentazione-rinf': `<path d="M12 2l9 4v6c0 5-4 9-9 10-5-1-9-5-9-10V6l9-4zm0 3.2L5 8v4c0 3.8 2.9 6.9 7 7.8 4.1-.9 7-4 7-7.8V8l-7-2.8z"/>`,
   };
-  const opts = IS_PARAPETTO ? PARAPETTO_ACCESSORY_OPTS : ACCESSORY_OPTS;
+  const opts = st.type === 'porta-ingresso' ? ENTRY_ACCESSORY_OPTS : ACCESSORY_OPTS;
   el.innerHTML = opts.map(a => `
     <div class="acc-item${st.accessories.has(a.id)?' selected':''}"
          onclick="toggleAcc('${a.id}')"
@@ -1659,76 +1581,25 @@ function renderAccList() {
     </div>`).join('');
 }
 
-function renderSummary() {
-  if(IS_PARAPETTO) { renderSummaryParapetto(); return; }
-  document.getElementById('summary-svg-wrap').innerHTML = buildPreviewSVG(false);
-
-  const tInfo  = WINDOW_TYPES.find(x=>x.id===st.type);
-  const gInfo  = GLASS_OPTS.find(x=>x.id===st.glass);
-  const cInfo  = COLOR_OPTS.find(x=>x.id===st.color);
-  const opInfo = (OPENING_OPTS[st.type]||[]).find(x=>x.id===st.opening);
-  const gcInfo = GLASS_COLOR_OPTS.find(x=>x.id===st.glassColor);
-  const accNames = [...st.accessories].map(id=>ACCESSORY_OPTS.find(x=>x.id===id)?.name).filter(Boolean);
-  const divText = st.divEnabled
-    ? `Sì, traversa a ${st.divSymmetric?'centro':st.divPos1+' mm'}${st.divPos2?' + '+st.divPos2+' mm':''}`
-    : 'No';
-
-  const matLabel = { pvc:'PVC', legno:'Legno', alluminio:'Alluminio' }[st.material] || 'PVC';
-  const specs = [
-    { k:'Materiale',    v: matLabel },
-    { k:'Tipo',         v: tInfo?.name||'N/D' },
-    { k:'Dimensioni',   v: `${st.width} × ${st.height} mm` },
-    { k:'Divisioni',    v: divText },
-    { k:'Canalina calda',v: st.warmEdge ? 'Sì (warm edge spacer)' : 'No' },
-    { k:'Apertura',     v: opInfo?.name||'N/D' },
-    { k:'Profilo colore',v: `${cInfo?.name||'N/D'} (${cInfo?.code||''})` },
-    { k:'Vetro',        v: gInfo?.name||'N/D' },
-    { k:'Colore vetro', v: gcInfo?.name||'N/D' },
-    { k:'Accessori',    v: accNames.length ? accNames.join(', ') : 'Nessuno' },
-  ];
-  document.getElementById('summary-specs').innerHTML = specs.map(s=>
-    `<div class="summary-spec-row"><span class="spec-key">${s.k}</span><span class="spec-val">${s.v}</span></div>`
-  ).join('');
-
-  const uw = getUw();
-  document.getElementById('uw-pointer').style.left = uwToPercent(uw)+'%';
-}
-
-// Shared lookups for parapetto config
-function getParapettoParts() {
-  return {
-    t:   PARAPETTO_TYPES.find(x=>x.id===st.type),
-    fx:  FIXING_OPTS.find(x=>x.id===st.fixing),
-    cor: CORRIMANO_OPTS.find(x=>x.id===st.opening),
-    fin: FINISH_OPTS.find(x=>x.id===st.color),
-    g:   PARAPETTO_GLASS_OPTS.find(x=>x.id===st.glass),
-    gc:  GLASS_COLOR_OPTS.find(x=>x.id===st.glassColor),
-    accNames: [...st.accessories].map(id=>PARAPETTO_ACCESSORY_OPTS.find(x=>x.id===id)?.name).filter(Boolean),
-  };
-}
-
 function getConfigSpecs() {
-  if(IS_PARAPETTO) {
-    const p = getParapettoParts();
+  if(st.type === 'parapetto') {
+    const g = PARAPETTO_GLASS_OPTS.find(x=>x.id===st.glass);
     return [
-      ['Prodotto',            'Parapetto in vetro'],
-      ['Installazione',       p.t?.name||'N/D'],
-      ['Lunghezza totale',    `${(st.width/1000).toFixed(1)} m`],
-      ['Altezza vetro',       `${st.height} mm`],
-      ['Fissaggio',           p.fx?.name||'N/D'],
-      ['Corrimano',           p.cor?.name||'N/D'],
-      ['Finitura ferramenta', `${p.fin?.name||'N/D'} (${p.fin?.code||''})`],
-      ['Tipo vetro',          p.g?.name||'N/D'],
-      ['Colore vetro',        p.gc?.name||'N/D'],
-      ['Accessori',           p.accNames.length ? p.accNames.join(', ') : 'Nessuno'],
+      ['Prodotto',         'Parapetto in vetro'],
+      ['Lunghezza totale', `${(st.width/1000).toFixed(1)} m`],
+      ['Altezza vetro',    `${st.height} mm`],
+      ['Spessore vetro',   g?.name || 'N/D'],
     ];
   }
+  const isEntryDoor = st.type === 'porta-ingresso';
   const tInfo  = WINDOW_TYPES.find(x=>x.id===st.type);
-  const gInfo  = GLASS_OPTS.find(x=>x.id===st.glass);
+  const panelOrGlassOpts = isEntryDoor ? PANEL_OPTS : GLASS_OPTS;
+  const gInfo  = panelOrGlassOpts.find(x=>x.id===st.glass);
   const cInfo  = COLOR_OPTS.find(x=>x.id===st.color);
   const opInfo = (OPENING_OPTS[st.type]||[]).find(x=>x.id===st.opening);
   const matLabel = { pvc:'PVC', legno:'Legno', alluminio:'Alluminio' }[st.material] || 'PVC';
-  const accNames = [...st.accessories].map(id=>ACCESSORY_OPTS.find(x=>x.id===id)?.name).filter(Boolean);
+  const accOpts = isEntryDoor ? ENTRY_ACCESSORY_OPTS : ACCESSORY_OPTS;
+  const accNames = [...st.accessories].map(id=>accOpts.find(x=>x.id===id)?.name).filter(Boolean);
   const divText = st.divEnabled
     ? `Sì, traversa a ${st.divSymmetric?'centro':st.divPos1+' mm'}${st.divPos2?' + '+st.divPos2+' mm':''}`
     : 'No';
@@ -1739,66 +1610,80 @@ function getConfigSpecs() {
     ['Divisioni',       divText],
     ['Canalina calda',  st.warmEdge ? 'Sì (warm edge spacer)' : 'No'],
     ['Apertura',        opInfo?.name||'N/D'],
-    ['Profilo colore',  `${cInfo?.name||'N/D'} (${cInfo?.code||''})`],
-    ['Vetro',           gInfo?.name||'N/D'],
-    ['Colore vetro',    (GLASS_COLOR_OPTS.find(x=>x.id===st.glassColor))?.name||'N/D'],
+    ['Colore profilo',  `${cInfo?.name||'N/D'} (${cInfo?.code||''})`],
+    [isEntryDoor ? 'Pannello' : 'Vetro', gInfo?.name||'N/D'],
+    ['Colore vetro',    isEntryDoor ? 'N/A' : ((GLASS_COLOR_OPTS.find(x=>x.id===st.glassColor))?.name||'N/D')],
     ['Accessori',       accNames.length ? accNames.join(', ') : 'Nessuno'],
   ];
 }
 
-function renderSummaryParapetto() {
-  document.getElementById('summary-svg-wrap').innerHTML =
-    `<img src="images/parapetto.jpg" alt="Parapetto in vetro" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`;
+function renderSummary() {
+  const isParapetto = st.type === 'parapetto';
+  document.getElementById('summary-svg-wrap').innerHTML = isParapetto
+    ? `<img src="images/parapetto.jpg" alt="Parapetto in vetro" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`
+    : buildPreviewSVG(false);
+
   const specs = getConfigSpecs();
   document.getElementById('summary-specs').innerHTML = specs.map(([k,v])=>
     `<div class="summary-spec-row"><span class="spec-key">${k}</span><span class="spec-val">${v}</span></div>`
   ).join('');
+
   const uwWrap = document.getElementById('uw-bar-wrap-el');
-  if(uwWrap) uwWrap.style.display = 'none';
+  if(isParapetto || st.type === 'porta-ingresso') {
+    if(uwWrap) uwWrap.style.display = 'none';
+  } else {
+    if(uwWrap) uwWrap.style.display = '';
+    const uw = getUw();
+    document.getElementById('uw-pointer').style.left = uwToPercent(uw)+'%';
+  }
 }
 
 function updatePreviewPanel() {
-  if(IS_PARAPETTO) { updatePreviewPanelParapetto(); return; }
+  const isParapetto = st.type === 'parapetto';
+  const isEntryDoor = st.type === 'porta-ingresso';
+  const previewInfo = document.querySelector('.preview-info');
+
+  if(isParapetto) {
+    document.getElementById('preview-svg-area').innerHTML =
+      `<img src="images/parapetto.jpg" alt="Parapetto in vetro" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`;
+    document.getElementById('prev-dim').textContent = `${(st.width/1000).toFixed(1)} m × ${st.height} mm`;
+    if(previewInfo) previewInfo.style.display = 'none';
+    const g = PARAPETTO_GLASS_OPTS.find(x=>x.id===st.glass);
+    const miniSpecs = [
+      { k:'Prodotto', v:'Parapetto in vetro' },
+      { k:'Spessore', v: g?.name||'N/D' },
+    ];
+    document.getElementById('preview-specs-mini').innerHTML = miniSpecs.map(s=>
+      `<div class="spec-mini-row"><span class="spec-mini-key">${s.k}</span><span class="spec-mini-val">${s.v}</span></div>`
+    ).join('');
+    return;
+  }
+
   document.getElementById('preview-svg-area').innerHTML = buildPreviewSVG(true);
   document.getElementById('prev-dim').textContent = `${st.width} × ${st.height} mm`;
 
-  const uw = getUw();
-  const pct = uwToPercent(uw);
-  document.getElementById('uw-dot-mini').style.left = pct+'%';
-  const uwl = uwLabel(uw);
-  const pill = document.getElementById('uw-pill');
-  pill.textContent = `${uw} W/m²K`;
-  pill.style.background = uwl.bg;
-  pill.style.color = uwl.color;
+  if(isEntryDoor) {
+    if(previewInfo) previewInfo.style.display = 'none';
+  } else {
+    if(previewInfo) previewInfo.style.display = '';
+    const uw = getUw();
+    const pct = uwToPercent(uw);
+    document.getElementById('uw-dot-mini').style.left = pct+'%';
+    const uwl = uwLabel(uw);
+    const pill = document.getElementById('uw-pill');
+    pill.textContent = `${uw} W/m²K`;
+    pill.style.background = uwl.bg;
+    pill.style.color = uwl.color;
+  }
 
   // Mini specs
   const tInfo = WINDOW_TYPES.find(x=>x.id===st.type);
   const cInfo = COLOR_OPTS.find(x=>x.id===st.color);
-  const gInfo = GLASS_OPTS.find(x=>x.id===st.glass);
+  const gInfo = (isEntryDoor ? PANEL_OPTS : GLASS_OPTS).find(x=>x.id===st.glass);
   const miniSpecs = [
     { k:'Tipo',    v: tInfo?.name||'N/D' },
     { k:'Profilo', v: cInfo?.name||'N/D' },
-    { k:'Vetro',   v: gInfo?.name||'N/D' },
-    { k:'Accessori', v: st.accessories.size > 0 ? st.accessories.size+' selezionati' : 'Nessuno' },
-  ];
-  document.getElementById('preview-specs-mini').innerHTML = miniSpecs.map(s=>
-    `<div class="spec-mini-row"><span class="spec-mini-key">${s.k}</span><span class="spec-mini-val">${s.v}</span></div>`
-  ).join('');
-}
-
-function updatePreviewPanelParapetto() {
-  document.getElementById('preview-svg-area').innerHTML =
-    `<img src="images/parapetto.jpg" alt="Parapetto in vetro" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`;
-  document.getElementById('prev-dim').textContent = `${(st.width/1000).toFixed(1)} m × ${st.height} mm`;
-
-  const previewInfo = document.querySelector('.preview-info');
-  if(previewInfo) previewInfo.style.display = 'none';
-
-  const p = getParapettoParts();
-  const miniSpecs = [
-    { k:'Installazione', v: p.t?.name||'N/D' },
-    { k:'Vetro',   v: p.g?.name||'N/D' },
-    { k:'Corrimano', v: p.cor?.name||'N/D' },
+    { k: isEntryDoor?'Pannello':'Vetro', v: gInfo?.name||'N/D' },
     { k:'Accessori', v: st.accessories.size > 0 ? st.accessories.size+' selezionati' : 'Nessuno' },
   ];
   document.getElementById('preview-specs-mini').innerHTML = miniSpecs.map(s=>
@@ -1818,11 +1703,33 @@ function selectMaterial(id) {
 
 function selectType(id) {
   st.type = id;
-  st.opening = id === 'fisso' ? 'fisso-fix' : null;
-  st.fixing = null;
+  st.opening = id === 'vetro-fisso' ? 'fisso-fix'
+             : id === '2-ante-rib'  ? 'rib-entrambe'
+             : null;
+  st.color = null;
+  st.glass = null;
   document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
   event.currentTarget.classList.add('selected');
+  applyTypeUI();
   updatePreviewPanel();
+}
+
+// Adapts the wizard shape/labels to whichever of the 6 products is selected.
+// Always called while st.step === 1, so it's safe to swap STEPS wholesale.
+function applyTypeUI() {
+  STEPS = (st.type === 'parapetto' ? STEPS_PARAPETTO : STEPS_FULL).map(s => ({...s}));
+  if(st.type === 'porta-ingresso') {
+    STEPS[5].lbl   = 'Pannello';
+    STEPS[5].title = 'Pannello Esterno';
+    STEPS[5].desc  = 'Scegli il rivestimento esterno della porta';
+  }
+
+  const matBlock = document.getElementById('mat-block');
+  if(matBlock) matBlock.style.display = st.type === 'parapetto' ? 'none' : '';
+
+  renderProgressBar();
+  renderStepHeader();
+  updateNavButtons();
 }
 
 function applyPreset(w, h) {
@@ -1876,41 +1783,44 @@ function toggleAcc(id) {
 // ═══════════════════════════════════════════════════
 
 function validate(step) {
-  if(step===1) return !!st.type;
-  if(step===2) {
-    const TYPES = IS_PARAPETTO ? PARAPETTO_TYPES : WINDOW_TYPES;
-    const t = TYPES.find(x=>x.id===st.type);
-    return st.width>=(t?.minW||400) && st.width<=(t?.maxW||2500) &&
-           st.height>=(t?.minH||400) && st.height<=(t?.maxH||2500);
+  const cid = STEPS[step-1].contentId;
+  if(cid===1) return !!st.type;
+  if(cid===2) {
+    const t = WINDOW_TYPES.find(x=>x.id===st.type);
+    const dimsOk = st.width>=(t?.minW||400) && st.width<=(t?.maxW||2500) &&
+                   st.height>=(t?.minH||400) && st.height<=(t?.maxH||2500);
+    return st.type === 'parapetto' ? (dimsOk && !!st.glass) : dimsOk;
   }
-  if(step===3) return IS_PARAPETTO ? !!st.fixing : true; // divisioni optional / fissaggio required
-  if(step===4) return !!st.opening;
-  if(step===5) return !!st.color;
-  if(step===6) return !!st.glass;
-  if(step===7) return true; // accessories optional
-  if(step===8) return true; // riepilogo, no required field
-  if(step===9) return !!(st.contact.nome.trim() && (st.contact.email.trim() || st.contact.tel.trim()));
+  if(cid===3) return true; // divisioni optional
+  if(cid===4) return !!st.opening;
+  if(cid===5) return !!st.color;
+  if(cid===6) return !!st.glass;
+  if(cid===7) return true; // accessories optional
+  if(cid===8) return true; // riepilogo, no required field
+  if(cid===9) return !!(st.contact.nome.trim() && (st.contact.email.trim() || st.contact.tel.trim()));
   return true;
 }
 
 function showError(step, show) {
-  const el = document.getElementById(`err-${step}`);
+  const cid = STEPS[step-1].contentId;
+  const el = document.getElementById(`err-${cid}`);
   if(el) el.classList.toggle('show', show);
 }
 
 function activateStep(n) {
   hideAllErrors();
-  document.getElementById(`sc-${st.step}`).classList.remove('active');
+  const curCid = STEPS[st.step-1].contentId;
+  document.getElementById(`sc-${curCid}`).classList.remove('active');
   st.step = n;
-  document.getElementById(`sc-${n}`).classList.add('active');
-  if(n===2) renderSizeChips();
-  if(n===3 && IS_PARAPETTO) renderFixingGrid();
-  if(n===4) renderOpeningGrid();
-  if(n===5) renderColorGrid();
-  if(n===6) renderGlassGrid();
-  if(n===7) renderAccList();
-  if(n===8) renderSummary();
-  if(n===9) {
+  const cid = STEPS[n-1].contentId;
+  document.getElementById(`sc-${cid}`).classList.add('active');
+  if(cid===2) renderSizeChips();
+  if(cid===4) renderOpeningGrid();
+  if(cid===5) renderColorGrid();
+  if(cid===6) renderGlassGrid();
+  if(cid===7) renderAccList();
+  if(cid===8) renderSummary();
+  if(cid===9) {
     if(submitted) {
       document.getElementById('contact-form-wrap').style.display = 'none';
       document.getElementById('success-screen-wrap').style.display = 'block';
@@ -1961,7 +1871,8 @@ function updateNavButtons() {
     next.style.display = 'none';
   } else {
     next.style.display = 'flex';
-    const lbl = st.step===7 ? 'Vai al Riepilogo' : st.step===8 ? 'Inserisci Contatti' : 'Avanti';
+    const nextCid = STEPS[st.step] ? STEPS[st.step].contentId : null;
+    const lbl = nextCid===8 ? 'Vai al Riepilogo' : nextCid===9 ? 'Inserisci Contatti' : 'Avanti';
     next.innerHTML = lbl
       + `<svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:#fff;fill:none;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>`;
   }
@@ -1984,7 +1895,7 @@ document.getElementById('btn-next').addEventListener('click', () => {
 });
 
 // Summary action: go to contact form (step 9)
-document.getElementById('btn-quote').addEventListener('click', () => goToStep(9));
+document.getElementById('btn-quote').addEventListener('click', () => goToStep(STEPS.length));
 
 function generateQuotePDF() {
   const tInfo  = WINDOW_TYPES.find(x=>x.id===st.type);
@@ -2173,7 +2084,7 @@ function buildPDFBase64() {
   doc.setFont('helvetica','bold');
   doc.setFontSize(7);
   doc.setTextColor(100,116,139);
-  doc.text(IS_PARAPETTO ? 'CONFIGURAZIONE PARAPETTO' : 'CONFIGURAZIONE SERRAMENTO', M, y);
+  doc.text(st.type === 'parapetto' ? 'CONFIGURAZIONE PARAPETTO' : 'CONFIGURAZIONE SERRAMENTO', M, y);
   y += 3;
   doc.setDrawColor(191,219,254);
   doc.setLineWidth(0.4);
@@ -2240,20 +2151,20 @@ function submitContact() {
   const specs = getConfigSpecs();
   const specVal = k => specs.find(([sk]) => sk === k)?.[1] || 'N/D';
 
-  const params = IS_PARAPETTO ? {
+  const params = st.type === 'parapetto' ? {
     client_nome:      nome,
     client_email:     email || 'Non inserita',
     client_tel:       tel   || 'Non inserito',
     client_note:      note  || 'Nessuna',
-    config_materiale: 'Vetro / ' + specVal('Finitura ferramenta'),
-    config_tipo:      'Parapetto - ' + specVal('Installazione'),
+    config_materiale: 'Vetro',
+    config_tipo:      'Parapetto in vetro',
     config_dimensioni:`${specVal('Lunghezza totale')} lunghezza × ${specVal('Altezza vetro')} altezza`,
-    config_apertura:  specVal('Corrimano'),
-    config_divisioni: specVal('Fissaggio'),
+    config_apertura:  'N/A',
+    config_divisioni: 'N/A',
     config_canalina:  'N/A',
-    config_colore:    specVal('Finitura ferramenta'),
-    config_vetro:     specVal('Tipo vetro') + ' - ' + specVal('Colore vetro'),
-    config_accessori: specVal('Accessori'),
+    config_colore:    'N/A',
+    config_vetro:     specVal('Spessore vetro'),
+    config_accessori: 'Nessuno',
     pdf_attachment:   pdfBase64,
   } : {
     client_nome:      nome,
@@ -2266,8 +2177,8 @@ function submitContact() {
     config_apertura:  specVal('Apertura'),
     config_divisioni: specVal('Divisioni'),
     config_canalina:  specVal('Canalina calda'),
-    config_colore:    specVal('Profilo colore'),
-    config_vetro:     specVal('Vetro') + ' - ' + specVal('Colore vetro'),
+    config_colore:    specVal('Colore profilo'),
+    config_vetro:     (specVal('Vetro')!=='N/D' ? specVal('Vetro') : specVal('Pannello')) + ' - ' + specVal('Colore vetro'),
     config_accessori: specVal('Accessori'),
     pdf_attachment:   pdfBase64,
   };
@@ -2353,55 +2264,22 @@ document.addEventListener('keydown', e => {
 (function init() {
   emailjs.init('hl1lCU9C3xb0P9A29');
 
-  // Check URL params for pre-selection
+  // Check URL params for pre-selection (from homepage "Configuratore rapido")
   const params = new URLSearchParams(window.location.search);
   const preset = params.get('tipo');
-  if(preset && WINDOW_TYPES.find(x=>x.id===preset)) st.type = preset;
-
-  if(IS_PARAPETTO) {
-    // Adapt the wizard shell to the Parapetto flow
-    STEPS[0].title = 'Tipo di Installazione';
-    STEPS[0].desc  = 'Dove verrà installato il tuo parapetto in vetro?';
-    STEPS[1].desc  = 'Inserisci la lunghezza totale e l\'altezza del vetro';
-    STEPS[2].lbl   = 'Fissaggio';
-    STEPS[2].title = 'Tipo di Fissaggio';
-    STEPS[2].desc  = 'Scegli il sistema di ancoraggio del parapetto';
-    STEPS[3].lbl   = 'Corrimano';
-    STEPS[3].title = 'Corrimano';
-    STEPS[3].desc  = 'Vuoi aggiungere un corrimano superiore?';
-    STEPS[4].lbl   = 'Finitura';
-    STEPS[4].title = 'Finitura Ferramenta';
-    STEPS[4].desc  = 'Scegli la finitura di staffe, supporti e profili';
-    STEPS[5].desc  = 'Seleziona il vetro di sicurezza più adatto al tuo progetto';
-    STEPS[6].desc  = 'Personalizza ulteriormente il tuo parapetto';
-    STEPS[7].desc  = 'Verifica la configurazione e richiedi il preventivo';
-
-    document.getElementById('config-h1').textContent = 'Configuratore Parapetti in Vetro';
-    document.getElementById('config-sub').textContent = 'Personalizza il tuo parapetto passo per passo e ricevi un preventivo gratuito';
-
-    document.getElementById('mat-block').style.display = 'none';
-    document.getElementById('type-grid-label').textContent = 'Tipo di installazione';
-    document.getElementById('err-1').textContent = 'Seleziona il tipo di installazione per continuare.';
-
-    document.getElementById('label-width').textContent = 'Lunghezza totale (mm)';
-    document.getElementById('label-height').textContent = 'Altezza vetro (mm)';
-    document.getElementById('err-2').textContent = 'Inserisci dimensioni valide.';
-
-    document.getElementById('fixing-content').style.display = 'block';
-    document.getElementById('divisioni-content').style.display = 'none';
-
-    st.width = 3000;
-    st.height = 1000;
-    st.color = null;
-    st.glass = null;
-    document.getElementById('inp-width').value = 3000;
-    document.getElementById('inp-height').value = 1000;
+  if(preset && WINDOW_TYPES.find(x=>x.id===preset)) {
+    st.type = preset;
+    if(preset === 'vetro-fisso') st.opening = 'fisso-fix';
+    if(preset === '2-ante-rib') st.opening = 'rib-entrambe';
+    if(preset === 'parapetto') { st.width = 3000; st.height = 1000; }
+  }
+  applyTypeUI();
+  if(st.type === 'parapetto') {
+    document.getElementById('inp-width').value = st.width;
+    document.getElementById('inp-height').value = st.height;
   }
 
-  renderProgressBar();
-  renderStepHeader();
   renderTypeGrid();
-  updateNavButtons();
   updatePreviewPanel();
 
   const hamburger = document.getElementById('hamburger');
