@@ -999,13 +999,19 @@ const STEPS_PARAPETTO = [
 let STEPS = STEPS_FULL.map(s => ({...s}));
 
 const WINDOW_TYPES = [
+  { id:'finestra',     name:'Finestra',           desc:'Anta con apertura standard, per una o due ante', rate:120, minW:400, maxW:2500, minH:400,  maxH:2000 },
   { id:'porta-ingresso', name:'Porta di ingresso', desc:'Porta blindata/di sicurezza d\'ingresso', rate:210, minW:700, maxW:1200, minH:2000, maxH:2400 },
-  { id:'parapetto',    name:'Parapetto',           desc:'Solo misure e spessore del vetro',       rate:0,   minW:500, maxW:20000,minH:850,  maxH:1300 },
-  { id:'porta-finestra', name:'1 porta finestra',  desc:'Vetrata, per balconi e terrazzi',        rate:150, minW:600, maxW:2500, minH:1800, maxH:2400 },
-  { id:'vetro-fisso',  name:'1 vetro fisso',       desc:'Pannello non apribile, massima luce',    rate:95,  minW:300, maxW:3000, minH:300,  maxH:2500 },
+  { id:'parapetto',    name:'Parapetto',           desc:'Ringhiera in vetro per balconi, scale e piscine', rate:0,   minW:500, maxW:20000,minH:850,  maxH:1300 },
+  { id:'porta-finestra', name:'Porta finestra',    desc:'Vetrata, per balconi e terrazzi',        rate:150, minW:600, maxW:2500, minH:1800, maxH:2400 },
+  { id:'vetro-fisso',  name:'Vetro fisso',         desc:'Pannello non apribile, massima luce',    rate:95,  minW:300, maxW:3000, minH:300,  maxH:2500 },
 ];
 
 const OPENING_OPTS = {
+  'finestra': [
+    { id:'1a-dx', name:'1 anta, apertura interno destra',  desc:'Cerniere a sinistra, apre verso interno' },
+    { id:'1a-sx', name:'1 anta, apertura interno sinistra', desc:'Cerniere a destra, apre verso interno' },
+    { id:'2a',    name:'2 ante, entrambe verso interno',   desc:'Ampia apertura a doppia anta' },
+  ],
   'porta-finestra': [
     { id:'1a-dx', name:'1 anta, apertura interno destra',  desc:'Cerniere a sinistra, apre verso interno' },
     { id:'1a-sx', name:'1 anta, apertura interno sinistra', desc:'Cerniere a destra, apre verso interno' },
@@ -1077,6 +1083,7 @@ const PARAPETTO_GLASS_OPTS = [
 ];
 
 const SIZE_PRESETS = {
+  'finestra':      [{w:600,h:900},{w:800,h:1200},{w:1000,h:1200},{w:1200,h:1400}],
   'porta-finestra':[{w:900,h:2100},{w:1200,h:2100},{w:1600,h:2200}],
   'porta-ingresso':[{w:800,h:2100},{w:900,h:2100},{w:1000,h:2200}],
   'vetro-fisso':   [{w:600,h:900},{w:1000,h:1200},{w:1200,h:1500},{w:1500,h:2000}],
@@ -1149,7 +1156,7 @@ function buildPreviewSVG(compact) {
 
   const type = st.type;
   const op = st.opening;
-  const isDouble = type === 'porta-finestra' && op === '2a';
+  const isDouble = (type === 'porta-finestra' || type === 'finestra') && op === '2a';
   const isDoor = type === 'porta-finestra' || type === 'porta-ingresso';
   const isRibalta = false;
   const isFisso = type === 'vetro-fisso';
@@ -1310,8 +1317,10 @@ function typeCardSVG(typeId) {
     if(isFisso){
       // no opening indicator for fixed pane
     } else if(!isRib){
-      const sgw=sw-2*Sp, sgh=sh-2*Sp, sgx=sx2+Sp, sgy=sy2+Sp, sgmid=(sgy+sgy+sgh)/2;
+      // standard catalog symbol: turn (diagonal) + tilt (apex up) opening combined
+      const sgw=sw-2*Sp, sgh=sh-2*Sp, sgx=sx2+Sp, sgy=sy2+Sp, sgmid=(sgy+sgy+sgh)/2, sgmidX=sgx+sgw/2;
       parts.push(`<polygon points="${sgx},${sgmid} ${sgx+sgw},${sgy} ${sgx+sgw},${sgy+sgh}" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1" stroke-linejoin="round" opacity=".8"/>`);
+      parts.push(`<polygon points="${sgx},${sgy+sgh} ${sgx+sgw},${sgy+sgh} ${sgmidX},${sgy}" fill="rgba(245,158,11,0.16)" stroke="#F59E0B" stroke-width="1" stroke-linejoin="round" opacity=".8"/>`);
     } else {
       const btm=sy2+sh-Sp, top=sy2+Sp, mid=sx2+sw/2;
       parts.push(`<polygon points="${sx2+Sp},${btm} ${sx2+sw-Sp},${btm} ${mid},${top}" fill="rgba(245,158,11,0.2)" stroke="#F59E0B" stroke-width="1.2" stroke-linejoin="round" opacity=".85"/>`);
