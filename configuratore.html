@@ -999,22 +999,13 @@ const STEPS_PARAPETTO = [
 let STEPS = STEPS_FULL.map(s => ({...s}));
 
 const WINDOW_TYPES = [
-  { id:'1-anta-rib',   name:'1 anta con ribalta',  desc:'Tilt & Turn, apertura e ribalta',        rate:135, minW:400, maxW:1600, minH:400,  maxH:2200 },
-  { id:'2-ante-rib',   name:'2 ante con ribalta',  desc:'Tilt & Turn doppia anta',                rate:125, minW:700, maxW:2500, minH:400,  maxH:2200 },
+  { id:'porta-ingresso', name:'Porta di ingresso', desc:'Porta blindata/di sicurezza d\'ingresso', rate:210, minW:700, maxW:1200, minH:2000, maxH:2400 },
+  { id:'parapetto',    name:'Parapetto',           desc:'Solo misure e spessore del vetro',       rate:0,   minW:500, maxW:20000,minH:850,  maxH:1300 },
   { id:'porta-finestra', name:'1 porta finestra',  desc:'Vetrata, per balconi e terrazzi',        rate:150, minW:600, maxW:2500, minH:1800, maxH:2400 },
-  { id:'porta-ingresso', name:'1 porta ingresso',  desc:'Porta blindata/di sicurezza d\'ingresso', rate:210, minW:700, maxW:1200, minH:2000, maxH:2400 },
   { id:'vetro-fisso',  name:'1 vetro fisso',       desc:'Pannello non apribile, massima luce',    rate:95,  minW:300, maxW:3000, minH:300,  maxH:2500 },
-  { id:'parapetto',    name:'1 parapetto',         desc:'Solo misure e spessore del vetro',       rate:0,   minW:500, maxW:20000,minH:850,  maxH:1300 },
 ];
 
 const OPENING_OPTS = {
-  '1-anta-rib': [
-    { id:'rib-dx', name:'Ribalta + apertura destra',    desc:'Tilt & Turn: ribalta e rotazione, maniglia a destra' },
-    { id:'rib-sx', name:'Ribalta + apertura sinistra',  desc:'Tilt & Turn: ribalta e rotazione, maniglia a sinistra' },
-  ],
-  '2-ante-rib': [
-    { id:'rib-entrambe', name:'Ribalta su entrambe le ante', desc:'Tilt & Turn su entrambe le ante, apertura verso interno' },
-  ],
   'porta-finestra': [
     { id:'1a-dx', name:'1 anta, apertura interno destra',  desc:'Cerniere a sinistra, apre verso interno' },
     { id:'1a-sx', name:'1 anta, apertura interno sinistra', desc:'Cerniere a destra, apre verso interno' },
@@ -1086,8 +1077,6 @@ const PARAPETTO_GLASS_OPTS = [
 ];
 
 const SIZE_PRESETS = {
-  '1-anta-rib':    [{w:600,h:900},{w:800,h:1200},{w:1000,h:1200},{w:1200,h:1400}],
-  '2-ante-rib':    [{w:1200,h:1200},{w:1400,h:1400},{w:1600,h:1400},{w:2000,h:1600}],
   'porta-finestra':[{w:900,h:2100},{w:1200,h:2100},{w:1600,h:2200}],
   'porta-ingresso':[{w:800,h:2100},{w:900,h:2100},{w:1000,h:2200}],
   'vetro-fisso':   [{w:600,h:900},{w:1000,h:1200},{w:1200,h:1500},{w:1500,h:2000}],
@@ -1160,9 +1149,9 @@ function buildPreviewSVG(compact) {
 
   const type = st.type;
   const op = st.opening;
-  const isDouble = type === '2-ante-rib' || (type === 'porta-finestra' && op === '2a');
+  const isDouble = type === 'porta-finestra' && op === '2a';
   const isDoor = type === 'porta-finestra' || type === 'porta-ingresso';
-  const isRibalta = type === '1-anta-rib' || type === '2-ante-rib';
+  const isRibalta = false;
   const isFisso = type === 'vetro-fisso';
 
   const parts = [];
@@ -1279,9 +1268,10 @@ function buildPreviewSVG(compact) {
 // Type-card mini SVGs (static schematic)
 function typeCardSVG(typeId) {
   if(typeId === 'parapetto') return parapettoTypeIcon();
-  const isDouble = typeId === '2-ante-rib';
-  const isDoor   = typeId === 'porta-finestra' || typeId === 'porta-ingresso';
-  const isRib    = typeId === '1-anta-rib' || typeId === '2-ante-rib';
+  if(typeId === 'porta-ingresso') return doorEntryIcon();
+  const isDouble = false;
+  const isDoor   = typeId === 'porta-finestra';
+  const isRib    = false;
   const isFisso  = typeId === 'vetro-fisso';
   const h = isDoor ? 90 : 68;
   const w = isDouble ? 90 : 68;
@@ -1334,8 +1324,21 @@ function typeCardSVG(typeId) {
 }
 
 function parapettoTypeIcon() {
-  return `<svg viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-    <rect x="3" y="9" width="18" height="3"/><path d="M5 12v9M19 12v9M3 21h18"/><path d="M3 9V3h18v6"/>
+  return `<svg viewBox="0 0 68 68" xmlns="http://www.w3.org/2000/svg">
+    <rect x="2" y="2" width="64" height="64" rx="2" fill="#BFDBFE" stroke="#3B82F6" stroke-width="4"/>
+    <rect x="10" y="27" width="48" height="5" rx="1" fill="#1E40AF"/>
+    <rect x="15" y="32" width="4" height="24" fill="#1E40AF"/>
+    <rect x="49" y="32" width="4" height="24" fill="#1E40AF"/>
+    <rect x="32" y="32" width="4" height="24" fill="#1E40AF"/>
+    <rect x="8" y="56" width="52" height="4" rx="1" fill="#1E40AF"/>
+  </svg>`;
+}
+
+function doorEntryIcon() {
+  return `<svg viewBox="0 0 68 90" xmlns="http://www.w3.org/2000/svg">
+    <rect x="2" y="2" width="64" height="86" rx="2" fill="#BFDBFE" stroke="#3B82F6" stroke-width="4"/>
+    <rect x="16" y="12" width="36" height="66" rx="2" fill="#93C5FD" stroke="#1E40AF" stroke-width="2.5"/>
+    <circle cx="44" cy="46" r="2.6" fill="#1E40AF"/>
   </svg>`;
 }
 
@@ -1421,7 +1424,7 @@ function renderTypeGrid() {
 function renderSizeChips() {
   const isParapetto = st.type === 'parapetto';
   const t = WINDOW_TYPES.find(x=>x.id===st.type);
-  const presets = SIZE_PRESETS[st.type] || SIZE_PRESETS['1-anta-rib'];
+  const presets = SIZE_PRESETS[st.type] || SIZE_PRESETS['porta-finestra'];
   const el = document.getElementById('size-chips');
   el.innerHTML = presets.map(p =>
     `<button class="size-chip" type="button" onclick="applyPreset(${p.w},${p.h})">${isParapetto ? (p.w/1000)+' m × '+p.h+' mm' : p.w+'×'+p.h+' mm'}</button>`
@@ -1459,7 +1462,7 @@ function renderThicknessChips() {
 }
 
 function renderOpeningGrid() {
-  const opts = OPENING_OPTS[st.type] || OPENING_OPTS['1-anta-rib'];
+  const opts = OPENING_OPTS[st.type] || OPENING_OPTS['porta-finestra'];
   const el = document.getElementById('opening-grid');
   el.innerHTML = opts.map(o => `
     <div class="opening-card${st.opening===o.id?' selected':''}"
@@ -1703,9 +1706,7 @@ function selectMaterial(id) {
 
 function selectType(id) {
   st.type = id;
-  st.opening = id === 'vetro-fisso' ? 'fisso-fix'
-             : id === '2-ante-rib'  ? 'rib-entrambe'
-             : null;
+  st.opening = id === 'vetro-fisso' ? 'fisso-fix' : null;
   st.color = null;
   st.glass = null;
   document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
@@ -2270,7 +2271,6 @@ document.addEventListener('keydown', e => {
   if(preset && WINDOW_TYPES.find(x=>x.id===preset)) {
     st.type = preset;
     if(preset === 'vetro-fisso') st.opening = 'fisso-fix';
-    if(preset === '2-ante-rib') st.opening = 'rib-entrambe';
     if(preset === 'parapetto') { st.width = 3000; st.height = 1000; }
   }
   applyTypeUI();
