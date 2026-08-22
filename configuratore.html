@@ -1028,6 +1028,7 @@ const WINDOW_TYPES = [
   { id:'parapetto',    name:'Parapetto',           desc:'Ringhiera in vetro per balconi, scale e piscine', rate:0,   minW:300, maxW:6000, minH:300,  maxH:3210 },
   { id:'porta-finestra', name:'Porta finestra',    desc:'Vetrata, per balconi e terrazzi',        rate:150, minW:600, maxW:2500, minH:1800, maxH:2400 },
   { id:'vetro-fisso',  name:'Vetro fisso',         desc:'Pannello non apribile, massima luce',    rate:95,  minW:300, maxW:3000, minH:300,  maxH:2500 },
+  { id:'scorrevole',   name:'Scorrevoli',          desc:'Sistemi scorrevoli e alzanti-scorrevoli, massima luminosità', rate:160, minW:1200, maxW:6000, minH:1800, maxH:2400 },
 ];
 
 const OPENING_OPTS = {
@@ -1047,6 +1048,10 @@ const OPENING_OPTS = {
   ],
   'vetro-fisso': [
     { id:'fisso-fix', name:'Vetro fisso non apribile', desc:'Pannello vetrato in luce fissa, senza cerniere né maniglie' },
+  ],
+  'scorrevole': [
+    { id:'2-ante-scorr', name:'2 ante scorrevoli', desc:'Un pannello fisso e uno scorrevole' },
+    { id:'3-ante-scorr', name:'3 ante scorrevoli', desc:'Tre pannelli scorrevoli in sequenza' },
   ],
 };
 
@@ -1112,6 +1117,7 @@ const SIZE_PRESETS = {
   'porta-ingresso':[{w:900,h:2200},{w:800,h:2100},{w:1000,h:2200}],
   'vetro-fisso':   [{w:600,h:900},{w:1000,h:1200},{w:1200,h:1500},{w:1500,h:2000}],
   'parapetto':     [{w:1500,h:1000},{w:3000,h:1500},{w:6000,h:2000}],
+  'scorrevole':    [{w:2000,h:2100},{w:3000,h:2200},{w:4000,h:2200}],
 };
 
 // ═══════════════════════════════════════════════════
@@ -1186,6 +1192,7 @@ function buildPreviewSVG(compact) {
   const isDoor = type === 'porta-finestra' || type === 'porta-ingresso';
   const isRibalta = false;
   const isFisso = type === 'vetro-fisso';
+  const isScorrevole = type === 'scorrevole';
 
   const parts = [];
 
@@ -1227,7 +1234,30 @@ function buildPreviewSVG(compact) {
     parts.push(`<rect x="${fx}" y="${fy+fh-8}" width="${fw}" height="8" rx="1" fill="${profFill}" stroke="${pc.stroke}" stroke-width="2"/>`);
   }
 
-  if(isDouble) {
+  if(isScorrevole) {
+    // Overlapping sliding panels + horizontal slide-direction arrow
+    const panels = op === '3-ante-scorr' ? 3 : 2;
+    const sep = F + G;
+    const totalW = fw - 2*sep, totalH = fh - 2*sep;
+    const pw = totalW / panels;
+    const sx0 = fx + sep, sy0 = fy + sep;
+    const overlap = Math.min(pw * 0.12, 6);
+
+    for(let i = 0; i < panels; i++) {
+      const px = sx0 + i * pw - (i > 0 ? overlap : 0);
+      const pW = pw + (i > 0 && i < panels - 1 ? overlap * 2 : overlap);
+      parts.push(`<rect x="${px}" y="${sy0}" width="${pW}" height="${totalH}" rx="1" fill="${profFill}" stroke="${pc.stroke}" stroke-width="${S}" opacity="${i % 2 === 0 ? 1 : 0.92}"/>`);
+      const gx2 = px + S, gy2 = sy0 + S, gw2 = pW - 2 * S, gh2 = totalH - 2 * S;
+      parts.push(`<rect x="${gx2}" y="${gy2}" width="${gw2}" height="${gh2}" fill="${glassFill}" stroke="rgba(147,210,245,.5)" stroke-width=".8"/>`);
+    }
+
+    // Slide-direction indicator (↔)
+    const midY = fy + fh / 2, midX = fx + fw / 2;
+    const aw = Math.min(fw, fh) * 0.16;
+    parts.push(`<line x1="${midX-aw}" y1="${midY}" x2="${midX+aw}" y2="${midY}" stroke="#1E40AF" stroke-width="2" opacity=".75"/>`);
+    parts.push(`<polygon points="${midX-aw},${midY} ${midX-aw+6},${midY-5} ${midX-aw+6},${midY+5}" fill="#1E40AF" opacity=".75"/>`);
+    parts.push(`<polygon points="${midX+aw},${midY} ${midX+aw-6},${midY-5} ${midX+aw-6},${midY+5}" fill="#1E40AF" opacity=".75"/>`);
+  } else if(isDouble) {
     const sep = F + G;
     const sw = (fw - 2*sep - F) / 2;
     const sh = fh - 2*sep;
@@ -1302,6 +1332,7 @@ function buildPreviewSVG(compact) {
 function typeCardSVG(typeId) {
   if(typeId === 'parapetto') return parapettoTypeIcon();
   if(typeId === 'porta-ingresso') return doorEntryIcon();
+  if(typeId === 'scorrevole') return scorrevoleTypeIcon();
   const isDouble = false;
   const isDoor   = typeId === 'porta-finestra';
   const isRib    = false;
@@ -1366,6 +1397,20 @@ function parapettoTypeIcon() {
     <rect x="49" y="32" width="4" height="24" fill="#1E40AF"/>
     <rect x="32" y="32" width="4" height="24" fill="#1E40AF"/>
     <rect x="8" y="56" width="52" height="4" rx="1" fill="#1E40AF"/>
+  </svg>`;
+}
+
+function scorrevoleTypeIcon() {
+  // same double-panel + inward-arrows motif used on the homepage
+  // "Finestre Scorrevoli & Speciali" product card
+  return `<svg viewBox="0 0 90 68" xmlns="http://www.w3.org/2000/svg">
+    <rect x="2" y="2" width="86" height="64" rx="2" fill="#BFDBFE" stroke="#1E40AF" stroke-width="4"/>
+    <rect x="9" y="9" width="72" height="50" rx="1" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+    <line x1="45" y1="9" x2="45" y2="59" stroke="#1E40AF" stroke-width="2"/>
+    <rect x="13" y="13" width="29" height="42" fill="rgba(147,197,253,0.3)" stroke="#93C5FD" stroke-width="1"/>
+    <rect x="48" y="13" width="29" height="42" fill="rgba(147,197,253,0.3)" stroke="#93C5FD" stroke-width="1"/>
+    <polygon points="15,34 41,15 41,53" fill="rgba(30,64,175,0.1)" stroke="#1E40AF" stroke-width="1" stroke-linejoin="round" opacity=".8"/>
+    <polygon points="75,34 49,15 49,53" fill="rgba(30,64,175,0.1)" stroke="#1E40AF" stroke-width="1" stroke-linejoin="round" opacity=".8"/>
   </svg>`;
 }
 
