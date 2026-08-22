@@ -739,6 +739,25 @@
             <span class="hint">Max 100 caratteri</span>
           </div>
         </div>
+        <div id="extra-sizes-block" style="margin-top:24px;">
+          <div class="size-presets-label" style="margin-bottom:10px;">Altre misure da aggiungere allo stesso preventivo (opzionale)</div>
+          <div id="extra-sizes-list"></div>
+          <div class="dim-grid" style="grid-template-columns:1fr 1fr 90px auto;align-items:end;gap:10px;">
+            <div class="form-group">
+              <label for="extra-width">Larghezza (mm)</label>
+              <input type="number" id="extra-width" min="200" max="20000" value="1000" step="10" />
+            </div>
+            <div class="form-group">
+              <label for="extra-height">Altezza (mm)</label>
+              <input type="number" id="extra-height" min="200" max="20000" value="1200" step="10" />
+            </div>
+            <div class="form-group">
+              <label for="extra-qty">Quantità</label>
+              <input type="number" id="extra-qty" min="1" max="99" value="1" step="1" />
+            </div>
+            <button type="button" class="size-chip" onclick="addExtraSize()" style="height:44px;white-space:nowrap;">+ Aggiungi</button>
+          </div>
+        </div>
         <div class="val-error" id="err-2">Inserisci dimensioni valide.</div>
       </div>
 
@@ -1116,6 +1135,7 @@ const st = {
   glassColor: 'chiaro',
   accessories: new Set(),
   glassCustomNote: '',
+  extraSizes: [], // { w, h, qty } — altri pezzi con misure diverse per lo stesso preventivo
   contact: { nome:'', email:'', tel:'', note:'' },
 };
 
@@ -1463,6 +1483,39 @@ function renderSizeChips() {
     thickBlock.style.display = isParapetto ? 'block' : 'none';
     if(isParapetto) renderThicknessChips();
   }
+  const extraBlock = document.getElementById('extra-sizes-block');
+  if(extraBlock) {
+    extraBlock.style.display = isParapetto ? 'none' : 'block';
+    if(!isParapetto) renderExtraSizes();
+  }
+}
+
+function renderExtraSizes() {
+  const el = document.getElementById('extra-sizes-list');
+  if(!el) return;
+  if(st.extraSizes.length === 0) {
+    el.innerHTML = '';
+    return;
+  }
+  el.innerHTML = st.extraSizes.map((s,i) => `
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);margin-bottom:8px;background:#fff;">
+      <span style="font-size:.9rem;font-weight:600;color:var(--text-dark);">${s.qty}× ${s.w} × ${s.h} mm</span>
+      <button type="button" onclick="removeExtraSize(${i})" aria-label="Rimuovi misura" style="background:none;border:none;color:#DC2626;cursor:pointer;font-size:1.3rem;line-height:1;padding:0 4px;">&times;</button>
+    </div>`).join('');
+}
+
+function addExtraSize() {
+  const w = parseInt(document.getElementById('extra-width').value) || 0;
+  const h = parseInt(document.getElementById('extra-height').value) || 0;
+  const qty = Math.max(1, parseInt(document.getElementById('extra-qty').value) || 1);
+  if(w <= 0 || h <= 0) return;
+  st.extraSizes.push({ w, h, qty });
+  renderExtraSizes();
+}
+
+function removeExtraSize(i) {
+  st.extraSizes.splice(i, 1);
+  renderExtraSizes();
 }
 
 function renderThicknessChips() {
@@ -1629,7 +1682,7 @@ function getConfigSpecs() {
   const divText = st.divEnabled
     ? `Sì, traversa a ${st.divSymmetric?'centro':st.divPos1+' mm'}${st.divPos2?' + '+st.divPos2+' mm':''}`
     : 'No';
-  return [
+  const specs = [
     ['Materiale',       matLabel],
     ['Tipo',            tInfo?.name||'N/D'],
     ['Dimensioni',      `${st.width} × ${st.height} mm`],
@@ -1641,6 +1694,10 @@ function getConfigSpecs() {
     ['Colore vetro',    isEntryDoor ? 'N/A' : ((GLASS_COLOR_OPTS.find(x=>x.id===st.glassColor))?.name||'N/D')],
     ['Accessori',       accNames.length ? accNames.join(', ') : 'Nessuno'],
   ];
+  if(st.extraSizes.length) {
+    specs.push(['Altri pezzi richiesti', st.extraSizes.map(s => `${s.qty}× ${s.w}×${s.h} mm`).join(', ')]);
+  }
+  return specs;
 }
 
 function renderSummary() {
@@ -2220,7 +2277,7 @@ function submitContact() {
     client_note:      note  || 'Nessuna',
     config_materiale: specVal('Materiale'),
     config_tipo:      specVal('Tipo'),
-    config_dimensioni:specVal('Dimensioni'),
+    config_dimensioni:specVal('Dimensioni') + (st.extraSizes.length ? ` | Altri pezzi: ${specVal('Altri pezzi richiesti')}` : ''),
     config_apertura:  specVal('Apertura'),
     config_divisioni: specVal('Divisioni'),
     config_canalina:  specVal('Canalina calda'),
