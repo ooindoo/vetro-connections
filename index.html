@@ -153,6 +153,8 @@
     .materials-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
     .material-card { display:flex; flex-direction:column; height:100%; border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--border); transition:box-shadow 250ms ease,transform 250ms ease; }
     .material-card:hover { box-shadow:var(--shadow-lg); transform:translateY(-5px); }
+    .material-photo { width:100%; height:180px; overflow:hidden; }
+    .material-photo img { width:100%; height:100%; object-fit:cover; display:block; }
     .material-header { padding:36px 28px 24px; position:relative; }
     .material-header.pvc { background:linear-gradient(135deg,#1E40AF,#3B82F6); }
     .material-header.legno { background:linear-gradient(135deg,#92400E,#D97706); }
@@ -692,6 +694,7 @@
     </div>
     <div class="materials-grid">
       <div class="material-card reveal">
+        <div class="material-photo"><img src="images/materiale-pvc.jpg" alt="Profilo PVC"></div>
         <div class="material-header pvc">
           <div class="material-icon">
             <svg viewBox="0 0 24 24"><path d="M3 3h18v18H3V3zm2 2v14h14V5H5zm2 2h10v10H7V7zm2 2v6h6V9H9z"/></svg>
@@ -719,6 +722,7 @@
         </div>
       </div>
       <div class="material-card reveal">
+        <div class="material-photo"><img src="images/materiale-legno.jpg" alt="Profilo Legno"></div>
         <div class="material-header legno">
           <div class="material-icon">
             <svg viewBox="0 0 24 24"><path d="M17 8C8 10 5.9 16.17 3.82 21c1.06-1.06 3.43-2.9 6.82-3.5 1.07 2.11 2.18 3.94 3.18 5.5C19.5 19 22 13 22 8h-5z"/></svg>
@@ -746,6 +750,7 @@
         </div>
       </div>
       <div class="material-card reveal">
+        <div class="material-photo"><img src="images/materiale-alluminio.jpg" alt="Profilo Alluminio"></div>
         <div class="material-header alluminio">
           <div class="material-icon">
             <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4V4zm2 6h12v4H6v-4z"/></svg>
