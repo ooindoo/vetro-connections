@@ -733,6 +733,11 @@
           <div class="glass-grid" id="thickness-chips" style="margin-bottom:0;">
             <!-- rendered by JS -->
           </div>
+          <div id="glass-custom-note-block" class="form-group" style="display:none;margin-top:14px;">
+            <label for="glass-custom-note">Specifica lo spessore/composizione</label>
+            <input type="text" id="glass-custom-note" maxlength="100" placeholder="Es. Stratificato 12+12 mm extrachiaro" />
+            <span class="hint">Max 100 caratteri</span>
+          </div>
         </div>
         <div class="val-error" id="err-2">Inserisci dimensioni valide.</div>
       </div>
@@ -1001,7 +1006,7 @@ let STEPS = STEPS_FULL.map(s => ({...s}));
 const WINDOW_TYPES = [
   { id:'finestra',     name:'Finestra',           desc:'Anta con apertura standard, per una o due ante', rate:120, minW:400, maxW:2500, minH:400,  maxH:2000 },
   { id:'porta-ingresso', name:'Porta di ingresso', desc:'Porta blindata/di sicurezza d\'ingresso', rate:210, minW:700, maxW:1200, minH:2000, maxH:2400 },
-  { id:'parapetto',    name:'Parapetto',           desc:'Ringhiera in vetro per balconi, scale e piscine', rate:0,   minW:500, maxW:20000,minH:850,  maxH:1300 },
+  { id:'parapetto',    name:'Parapetto',           desc:'Ringhiera in vetro per balconi, scale e piscine', rate:0,   minW:300, maxW:6000, minH:300,  maxH:3210 },
   { id:'porta-finestra', name:'Porta finestra',    desc:'Vetrata, per balconi e terrazzi',        rate:150, minW:600, maxW:2500, minH:1800, maxH:2400 },
   { id:'vetro-fisso',  name:'Vetro fisso',         desc:'Pannello non apribile, massima luce',    rate:95,  minW:300, maxW:3000, minH:300,  maxH:2500 },
 ];
@@ -1077,9 +1082,9 @@ const ENTRY_ACCESSORY_OPTS = [
 
 // Spessore vetro per "1 parapetto" (unico dato richiesto oltre alle misure)
 const PARAPETTO_GLASS_OPTS = [
-  { id:'temp-8',   name:'Temperato 8 mm',           tag:'8 mm',      badge:null,               desc:'Vetro monolitico temperato, conforme UNI EN 12150' },
-  { id:'temp-10',  name:'Temperato 10 mm',          tag:'10 mm',     badge:'Consigliato',       desc:'Maggior spessore, extra rigidità per lastre più lunghe' },
-  { id:'strat-33', name:'Stratificato 33.1 antic.', tag:'33.1 VSG',  badge:'Massima sicurezza', desc:'Vetro stratificato: in caso di rottura i frammenti restano ancorati alla pellicola' },
+  { id:'strat-8-8',   name:'Stratificato 8+8',   tag:'8+8 mm',   badge:null, desc:'Vetro stratificato di sicurezza, due lastre da 8 mm' },
+  { id:'strat-10-10', name:'Stratificato 10+10', tag:'10+10 mm', badge:null, desc:'Vetro stratificato di sicurezza, due lastre da 10 mm' },
+  { id:'altro',       name:'Altro',              tag:'Altro',    badge:null, desc:'Specifica lo spessore o la composizione desiderata', isCustom:true },
 ];
 
 const SIZE_PRESETS = {
@@ -1087,7 +1092,7 @@ const SIZE_PRESETS = {
   'porta-finestra':[{w:900,h:2200},{w:1200,h:2100},{w:1600,h:2200}],
   'porta-ingresso':[{w:900,h:2200},{w:800,h:2100},{w:1000,h:2200}],
   'vetro-fisso':   [{w:600,h:900},{w:1000,h:1200},{w:1200,h:1500},{w:1500,h:2000}],
-  'parapetto':     [{w:3000,h:1000},{w:5000,h:1000},{w:8000,h:1100}],
+  'parapetto':     [{w:1500,h:1000},{w:3000,h:1500},{w:6000,h:2000}],
 };
 
 // ═══════════════════════════════════════════════════
@@ -1110,6 +1115,7 @@ const st = {
   glass: 'doppio-lowe',
   glassColor: 'chiaro',
   accessories: new Set(),
+  glassCustomNote: '',
   contact: { nome:'', email:'', tel:'', note:'' },
 };
 
@@ -1598,11 +1604,14 @@ function renderAccList() {
 function getConfigSpecs() {
   if(st.type === 'parapetto') {
     const g = PARAPETTO_GLASS_OPTS.find(x=>x.id===st.glass);
+    const glassLabel = st.glass === 'altro'
+      ? `Altro: ${st.glassCustomNote.trim() || 'N/D'}`
+      : (g?.name || 'N/D');
     return [
       ['Prodotto',         'Parapetto in vetro'],
       ['Lunghezza totale', `${(st.width/1000).toFixed(1)} m`],
       ['Altezza vetro',    `${st.height} mm`],
-      ['Spessore vetro',   g?.name || 'N/D'],
+      ['Spessore vetro',   glassLabel],
     ];
   }
   const isEntryDoor = st.type === 'porta-ingresso';
@@ -1785,8 +1794,14 @@ function selectGlass(id) {
   document.querySelectorAll('.glass-card').forEach(c => {
     c.classList.toggle('selected', c.getAttribute('onclick')?.includes(`'${id}'`));
   });
+  const noteBlock = document.getElementById('glass-custom-note-block');
+  if(noteBlock) noteBlock.style.display = id === 'altro' ? 'flex' : 'none';
   updatePreviewPanel();
 }
+
+document.getElementById('glass-custom-note').addEventListener('input', e => {
+  st.glassCustomNote = e.target.value;
+});
 
 function selectGlassColor(id) {
   st.glassColor = id;
@@ -1814,7 +1829,11 @@ function validate(step) {
     const t = WINDOW_TYPES.find(x=>x.id===st.type);
     const dimsOk = st.width>=(t?.minW||400) && st.width<=(t?.maxW||2500) &&
                    st.height>=(t?.minH||400) && st.height<=(t?.maxH||2500);
-    return st.type === 'parapetto' ? (dimsOk && !!st.glass) : dimsOk;
+    if(st.type === 'parapetto') {
+      const glassOk = st.glass === 'altro' ? !!st.glassCustomNote.trim() : !!st.glass;
+      return dimsOk && glassOk;
+    }
+    return dimsOk;
   }
   if(cid===3) return true; // divisioni optional
   if(cid===4) return !!st.opening;
