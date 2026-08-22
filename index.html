@@ -151,7 +151,7 @@
 
     /* MATERIALS */
     .materials-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
-    .material-card { border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--border); transition:box-shadow 250ms ease,transform 250ms ease; }
+    .material-card { display:flex; flex-direction:column; height:100%; border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--border); transition:box-shadow 250ms ease,transform 250ms ease; }
     .material-card:hover { box-shadow:var(--shadow-lg); transform:translateY(-5px); }
     .material-header { padding:36px 28px 24px; position:relative; }
     .material-header.pvc { background:linear-gradient(135deg,#1E40AF,#3B82F6); }
@@ -161,7 +161,7 @@
     .material-icon svg { width:28px; height:28px; fill:#fff; }
     .material-header h3 { font-size:1.3rem; font-weight:700; color:#fff; margin-bottom:6px; }
     .material-header p { font-size:0.85rem; color:rgba(255,255,255,.8); }
-    .material-body { background:#fff; padding:24px 28px; }
+    .material-body { background:#fff; padding:24px 28px; flex:1; }
     .material-feature { display:flex; align-items:center; gap:10px; font-size:0.875rem; color:var(--text-mid); margin-bottom:10px; }
     .material-feature:last-child { margin-bottom:0; }
     .material-feature svg { width:16px; height:16px; fill:var(--accent); flex-shrink:0; }
