@@ -1084,8 +1084,8 @@ const PARAPETTO_GLASS_OPTS = [
 
 const SIZE_PRESETS = {
   'finestra':      [{w:600,h:900},{w:800,h:1200},{w:1000,h:1200},{w:1200,h:1400}],
-  'porta-finestra':[{w:900,h:2100},{w:1200,h:2100},{w:1600,h:2200}],
-  'porta-ingresso':[{w:800,h:2100},{w:900,h:2100},{w:1000,h:2200}],
+  'porta-finestra':[{w:900,h:2200},{w:1200,h:2100},{w:1600,h:2200}],
+  'porta-ingresso':[{w:900,h:2200},{w:800,h:2100},{w:1000,h:2200}],
   'vetro-fisso':   [{w:600,h:900},{w:1000,h:1200},{w:1200,h:1500},{w:1500,h:2000}],
   'parapetto':     [{w:3000,h:1000},{w:5000,h:1000},{w:8000,h:1100}],
 };
@@ -1720,6 +1720,19 @@ function selectType(id) {
   st.opening = id === 'vetro-fisso' ? 'fisso-fix' : null;
   st.color = null;
   st.glass = null;
+
+  // Reset dimensions to this product's default so the preview immediately
+  // shows the right proportions (a door must not look like a square window).
+  const defaultSize = (SIZE_PRESETS[id] || [])[0];
+  if(defaultSize) {
+    st.width = defaultSize.w;
+    st.height = defaultSize.h;
+    const iw = document.getElementById('inp-width');
+    const ih = document.getElementById('inp-height');
+    if(iw) iw.value = defaultSize.w;
+    if(ih) ih.value = defaultSize.h;
+  }
+
   document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
   event.currentTarget.classList.add('selected');
   applyTypeUI();
