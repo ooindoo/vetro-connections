@@ -1233,8 +1233,8 @@ function buildPreviewSVG(compact) {
       parts.push(ribTri(lgx,lgy,gw,gh));
       parts.push(ribTri(rgx,rgy,gw,gh));
     }
-    parts.push(openTri('>',lgx,lgy,gw,gh));
-    parts.push(openTri('<',rgx,rgy,gw,gh));
+    parts.push(openTri('<',lgx,lgy,gw,gh));
+    parts.push(openTri('>',rgx,rgy,gw,gh));
 
     // Handles
     const hY = sy + sh/2 - 10;
@@ -1263,9 +1263,9 @@ function buildPreviewSVG(compact) {
     if(!isFisso) {
       if(isRibalta) parts.push(ribTri(gx,gy,gw,gh));
       if(op==='rib-dx'||op==='1a-dx'||op==='int-dx'||(!op&&!isRibalta)) {
-        parts.push(openTri('>',gx,gy,gw,gh));
-      } else if(op==='rib-sx'||op==='1a-sx'||op==='int-sx') {
         parts.push(openTri('<',gx,gy,gw,gh));
+      } else if(op==='rib-sx'||op==='1a-sx'||op==='int-sx') {
+        parts.push(openTri('>',gx,gy,gw,gh));
       }
 
       // Handle
@@ -1307,8 +1307,8 @@ function typeCardSVG(typeId) {
     if(!isRib){
       const lgw=sw-2*Sp, lgh=sh-2*Sp, lgx=lx+Sp, lgy=sy+Sp, lgmid=(lgy+lgy+lgh)/2;
       const rgx=rx+Sp;
-      parts.push(`<polygon points="${lgx},${lgmid} ${lgx+lgw},${lgy} ${lgx+lgw},${lgy+lgh}" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1" stroke-linejoin="round" opacity=".8"/>`);
-      parts.push(`<polygon points="${rgx+lgw},${lgmid} ${rgx},${lgy} ${rgx},${lgy+lgh}" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1" stroke-linejoin="round" opacity=".8"/>`);
+      parts.push(`<polygon points="${lgx+lgw},${lgmid} ${lgx},${lgy} ${lgx},${lgy+lgh}" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1" stroke-linejoin="round" opacity=".8"/>`);
+      parts.push(`<polygon points="${rgx},${lgmid} ${rgx+lgw},${lgy} ${rgx+lgw},${lgy+lgh}" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1" stroke-linejoin="round" opacity=".8"/>`);
     } else {
       const btm=sy+sh-Sp, top=sy+Sp;
       parts.push(`<polygon points="${lx+Sp},${btm} ${lx+sw-Sp},${btm} ${lx+sw/2},${top}" fill="rgba(245,158,11,0.2)" stroke="#F59E0B" stroke-width="1.2" stroke-linejoin="round" opacity=".85"/>`);
@@ -1323,9 +1323,10 @@ function typeCardSVG(typeId) {
     if(isFisso){
       // no opening indicator for fixed pane
     } else if(!isRib){
-      // same opening symbol used by the live preview panel (apex-left triangle)
+      // same opening symbol used by the live preview panel: wide base = hinge
+      // side (left), tip = opening/handle side (right)
       const sgw=sw-2*Sp, sgh=sh-2*Sp, sgx=sx2+Sp, sgy=sy2+Sp, sgmid=(sgy+sgy+sgh)/2;
-      parts.push(`<polygon points="${sgx},${sgmid} ${sgx+sgw},${sgy} ${sgx+sgw},${sgy+sgh}" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1" stroke-linejoin="round" opacity=".8"/>`);
+      parts.push(`<polygon points="${sgx+sgw},${sgmid} ${sgx},${sgy} ${sgx},${sgy+sgh}" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1" stroke-linejoin="round" opacity=".8"/>`);
     } else {
       const btm=sy2+sh-Sp, top=sy2+Sp, mid=sx2+sw/2;
       parts.push(`<polygon points="${sx2+Sp},${btm} ${sx2+sw-Sp},${btm} ${mid},${top}" fill="rgba(245,158,11,0.2)" stroke="#F59E0B" stroke-width="1.2" stroke-linejoin="round" opacity=".85"/>`);
@@ -1349,12 +1350,12 @@ function parapettoTypeIcon() {
 }
 
 function doorEntryIcon() {
-  // same opening symbol used by the live preview panel (apex-left triangle),
-  // so the card icon matches the "Anteprima" panel once selected
+  // same opening symbol used by the live preview panel: wide base = hinge
+  // side (left), tip = opening/handle side (right)
   return `<svg viewBox="0 0 68 90" xmlns="http://www.w3.org/2000/svg">
     <rect x="2" y="2" width="64" height="86" rx="2" fill="#BFDBFE" stroke="#3B82F6" stroke-width="4"/>
     <rect x="16" y="12" width="36" height="66" rx="2" fill="#93C5FD" stroke="#1E40AF" stroke-width="2.5"/>
-    <polygon points="19,45 49,15 49,75" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1" stroke-linejoin="round" opacity=".8"/>
+    <polygon points="49,45 19,15 19,75" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1" stroke-linejoin="round" opacity=".8"/>
     <circle cx="44" cy="46" r="2.6" fill="#1E40AF"/>
   </svg>`;
 }
@@ -1497,9 +1498,11 @@ function renderOpeningGrid() {
 function openingIcon(id) {
   const box = `<rect x="3" y="3" width="22" height="22" rx="2" stroke="#3B82F6" stroke-width="2" fill="#DBEAFE"/>`;
   if(id==='ribalta') return `<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">${box}<polygon points="5,23 23,23 14,5" fill="rgba(245,158,11,0.2)" stroke="#F59E0B" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
-  if(id.includes('dx')) return `<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">${box}<line x1="3" y1="3" x2="3" y2="25" stroke="#1E40AF" stroke-width="2"/><polygon points="5,14 23,5 23,23" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1.2" stroke-linejoin="round"/></svg>`;
-  if(id.includes('sx')) return `<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">${box}<line x1="25" y1="3" x2="25" y2="25" stroke="#1E40AF" stroke-width="2"/><polygon points="23,14 5,5 5,23" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1.2" stroke-linejoin="round"/></svg>`;
-  return `<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">${box}<polygon points="5,14 23,5 23,23" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1.2" stroke-linejoin="round"/></svg>`;
+  // Hinge line marks the fixed side; the triangle's wide base sits on that
+  // same side, its tip points to the opening/handle side.
+  if(id.includes('dx')) return `<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">${box}<line x1="3" y1="3" x2="3" y2="25" stroke="#1E40AF" stroke-width="2"/><polygon points="23,14 5,5 5,23" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1.2" stroke-linejoin="round"/></svg>`;
+  if(id.includes('sx')) return `<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">${box}<line x1="25" y1="3" x2="25" y2="25" stroke="#1E40AF" stroke-width="2"/><polygon points="5,14 23,5 23,23" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1.2" stroke-linejoin="round"/></svg>`;
+  return `<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">${box}<polygon points="23,14 5,5 5,23" fill="rgba(30,64,175,0.12)" stroke="#1E40AF" stroke-width="1.2" stroke-linejoin="round"/></svg>`;
 }
 
 function renderColorGrid() {
